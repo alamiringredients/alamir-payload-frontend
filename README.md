@@ -1,5 +1,7 @@
 # Alamir Payload frontend
 
+Use Node.js 24 LTS for development and deployment. The tooling also supports Node.js 22.13+ (22.x) and Node.js 26+.
+
 This separate Next.js website preserves the existing Alamir design and reads content from Payload's generated REST API. English, Arabic, and French routes remain available.
 
 Configure `.env` using `.env.example`. `NEXT_PUBLIC_BACKEND_URL` identifies the Payload API, and `NEXT_PUBLIC_MEDIA_URL` identifies the public R2 domain. Storage credentials belong only in the backend environment. `NEXT_PUBLIC_APP_TIMEZONE` configures date displays; leave it empty to use the runtime default. Set it to the same value as the backend’s `APP_TIMEZONE` when you need one consistent display timezone. Changes to public environment variables require rebuilding the frontend.
