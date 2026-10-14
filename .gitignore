@@ -10,28 +10,10 @@ node_modules
 .env.test
 .env.*.local
 
-# Holo
-.holo-js/framework
-.holo-js/generated
-.holo-js/runtime
-.holo-cli
-
-# Nuxt
-.nuxt
-.output
-.nitro
-.data
-.netlify
-.vercel
-
 # Next.js
 .next
 out
 next-env.d.ts
-
-# SvelteKit
-.svelte-kit
-build
 
 # Build / Misc
 dist

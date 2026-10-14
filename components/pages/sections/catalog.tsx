@@ -1,12 +1,11 @@
-import sections from '@/lib/payload/sections.json'
 import {sectionContent} from '@/lib/payload/client'
 import type {ManagedPageContent} from '@/lib/cms/types'
 import {getCatalogPayload} from '@/lib/api/public'
 import {renderManagedSection} from '@/lib/cms/render'
 import {CatalogIndexSections} from '@/components/catalog/catalog-content'
-import {mainSections,type SectionArgs} from '../section-utils'
+import {type SectionArgs} from '../section-utils'
 
-export async function renderSection({block,locale,source,definition,settings,context}:SectionArgs){
+export async function renderSection({block,locale,source,definition,settings}:SectionArgs){
  const {name,pageSlug}=definition
  if(pageSlug==='products'){
   const data=await getCatalogPayload(locale,'products'),content=sectionContent<ManagedPageContent>(source,block)

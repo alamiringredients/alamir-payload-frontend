@@ -1,3 +1,4 @@
+import type {CategoryCard} from '@/lib/catalog/types'
 import {SectionCopy} from '@/components/editor/section-copy'
 import {RecordLayout} from '@/components/pages/record-layout'
 import {SiteIcon} from '@/components/site/site-icon'
@@ -37,7 +38,7 @@ function CatalogCallToAction({block,locale,actions}:{block:CatalogBlock;locale:S
  return <CallToActionSection kicker={text(block,0,locale)} title={<SectionCopy kind="heading" section={block} locale={locale}/>} description={<SectionCopy kind="body" section={block} locale={locale}/>} actions={actions}/>
 }
 
-function CategoryArtwork({category}:{category:Pick<Category,'content'>|import('@/lib/catalog/types').CategoryCard}){
+function CategoryArtwork({category}:{category:Pick<Category,'content'>|CategoryCard}){
  const images=category.content.artwork.assets.filter(item=>item.value)
  if(!category.content.artwork.enabled||!images.length)return null
  const columns=Math.min(images.length,6),spread=Math.min(58,28+columns*5),width=images.length===1?66:Math.max(30,63-columns*5),lifts=[2,28,8,36,4,22]

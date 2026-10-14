@@ -7,13 +7,8 @@
     "dev": "node --import dotenv/config node_modules/next/dist/bin/next dev",
     "build": "next build",
     "start": "node --import dotenv/config node_modules/next/dist/bin/next start",
-    "lint": "eslint app components config i18n lib tests scripts proxy.ts next.config.ts --no-warn-ignored --no-error-on-unmatched-pattern",
-    "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test:layout-shift": "node --test tests/layout-shift.browser.test.mjs",
-    "test:media-loading": "node --test tests/media-loading.browser.test.mjs",
-    "test:category-gallery": "node --test tests/category-gallery.browser.test.mjs",
-    "test:product-filters": "node --test tests/product-filters.browser.test.mjs",
-    "test:forms": "node --test tests/holo-forms.browser.test.mjs"
+    "lint": "eslint app components config i18n lib proxy.ts next.config.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
     "@payloadcms/richtext-lexical": "^3.90.2",
@@ -33,7 +28,6 @@
     "@types/three": "^0.160.0",
     "eslint": "^9.17.0",
     "globals": "^15.14.0",
-    "playwright": "^1.63.0",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.30.1"
   },

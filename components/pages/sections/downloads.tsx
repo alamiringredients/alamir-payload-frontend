@@ -4,7 +4,7 @@ import {getDownloadsPayload} from '@/lib/api/public'
 import {DownloadsContent} from '@/components/certifications/downloads-content'
 import {mainSections,type SectionArgs} from '../section-utils'
 
-export async function renderSection({block,locale,source,definition,settings,context}:SectionArgs){
+export async function renderSection({block,locale,source,definition,settings}:SectionArgs){
  const {name,pageSlug}=definition
  if(pageSlug==='downloads'){
   const data=await getDownloadsPayload(locale),content=sectionContent<typeof data.content>(source,block)

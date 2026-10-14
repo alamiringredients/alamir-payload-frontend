@@ -5,7 +5,7 @@ import {NewsIndexBody} from '@/components/news/news-body'
 import {presentNewsCard} from '@/lib/news/presentation'
 import {mainSections,type SectionArgs} from '../section-utils'
 
-export async function renderSection({block,locale,source,definition,settings,context}:SectionArgs){
+export async function renderSection({block,locale,source,definition,context}:SectionArgs){
  const {name,pageSlug}=definition
  if(pageSlug==='sustainability'){
   const data=await getSustainabilityPayload(locale),page=sectionContent<typeof data.page>(source,block)

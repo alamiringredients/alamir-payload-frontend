@@ -1,5 +1,4 @@
 import {type ReactNode} from 'react'
-import sections from '@/lib/payload/sections.json'
 import {sectionContent} from '@/lib/payload/client'
 import type {HomeCmsData} from '@/lib/cms/types'
 import {getHomeCatalog,getHomepagePayload} from '@/lib/api/public'
@@ -14,9 +13,9 @@ import {ProcessSection} from '@/components/home/process-section'
 import {QualitySection} from '@/components/home/quality-section'
 import {GlobalReachSection} from '@/components/home/global-reach-section'
 import {ContactSection} from '@/components/home/contact-section'
-import {mainSections,type SectionArgs} from '../section-utils'
+import {type SectionArgs} from '../section-utils'
 
-export async function renderSection({block,locale,source,definition,settings,context}:SectionArgs){
+export async function renderSection({block,locale,source,definition,settings}:SectionArgs){
  const {name,pageSlug}=definition
  if(pageSlug==='home'){
   const content=sectionContent<HomeCmsData>(source,block),section=content.sections.find(section=>section.key===name)!

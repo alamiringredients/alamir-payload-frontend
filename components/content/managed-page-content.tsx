@@ -1,5 +1,4 @@
 import {SectionCopy} from '@/components/editor/section-copy'
-import {textContent} from '@/lib/editor/document'
 import type {CompanyInformation} from '@/lib/cms/types'
 import { SearchForm } from "@/components/search/search-form";
 import { PageHero } from "@/components/site/page-hero";

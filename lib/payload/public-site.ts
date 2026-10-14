@@ -1,9 +1,10 @@
+import type {Document} from './types'
 import 'server-only'
 import {cache} from 'react'
 import {locale as rootLocale} from 'next/root-params'
 
 type Row=Record<string,unknown>
-type Collection={docs:Row[]}
+type Collection<T extends Document=Document>={docs:T[];[key:string]:unknown}
 const site=cache(async(query:string):Promise<Record<string,Row|Collection>>=>{
  const origin=process.env.NEXT_PUBLIC_BACKEND_URL?.replace(/\/$/,'')
  if(!origin)throw new Error('NEXT_PUBLIC_BACKEND_URL is required.')
@@ -76,13 +77,14 @@ function selected(row:Row,fields:Row):Row{
 }
 
 // The published projection contains native Payload documents. Apply only the read shapes used by this frontend.
-// Keep the dynamic JSON boundary used by the native REST reader. Callers own their document types.
-async function read(path:string):Promise<any>{
+function read(path:`globals/${string}`):Promise<Document>
+function read<T extends Document=Document>(path:string):Promise<Collection<T>>
+async function read(path:string):Promise<Row|Collection>{
  const [resource,search]=path.split('?'),params=new URLSearchParams(search)
  const content=await resourceContent(resource,params)
  if(!content)throw new Error(`Unknown public resource: ${resource}`)
  const locale=params.get('locale')??'all'
- if(resource.startsWith('globals/'))return (locale==='all'?content:localized(content,locale))
+ if(resource.startsWith('globals/'))return (locale==='all'?content:localized(content,locale)) as Document
  let docs=(content as Collection).docs
  const fields:Row={}
  for(const [key,value] of params){
@@ -99,8 +101,8 @@ async function read(path:string):Promise<any>{
  if(sort){const descending=sort.startsWith('-'),key=sort.replace(/^-/,'');docs=[...docs].sort((a,b)=>String(valueAt(a,key)??'').localeCompare(String(valueAt(b,key)??''),undefined,{numeric:true})*(descending?-1:1))}
  const limit=Number(params.get('limit')??0)
  if(limit>0)docs=docs.slice(0,limit)
- if(Object.keys(fields).length)docs=docs.map(doc=>selected(doc,fields))
- if(locale!=='all')docs=docs.map(doc=>localized(doc,locale) as Row)
+ if(Object.keys(fields).length)docs=docs.map(doc=>selected(doc,fields) as Document)
+ if(locale!=='all')docs=docs.map(doc=>localized(doc,locale) as Document)
  return {docs,totalDocs:docs.length,hasNextPage:false,hasPrevPage:false,page:1,totalPages:1}
 }
-export const publicRequest=cache(read)
+export const publicRequest=cache(read) as typeof read

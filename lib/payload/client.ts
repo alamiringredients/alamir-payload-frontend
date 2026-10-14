@@ -9,7 +9,8 @@ import recordSections from './record-sections.json'
 import { textContent, type ContentNode, type ContentDocument } from '@/lib/editor/document'
 
 type Value = string | number | boolean | null | Value[] | { [key: string]: Value }
-export type Document = Record<string, unknown> & { id: number; sourceId?: number; slug?: string }
+import type {Document} from './types'
+export type {Document} from './types'
 
 export function backendOrigin() {
   const origin = process.env.NEXT_PUBLIC_BACKEND_URL
@@ -18,12 +19,12 @@ export function backendOrigin() {
 }
 export const request=publicRequest
 export const mediaDimensions = cache(async (): Promise<Map<string, {width: number; height: number}>> => {
-  const response = await request('media?locale=all&depth=0&limit=1000&pagination=false&joins=false&select[url]=true&select[width]=true&select[height]=true&select[mimeType]=true&select[filename]=true&select[prefix]=true&select[alt]=true')
+  const response = await request<Document & {url:string;width:number;height:number}>('media?locale=all&depth=0&limit=1000&pagination=false&joins=false&select[url]=true&select[width]=true&select[height]=true&select[mimeType]=true&select[filename]=true&select[prefix]=true&select[alt]=true')
   return new Map(response.docs.filter((doc: {url?: string; width?: number; height?: number}) => doc.url && doc.width && doc.height)
     .map((doc: {url: string; width: number; height: number}) => [new URL(doc.url, backendOrigin()).href, {width: doc.width, height: doc.height}]))
 })
 
-export function hydrate(template: Value, doc: Document, locale?: string): unknown {
+function hydrate(template: Value, doc: Document, locale?: string): unknown {
   if (Array.isArray(template)) return template.flatMap(item => {
     const result=hydrate(item, doc, locale)
     if (item && typeof item === 'object' && !Array.isArray(item)) {
@@ -96,7 +97,7 @@ export const globalContent = cache(async <T>(slug: keyof typeof templates.global
   return result as T
 })
 export const translationContent=cache(async ():Promise<Document> => {
-  const response=await request('translations?locale=all&depth=0&pagination=false&select[key]=true&select[text]=true')
+  const response=await request<Document & {key:string;text:unknown}>('translations?locale=all&depth=0&pagination=false&select[key]=true&select[text]=true')
   const result:Document={id:0}
   for(const record of response.docs as {key:string;text:unknown}[]) {
     const keys=record.key.split('.')
@@ -234,7 +235,7 @@ function fieldValue(doc: Document, path: string): unknown {
 
 export type PageBlock={id:string;blockType:string;enabled?:boolean;mediaPosition?:'original'|'left'|'right';content?:Record<string,unknown>;[key:string]:unknown}
 export type CmsPage=Document & {title:Record<string,string>;sourceKey?:string;layout:PageBlock[];page:Record<string,unknown>}
-export const pageIdentities=cache(async ():Promise<(Document & Pick<CmsPage,'title'|'sourceKey'>)[]> => (await request('pages?locale=all&depth=0&pagination=false&select[slug]=true&select[sourceKey]=true&select[title]=true')).docs)
+export const pageIdentities=cache(async ():Promise<(Document & Pick<CmsPage,'title'|'sourceKey'>)[]> => (await request<Document & Pick<CmsPage,'title'|'sourceKey'>>('pages?locale=all&depth=0&pagination=false&select[slug]=true&select[sourceKey]=true&select[title]=true')).docs)
 const pageByID=cache(async(id:number):Promise<CmsPage|undefined>=>{
  const [response,interfaceText,media]=await Promise.all([request(`pages?where[id][equals]=${id}&locale=all&depth=0&limit=1&pagination=false&joins=false`),translationContent(),mediaDocuments()])
  if(!response.docs[0])return
@@ -252,7 +253,7 @@ export const pageBySourceKey=cache(async(key:string):Promise<CmsPage|undefined>=
  return page?await pageByID(page.id):undefined
 })
 export const pageLinks=cache(async ():Promise<{slug:string}[]> => (await pageIdentities()).map(page=>({slug:page.slug!})))
-export function sourceDocument(page:CmsPage,selected?:PageBlock):Document {
+function sourceDocument(page:CmsPage,selected?:PageBlock):Document {
  const fields:Record<string,unknown>={...page.page,sectionVisibility:{hero:true,body:true,news:true,jobs:true,apply:true,company:true,products:true,product:true,related:true,events:true,contact:true}}
  for(const block of page.layout){
   const section=sections.find(section=>section.slug===block.blockType)

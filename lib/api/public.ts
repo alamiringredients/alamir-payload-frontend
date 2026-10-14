@@ -51,7 +51,6 @@ export const getManagedPageContent = (key: ManagedPageKey, locale: SiteLocale) =
   }
   return getManagedPayload(key, locale).then(data => data.content)
 }
-export const getDownloadsPageContent=(locale:SiteLocale)=>getDownloadsPayload(locale).then(data=>data.content)
 export function getCatalog(includeDrafts:boolean,locale:SiteLocale,page?:'navigation'):Promise<NavigationCatalog>
 export function getCatalog(includeDrafts:boolean,locale:SiteLocale,page:string):Promise<Catalog>
 export async function getCatalog(includeDrafts:boolean,locale:SiteLocale,page='navigation'):Promise<Catalog|NavigationCatalog>{
@@ -72,14 +71,9 @@ export const getPublicNewsArticle=(locale:SiteLocale,slug:string,preview=false)=
   return getNewsPayload(locale,slug).then(data=>data.source)
 }
 export const getPublicNewsPage=(locale:SiteLocale)=>getNewsPayload(locale).then(data=>data.page)
-export const getEditorialPage = (page: 'about' | 'careers', locale: SiteLocale) => {
-  if (page === 'careers') return getCareersPayload(locale).then(data => data.content)
-  return read<AboutContent & CareersContent>('pages/about/payload', locale)
-}
 export const getPublicJobs=(locale:SiteLocale,scope:'cards'|'search'='cards')=>{void scope;return getCareersPayload(locale).then(data=>data.jobs)}
 export const getPublicJob=(locale:SiteLocale,slug:string)=>getCareersPayload(locale,slug).then(data=>data.job)
 export const getSustainabilityCards=(locale:SiteLocale)=>getSustainabilityPayload(locale).then(data=>data.articles)
-export const getQualityPageContent=(locale:SiteLocale)=>getQualityPayload(locale).then(data=>data.content)
 type LayoutPayload = {
   settings: WebsiteSettings
   home: HomeCmsData

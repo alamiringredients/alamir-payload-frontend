@@ -5,9 +5,9 @@ import {ContentRenderer} from '@/components/editor/content-renderer'
 import {EditorialPageHero} from '@/components/editor/editorial-page-hero'
 import {qualityBlockRenderer} from '@/components/certifications/quality-blocks'
 import {getQualityPayload} from '@/lib/api/public'
-import {mainSections,type SectionArgs} from '../section-utils'
+import {type SectionArgs} from '../section-utils'
 
-export async function renderSection({block,locale,source,definition,settings,context}:SectionArgs){
+export async function renderSection({block,locale,source,definition,settings}:SectionArgs){
  const {name,pageSlug}=definition
  if(pageSlug==='about' || pageSlug==='quality'){
   const content=sectionContent<EditorialPageContent>(source,block)

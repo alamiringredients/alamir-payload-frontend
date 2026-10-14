@@ -16,43 +16,12 @@ import {
 import { EditorialPageHero } from "@/components/editor/editorial-page-hero";
 import { ApplicationForm } from "./application-form";
 import type {
-  AboutContent,
   CareersContent,
   JobRecord,
 } from "@/lib/careers/types";
 import type { SiteLocale } from "@/i18n/navigation";
 import type { NewsCardRecord as NewsRecord } from "@/lib/api/public";
 import type { JobCard } from "@/lib/api/public";
-const editorialHero = (
-  content: AboutContent | CareersContent,
-  locale: SiteLocale,
-) => (
-  <EditorialPageHero
-    kicker={content.hero.kicker[locale]}
-    title={content.hero.title[locale]}
-    description={content.hero.description[locale]}
-    image={content.hero.image}
-    imageAlt={content.hero.alt[locale]}
-  />
-);
-export function AboutPageBody({
-  content,
-  locale,
-  groupLogo,
-}: {
-  content: AboutContent;
-  locale: SiteLocale;
-  groupLogo: string;
-}) {
-  return (
-    <main id="main">
-      {content.sectionVisibility.hero && editorialHero(content, locale)}{" "}
-      {content.sectionVisibility.body && (
-        <ContentRenderer document={content.body[locale]} groupLogo={groupLogo} />
-      )}
-    </main>
-  );
-}
 function JobRows({
   jobs,
   locale,

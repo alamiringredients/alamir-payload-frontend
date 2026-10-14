@@ -7,15 +7,15 @@ import styles from './quality-blocks.module.css'
 
 type MediaCard={image:string;alt:string;title:string;description:string}
 
-export function PillarsBlock({items}:{items:string[]}){
+function PillarsBlock({items}:{items:string[]}){
   return <div className={styles.pillars}>{items.map((item,index)=><div key={index}><strong>{item}</strong></div>)}</div>
 }
 
-export function CertificationPanelBlock({attrs,data,locale,labels,groupLogo}:{attrs:Record<string,unknown>;data:CertificationData;locale:SiteLocale;labels:CertificationInterfaceLabels;groupLogo:string}){
+function CertificationPanelBlock({attrs,data,locale,labels,groupLogo}:{attrs:Record<string,unknown>;data:CertificationData;locale:SiteLocale;labels:CertificationInterfaceLabels;groupLogo:string}){
   return <CertificationPanel data={data} holder={String(attrs.holder) as CertificationHolder} locale={locale} labels={labels} groupLogo={groupLogo}/>
 }
 
-export function MediaCardsBlock({attrs}:{attrs:Record<string,unknown>}){
+function MediaCardsBlock({attrs}:{attrs:Record<string,unknown>}){
   return <MediaCards items={(attrs.items??[]) as MediaCard[]}/>
 }
 

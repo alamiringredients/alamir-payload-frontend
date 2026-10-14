@@ -794,5 +794,3 @@ export const countries: readonly CountryOption[] = [
     "dialCode": "+263"
   }
 ]
-
-export const countryNames = countries.map(country => country.name)

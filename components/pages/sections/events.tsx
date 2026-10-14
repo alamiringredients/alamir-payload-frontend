@@ -7,7 +7,7 @@ import {BookingPageBody} from '@/components/events/booking-route'
 import {BookingSelection} from '@/components/events/booking-selection'
 import {mainSections,type SectionArgs} from '../section-utils'
 
-export async function renderSection({block,locale,source,definition,settings,context}:SectionArgs){
+export async function renderSection({block,locale,source,definition,settings}:SectionArgs){
  const {name,pageSlug}=definition
  if(pageSlug==='events'){
   const data=await getEventsPayload(locale),content=sectionContent<ManagedPageContent>(source,block)

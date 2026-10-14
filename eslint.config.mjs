@@ -5,11 +5,7 @@ import tseslint from 'typescript-eslint'
 export default tseslint.config(
   {
     ignores: [
-      '.holo-js/**',
       '.next/**',
-      '.nuxt/**',
-      '.output/**',
-      '.svelte-kit/**',
       'build/**',
       'coverage/**',
       'node_modules/**',

@@ -1,3 +1,4 @@
+import type {Document} from './types'
 import 'server-only'
 import { cache } from 'react'
 import {preparePublicContent} from './public-site'
@@ -44,12 +45,12 @@ const navigationCatalog = cache(async ():Promise<NavigationCatalog & {categories
   ])
   const media=new Map(mediaRows.map(doc=>[doc.id,doc]))
   const values=(value:unknown):LocalizedValue=>Object.fromEntries(['en','ar','fr'].map(locale=>[locale,(value as Partial<LocalizedValue>|undefined)?.[locale as SiteLocale]??''])) as LocalizedValue
-  const categories=categoryRows.docs.map((doc: import('./client').Document)=>{
+  const categories=categoryRows.docs.map((doc: Document)=>{
     const page=doc.page as {artwork?:{enabled?:boolean;images?:{image:number}[]}}
     return {id:doc.sourceId??doc.id,slug:doc.slug!,content:{name:values(doc.name),description:values(doc.description),icon:String(media.get(Number(doc.icon))?.url??''),artwork:{key:'artwork',label:'',enabled:Boolean(page?.artwork?.enabled),texts:[],links:[],assets:(page?.artwork?.images??[]).map((photo,index)=>({id:String(index),kind:'image' as const,label:'',source:'',value:String(media.get(photo.image)?.url??'')}))}}} as CategoryCard
   })
-  const categoryIds=new Map(categoryRows.docs.map((doc: import('./client').Document)=>[doc.id,doc.sourceId??doc.id]))
-  const products=productRows.docs.map((doc: import('./client').Document)=>({id:doc.sourceId??doc.id,slug:doc.slug!,category_id:Number(categoryIds.get(Number(doc.category))),content:{name:values(doc.name),gallery:(doc.gallery as {image:number;caption:LocalizedValue;alt?:LocalizedValue}[]??[]).slice(0,1).map(photo=>({...photo,image:String(media.get(photo.image)?.url??'')}))}}))
+  const categoryIds=new Map(categoryRows.docs.map((doc: Document)=>[doc.id,doc.sourceId??doc.id]))
+  const products=productRows.docs.map((doc: Document)=>({id:doc.sourceId??doc.id,slug:doc.slug!,category_id:Number(categoryIds.get(Number(doc.category))),content:{name:values(doc.name),gallery:(doc.gallery as {image:number;caption:LocalizedValue;alt?:LocalizedValue}[]??[]).slice(0,1).map(photo=>({...photo,image:String(media.get(photo.image)?.url??'')}))}}))
   return {categories,products,settings:{labels:await catalogInterfaceLabels() as Catalog['settings']['labels']}}
 })
 const certifications = cache(async ():Promise<CertificationData> => {
@@ -72,7 +73,7 @@ export async function loadPayload(endpoint:string,locale:SiteLocale,params:Recor
     }
     case 'homepage': {
       const [home,certs,events,media]=await Promise.all([global<HomeCmsData>('home-page','meta'),certifications(),payloadDocuments('events','&sort=_order&select[sourceId]=true&select[slug]=true&select[kind]=true&select[startsAt]=true&select[endsAt]=true&select[timezone]=true&select[title]=true&select[venue]=true&select[stand]=true&select[layout]=true',0),mediaDocuments()])
-      return {home,certifications:certs,certificationLabels:ui.certification[locale],countries:ui.countries[locale],meetingEvent:events.map(doc=>presentRecord<EventRecord>('events',recordSource(resolveMediaReferences({...doc,interface:undefined},media) as import('./client').Document))).find(event => event.kind==='event' && new Date(event.ends_at)>new Date()) ?? null}
+      return {home,certifications:certs,certificationLabels:ui.certification[locale],countries:ui.countries[locale],meetingEvent:events.map(doc=>presentRecord<EventRecord>('events',recordSource(resolveMediaReferences({...doc,interface:undefined},media) as Document))).find(event => event.kind==='event' && new Date(event.ends_at)>new Date()) ?? null}
     }
     case 'catalog/home': {
       const [nav,labels]=await Promise.all([navigationCatalog(),catalogInterfaceLabels()])
