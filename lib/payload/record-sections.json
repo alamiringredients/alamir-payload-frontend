@@ -1,0 +1,200 @@
+[
+  {
+    "slug": "prd-hero",
+    "collection": "products",
+    "name": "hero",
+    "page": [
+      "hero"
+    ]
+  },
+  {
+    "slug": "prd-info",
+    "collection": "products",
+    "name": "overview",
+    "page": [
+      "overview",
+      "description",
+      "specifications",
+      "packaging",
+      "storage",
+      "documents",
+      "specificationIntro"
+    ]
+  },
+  {
+    "slug": "prd-gallery",
+    "collection": "products",
+    "name": "gallery",
+    "page": [
+      "galleryIntro"
+    ],
+    "root": {
+      "gallery": "gallery"
+    }
+  },
+  {
+    "slug": "prd-related",
+    "collection": "products",
+    "name": "related",
+    "page": [
+      "relatedProducts"
+    ]
+  },
+  {
+    "slug": "prd-enquiry",
+    "collection": "products",
+    "name": "enquiry",
+    "page": [
+      "enquiry",
+      "allProducts"
+    ]
+  },
+  {
+    "slug": "cat-hero",
+    "collection": "categories",
+    "name": "hero",
+    "page": [
+      "hero"
+    ]
+  },
+  {
+    "slug": "cat-range",
+    "collection": "categories",
+    "name": "range",
+    "page": [
+      "productRange"
+    ]
+  },
+  {
+    "slug": "cat-gallery",
+    "collection": "categories",
+    "name": "gallery",
+    "page": [
+      "galleryIntro"
+    ],
+    "root": {
+      "gallery": "gallery"
+    }
+  },
+  {
+    "slug": "cat-cta",
+    "collection": "categories",
+    "name": "traceability",
+    "page": [
+      "traceability",
+      "allProducts"
+    ]
+  },
+  {
+    "slug": "news-hero",
+    "collection": "news",
+    "name": "hero",
+    "page": [],
+    "root": {
+      "summary": "textarea",
+      "hero": "upload",
+      "heroAlt": "text",
+      "heroCaption": "text"
+    }
+  },
+  {
+    "slug": "news-body",
+    "collection": "news",
+    "name": "body",
+    "page": [],
+    "root": {
+      "body": "richText"
+    }
+  },
+  {
+    "slug": "news-related",
+    "collection": "news",
+    "name": "related",
+    "page": []
+  },
+  {
+    "slug": "news-contact",
+    "collection": "news",
+    "name": "contact",
+    "page": []
+  },
+  {
+    "slug": "sus-hero",
+    "collection": "sustainability",
+    "name": "hero",
+    "page": [],
+    "root": {
+      "summary": "textarea",
+      "kicker": "text",
+      "badge": "text",
+      "heroImage": "upload",
+      "heroAlt": "text",
+      "heroCaption": "text"
+    }
+  },
+  {
+    "slug": "sus-body",
+    "collection": "sustainability",
+    "name": "body",
+    "page": [],
+    "root": {
+      "body": "richText",
+      "railIntro": "textarea",
+      "note": "textarea"
+    }
+  },
+  {
+    "slug": "job-hero",
+    "collection": "jobs",
+    "name": "hero",
+    "page": [],
+    "root": {
+      "summary": "textarea",
+      "hero": "upload",
+      "heroAlt": "text"
+    }
+  },
+  {
+    "slug": "job-body",
+    "collection": "jobs",
+    "name": "body",
+    "page": [],
+    "root": {
+      "body": "richText"
+    }
+  },
+  {
+    "slug": "job-apply",
+    "collection": "jobs",
+    "name": "apply",
+    "page": []
+  },
+  {
+    "slug": "job-related",
+    "collection": "jobs",
+    "name": "related",
+    "page": []
+  },
+  {
+    "slug": "event-hero",
+    "collection": "events",
+    "name": "hero",
+    "page": [],
+    "root": {
+      "eyebrow": "text",
+      "summary": "textarea",
+      "heroImage": "upload",
+      "heroAlt": "text",
+      "heroCaption": "text"
+    }
+  },
+  {
+    "slug": "event-body",
+    "collection": "events",
+    "name": "body",
+    "page": [],
+    "root": {
+      "body": "richText"
+    }
+  }
+]

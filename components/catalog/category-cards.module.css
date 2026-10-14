@@ -1,0 +1,57 @@
+.card{--card-tint:rgba(200,64,44,.09);--card-wash:#fbf1ef;position:relative;min-height:300px;padding:128px 24px 74px;border-radius:26px;background:var(--white);box-shadow:0 18px 38px rgba(16,24,32,.09);isolation:isolate;transition:transform .55s cubic-bezier(.2,.75,.2,1),box-shadow .55s ease,background .45s ease}
+.card:has(.multi){padding-top:calc(64.78% - 62px)}
+.card:nth-child(2){--card-tint:rgba(201,138,46,.12);--card-wash:#fcf6ec}
+.card:nth-child(3){--card-tint:rgba(200,64,44,.075);--card-wash:#fbf2f0}
+.card:nth-child(4){--card-tint:rgba(168,45,34,.11);--card-wash:#faf0ee}
+.card::before{content:"";position:absolute;z-index:-1;inset:0;border-radius:inherit;background:radial-gradient(circle at 78% 12%,var(--card-tint),transparent 48%);opacity:0;transform:scale(.72);transition:opacity .5s ease,transform .7s cubic-bezier(.2,.8,.2,1)}
+.card::after{content:"";position:absolute;z-index:1;inset-inline:24px;bottom:60px;height:1px;background:var(--red);transform:scaleX(0);transform-origin:left;opacity:.38;transition:transform .55s cubic-bezier(.2,.8,.2,1)}
+.number{position:absolute;z-index:2;inset-inline-end:20px;top:20px;color:#a3aaad;font-size:10px;font-weight:700;letter-spacing:.16em;transition:color .35s ease,transform .55s cubic-bezier(.2,.8,.2,1)}
+.link{position:absolute;z-index:2;inset-inline-start:24px;bottom:26px;display:inline-flex;align-items:center;gap:10px;color:#9f522f;font-size:13px;font-weight:700;transition:color .35s ease,transform .45s cubic-bezier(.2,.8,.2,1)}
+.link::after{content:"";width:22px;height:12px;background:linear-gradient(currentColor,currentColor) left center/18px 1px no-repeat;clip-path:polygon(0 45%,72% 45%,58% 0,65% 0,100% 50%,65% 100%,58% 100%,72% 55%,0 55%);background-color:currentColor;transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+.art{position:absolute;z-index:3;left:50%;top:-92px;width:92%;height:190px;transform:translateX(-50%);margin:0;pointer-events:none;transition:transform .65s cubic-bezier(.18,.85,.2,1)}
+.multi{height:auto;aspect-ratio:1.42/1}
+.artwork{padding-inline:4%;box-sizing:border-box;transition:transform 220ms cubic-bezier(.23,1,.32,1)}
+.layer{position:absolute;left:var(--art-x);bottom:var(--art-y);z-index:var(--art-z);display:block;width:var(--art-width);max-width:300px;height:auto;max-height:300px;aspect-ratio:1;padding-inline:clamp(2px,.35vw,6px);box-sizing:border-box;object-fit:contain;transform:translateX(-50%) rotate(var(--art-rotation));transform-origin:50% 92%;filter:drop-shadow(0 20px 18px rgba(16,24,32,.17));transition:transform 240ms cubic-bezier(.23,1,.32,1),filter 180ms ease;transition-delay:0ms}
+.card:focus-within>.artwork{transition:none;transform:translateX(-50%)}
+.card h3{position:relative;z-index:2;margin:0;color:var(--navy);font:700 clamp(19px,1.55vw,23px)/1.12 var(--sans);letter-spacing:-.045em;transition:color .35s ease,transform .55s cubic-bezier(.2,.8,.2,1)}
+.card p{position:relative;z-index:2;margin:10px 0 0;color:#58706e;font-size:13.5px;transition:transform .55s cubic-bezier(.2,.8,.2,1)}
+:global([dir="rtl"]) .card::after{transform-origin:right}
+:global([dir="rtl"]) .link::after{transform:scaleX(-1)}
+
+@media(hover:hover) and (pointer:fine){
+  .card:hover,.card:focus-within{transform:translateY(-12px);box-shadow:0 36px 72px rgba(16,24,32,.16);background:var(--card-wash)}
+  .card:hover .link,.card:focus-within .link{color:var(--red);transform:translateX(5px)}
+  .card:hover .link::after,.card:focus-within .link::after{transform:translateX(8px)}
+  .card:hover::before,.card:focus-within::before{opacity:1;transform:scale(1)}
+  .card:hover::after,.card:focus-within::after{transform:scaleX(1)}
+  .card:hover h3,.card:focus-within h3{color:var(--red);transform:translateY(-6px)}
+  .card:hover p,.card:focus-within p{transform:translateY(-4px)}
+  .card:hover .number,.card:focus-within .number{color:var(--red);transform:translate(-7px,7px) scale(1.2)}
+  .card:hover>.artwork{transform:translateX(-50%) translateY(-10px);transition-duration:320ms}
+  .card:hover>.artwork>.layer{transform:translate(calc(-50% + var(--art-hover-x)),calc(-10px + var(--art-hover-y))) rotate(var(--art-rotation)) scale(1.035);filter:drop-shadow(0 28px 22px rgba(16,24,32,.22));transition-duration:360ms,260ms}
+  .card:hover>.artwork>.layer:nth-child(2){transition-delay:20ms}
+  .card:hover>.artwork>.layer:nth-child(3){transition-delay:40ms}
+  .card:hover>.artwork>.layer:nth-child(4){transition-delay:60ms}
+  .card:hover>.artwork>.layer:nth-child(5){transition-delay:80ms}
+  .card:hover>.artwork>.layer:nth-child(6){transition-delay:100ms}
+  :global([dir="rtl"]) .card:hover .link,:global([dir="rtl"]) .card:focus-within .link{transform:translateX(-5px)}
+  :global([dir="rtl"]) .card:hover .link::after,:global([dir="rtl"]) .card:focus-within .link::after{transform:translateX(-8px) scaleX(-1)}
+  :global([dir="rtl"]) .card:hover .number,:global([dir="rtl"]) .card:focus-within .number{transform:translate(7px,7px) scale(1.2)}
+}
+
+@media(max-width:1050px){.card{padding-inline:34px}.link{inset-inline-start:34px}}
+@media(max-width:700px){
+  .card{min-height:455px;padding:185px 28px 34px;border-radius:30px}
+  .card:has(.multi){padding-top:calc(64.78% - 75px)}
+  .link{position:static;margin-top:26px}
+  .card h3{font-size:clamp(26px,8vw,34px)}
+  .card p{font-size:16px}
+  .art{top:-105px;height:260px;width:88%}
+  .multi{height:auto;width:92%}
+}
+@media(prefers-reduced-motion:reduce){
+  .card,.card::before,.card::after,.link,.link::after,.art,.layer,.card h3,.card p{transition:none}
+  .card:hover,.card:focus-within{transform:none}
+  .card:hover>.artwork,.card:focus-within>.artwork{transform:translateX(-50%)}
+  .card:hover>.artwork>.layer{transform:translateX(-50%) rotate(var(--art-rotation));filter:drop-shadow(0 20px 18px rgba(16,24,32,.17))}
+}

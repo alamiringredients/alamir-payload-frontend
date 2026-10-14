@@ -1,0 +1,5 @@
+/* Next keeps route CSS after client navigation, so this scope must name its owner. */
+@scope (:root:has(.site-page[data-page="contact"])) to ([data-rich-content]) {
+/* Shared content-page styles live in styles/content-pages.css. */
+
+}

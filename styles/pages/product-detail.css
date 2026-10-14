@@ -1,0 +1,14 @@
+/* Product detail routes share this stylesheet. */
+@scope (:root:has(.site-page[data-catalog-style="product-detail"])) to ([data-rich-content]) {
+/* Shared content-page styles live in styles/content-pages.css. */
+    @keyframes view-in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+    :scope[dir="rtl"] .pdp-rail{text-align:right}
+    :scope[dir="rtl"] .pdp-facts th,:scope[dir="rtl"] .pdp-facts td{text-align:right}
+    #detail > .wrap > .band-head.reveal{opacity:1;transform:none;transition:none}
+    .prail{margin-top:clamp(6px,0.8vw,12px)}
+    .prail-track{display:flex;gap:clamp(14px,1.8vw,22px);overflow-x:auto;
+      scroll-snap-type:x proximity;scroll-behavior:smooth;
+      padding:clamp(84px,7.4vw,114px) 4px 26px;margin:0 -4px;scrollbar-width:none;
+      overscroll-behavior-x:contain}
+
+}

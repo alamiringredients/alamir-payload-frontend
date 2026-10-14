@@ -1,0 +1,54 @@
+/* Legal, status, search, and event detail pages share this document layout. */
+@scope (:root:has(.site-page:is(
+  [data-page="404"],
+  [data-page="cookies"],
+  [data-page="privacy"],
+  [data-page="search"],
+  [data-page="terms"],
+  [data-page="thank-you"],
+  [data-page^="events/"]
+))) to ([data-rich-content]) {
+/* Shared content-page styles live in styles/content-pages.css. */
+    .card :is(h2,h3){margin:12px 0 0;font:700 20px/1.2 var(--sans);letter-spacing:-.03em;color:var(--navy)}
+    .band.deep .card :is(h2,h3){color:var(--white)}
+    [data-page="404"] .status{text-align:center;max-width:60ch;margin:0 auto}
+    [data-page="404"] .status .big{margin-top:-.06em;font:500 clamp(84px,14vw,190px)/.85 var(--serif);letter-spacing:-.06em;color:#f2b19d}
+    [data-page="404"] .status h1{margin:30px auto 0;font:500 clamp(38px,5vw,68px)/.96 var(--serif);
+      letter-spacing:-.045em;color:inherit}
+    [data-page="404"] .status h1 em{font-style:italic;color:#f2b19d}
+    [data-page="404"] .page-hero .status p{margin:22px auto 0;max-width:56ch;font-size:17px;color:rgba(255,255,255,.76)}
+    [data-page="404"] .status .form-actions{justify-content:center}
+    [data-page="404"]{--ease-out:cubic-bezier(.23,1,.32,1)}
+    [data-page="404"] main :is(.btn,.card),
+    [data-page="404"] main .btn::after{transition:none;transform:none}
+    [data-page="404"] main .card:hover{box-shadow:0 12px 30px rgba(16,24,32,.07)}
+    [data-page="404"] .cards.reveal{opacity:1;transform:none;transition:none}
+    @media (prefers-reduced-motion:no-preference){
+      [data-page="404"] .status > :is(.big,h1,p),
+      [data-page="404"] .cards.reveal{
+        transition:opacity 250ms var(--ease-out),transform 250ms var(--ease-out)}
+      [data-page="404"] .status > :is(.big,h1,p):nth-child(2){transition-delay:40ms}
+      [data-page="404"] .status > :is(.big,h1,p):nth-child(3){transition-delay:80ms}
+      @starting-style{
+        [data-page="404"] .status > :is(.big,h1,p),
+        [data-page="404"] .cards.reveal{opacity:0;transform:translateY(8px)}
+      }
+      [data-page="404"] main :is(.btn,.card){transition:transform 160ms var(--ease-out)}
+      [data-page="404"] main :is(.btn,.card):active:not(:focus-visible){transform:scale(.97)}
+      @media (hover:hover) and (pointer:fine){
+        [data-page="404"] main :is(.btn,.card):hover:not(:active):not(:focus-visible){
+          transform:translateY(-2px)}
+      }
+    }
+    [data-page="404"] .status:focus-within > :is(.big,h1,p),
+    :scope.js [data-page="404"] .cards.reveal:focus-within,
+    [data-page="404"] main :is(.btn,.card):focus-visible{
+      opacity:1;transform:none;transition:none}
+    @media (max-width:1050px){
+      [data-page="404"]{--wrap:min(100% - 40px,900px)}
+    }
+    @media (max-width:700px){
+      [data-page="404"]{--wrap:calc(100% - 32px)}
+    }
+
+}

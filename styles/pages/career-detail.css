@@ -1,0 +1,20 @@
+/* Job detail routes share this stylesheet. */
+@scope (:root:has(.site-page[data-page^="careers/"])) to ([data-rich-content]) {
+/* Shared content-page styles live in styles/content-pages.css. */
+    .hire{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(14px,1.8vw,22px);
+      margin-top:48px;counter-reset:hire}
+    .hire div{padding:28px 26px 30px;border-radius:20px;background:var(--white);
+      box-shadow:0 12px 30px rgba(16,24,32,.07)}
+    .hire div::before{counter-increment:hire;content:"0" counter(hire);display:block;
+      font:500 36px/1 var(--serif);color:var(--red)}
+    .hire h3{margin:16px 0 0;font:700 16px/1.25 var(--sans);letter-spacing:-.02em;color:var(--navy)}
+    .hire p{margin:9px 0 0;font-size:14px;color:#5c6267}
+
+    @media (max-width:1050px){
+      .hire{grid-template-columns:repeat(2,minmax(0,1fr))}
+    }
+    @media (max-width:700px){
+      .hire{grid-template-columns:1fr}
+    }
+
+}

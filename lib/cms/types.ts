@@ -1,0 +1,124 @@
+import type {ContentDocument} from '@/lib/editor/document'
+export type CmsLocale = 'en' | 'ar' | 'fr'
+export type LocalizedValue = Record<CmsLocale, string>
+export type LocalizedDocument = Record<CmsLocale, ContentDocument>
+export type CmsRichText = {id:string;label:string;source:string;sources:string[];values:LocalizedDocument}
+
+export type CmsTextField = {
+  id: string
+  label: string
+  source: string
+  values: LocalizedValue
+}
+
+export type CmsAssetField = {
+  alt?:LocalizedValue
+  id: string
+  label: string
+  kind: 'image' | 'video' | 'pdf'
+  source: string
+  value: string
+}
+
+export type CmsLinkField = {
+  id: string
+  label: string
+  source: string
+  value: string
+}
+
+export type CmsStatField = {
+  id: string
+  label: string
+  value: number
+}
+
+export type CmsFigureItem = {
+  id: string
+  value: number
+  unit: string
+  unitLabel: LocalizedValue
+  label: LocalizedValue
+  description: LocalizedValue
+}
+
+export type CmsCardItem = {
+  id: string
+  title: LocalizedValue
+  description: LocalizedValue
+}
+
+export type HomeSectionContent = {
+  key: string
+  label: string
+  enabled: boolean
+  texts: CmsTextField[]
+  richTexts?: CmsRichText[]
+  assets: CmsAssetField[]
+  links: CmsLinkField[]
+  stats?: CmsStatField[]
+  figures?: CmsFigureItem[]
+  cards?: CmsCardItem[]
+  videos?: string[]
+}
+
+export type HomeSeoContent = {
+  title: LocalizedValue
+  description: LocalizedValue
+  socialTitle: LocalizedValue
+  socialDescription: LocalizedValue
+  socialImage: string
+}
+
+export type PageHeroContent = {
+  title: LocalizedDocument
+  description: LocalizedDocument
+  kicker: LocalizedValue
+  image: string
+  alt: LocalizedValue
+}
+
+export type EditorialPageContent = {
+  sectionVisibility: Record<'hero' | 'body', boolean>
+  hero: PageHeroContent
+  body: LocalizedDocument
+  seo: HomeSeoContent
+}
+
+export type CompanyInformation = {
+  email: string
+  phone: string
+  exportPhone: string
+  secondaryPhone: string
+  website: string
+  address: LocalizedValue
+  socialLinks: {facebook: string; instagram: string; linkedin: string; youtube: string; whatsapp: string}
+  salesWhatsapp: string
+}
+
+export type WebsiteSettings = {
+  company: CompanyInformation
+  companyProfile: LocalizedValue
+  siteName: LocalizedValue
+  logo: string
+  groupLogo: string
+  icon: string
+  defaultSeoTitle: LocalizedValue
+  defaultSeoDescription: LocalizedValue
+  socialImage: string
+}
+
+export type NavigationItem={id:string;label:LocalizedValue;linkType:'page'|'url';page?:{slug:string;title:LocalizedValue};url?:string}
+export type HomeCmsData = {
+  menus?:{left:NavigationItem[];right:NavigationItem[]};footerMenus?:{explore:NavigationItem[];company:NavigationItem[];legal:NavigationItem[]}
+  sections: HomeSectionContent[]
+  seo: HomeSeoContent
+}
+
+export type SectionPageContent = {
+  sections: HomeSectionContent[]
+  seo: HomeSeoContent
+}
+
+export type QualityPageContent = EditorialPageContent
+export type ManagedPageContent = SectionPageContent & {interface?:{backHome:LocalizedValue;browseDownloads:LocalizedValue;searchSite:LocalizedValue}}

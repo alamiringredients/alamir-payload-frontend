@@ -1,0 +1,1298 @@
+{
+  "/assets/categories/fruit-concentrates-hero.webp": {
+    "width": 1420,
+    "height": 1000
+  },
+  "/assets/categories/fruit-purees-hero.webp": {
+    "width": 1420,
+    "height": 1000
+  },
+  "/assets/categories/tomato-concentrates-hero.webp": {
+    "width": 1420,
+    "height": 1000
+  },
+  "/assets/certs/brcgs.webp": {
+    "width": 1200,
+    "height": 900
+  },
+  "/assets/certs/fda.webp": {
+    "width": 1200,
+    "height": 900
+  },
+  "/assets/certs/fssc-22000.webp": {
+    "width": 1200,
+    "height": 900
+  },
+  "/assets/certs/halal.webp": {
+    "width": 1200,
+    "height": 900
+  },
+  "/assets/certs/iso-14001.webp": {
+    "width": 1200,
+    "height": 900
+  },
+  "/assets/certs/iso-45001.webp": {
+    "width": 1200,
+    "height": 900
+  },
+  "/assets/certs/kosher.webp": {
+    "width": 1200,
+    "height": 900
+  },
+  "/assets/certs/nfsa.webp": {
+    "width": 1200,
+    "height": 900
+  },
+  "/assets/certs/sedex-smeta.webp": {
+    "width": 1200,
+    "height": 900
+  },
+  "/assets/chilli/magnific_a-red-chilli-pepper-slice_74wbRQWJAL-2.webp": {
+    "width": 476,
+    "height": 266
+  },
+  "/assets/chilli/magnific_a-red-chilli-pepper-slice_74wbRQWJAL-3.webp": {
+    "width": 367,
+    "height": 237
+  },
+  "/assets/chilli/magnific_a-single-whole-glossy-red_cDW4o5L0eP-3.webp": {
+    "width": 476,
+    "height": 245
+  },
+  "/assets/chilli/magnific_a-single-whole-glossy-red_EqCprNyuuO-2.webp": {
+    "width": 345,
+    "height": 165
+  },
+  "/assets/chilli/magnific_a-single-whole-glossy-red_XtdAClABfo-2.webp": {
+    "width": 470,
+    "height": 201
+  },
+  "/assets/FF987F42-D4FD-4FE7-84DA-00384480066C.webp": {
+    "width": 1536,
+    "height": 1024
+  },
+  "/assets/fruit-concentrates/magnific_a-single-whole-ripe-mango_Kj5tlhZkqp-2.webp": {
+    "width": 649,
+    "height": 631
+  },
+  "/assets/fruit-concentrates/magnific_a-single-whole-ripe-orang_9R4xzEENYZ-2.webp": {
+    "width": 301,
+    "height": 308
+  },
+  "/assets/fruit-concentrates/magnific_a-single-whole-ripe-paleg_NZ9jzkk6D9-2.webp": {
+    "width": 574,
+    "height": 574
+  },
+  "/assets/fruit-concentrates/magnific_a-single-whole-ripe-red-a_ohBzEoy829-2.webp": {
+    "width": 486,
+    "height": 533
+  },
+  "/assets/fruit-concentrates/magnific_a-single-whole-ripe-red-s_nTzOphrYQD-2.webp": {
+    "width": 349,
+    "height": 300
+  },
+  "/assets/fruit-purees/magnific_studio-product-photograph_cpT11XU0eP-1.webp": {
+    "width": 503,
+    "height": 412
+  },
+  "/assets/fruit-purees/magnific_studio-product-photograph_LwlMVUSswO-1.webp": {
+    "width": 548,
+    "height": 450
+  },
+  "/assets/fruit-purees/magnific_studio-product-photograph_nVW5qJEYQD-1.webp": {
+    "width": 1100,
+    "height": 800
+  },
+  "/assets/fruit-purees/puree-guava.webp": {
+    "width": 1100,
+    "height": 834
+  },
+  "/assets/hero-poster.webp": {
+    "width": 1280,
+    "height": 720
+  },
+  "/assets/icon-arrow.svg": {
+    "width": 24,
+    "height": 24
+  },
+  "/assets/icon-navy.svg": {
+    "width": 924,
+    "height": 791
+  },
+  "/assets/icon.svg": {
+    "width": 924,
+    "height": 791
+  },
+  "/assets/logo-full.svg": {
+    "width": 1163,
+    "height": 314
+  },
+  "/assets/logo-group-mark.webp": {
+    "width": 432,
+    "height": 276
+  },
+  "/assets/logo.webp": {
+    "width": 654,
+    "height": 381
+  },
+  "/assets/magnific_a-ripe-red-tomato-cut-cle_SOgF48FUb8-2.webp": {
+    "width": 150,
+    "height": 186
+  },
+  "/assets/magnific_a-single-whole-ripe-red-t_62NLzMIiJO-1.webp": {
+    "width": 392,
+    "height": 404
+  },
+  "/assets/magnific_a-single-whole-ripe-red-t_74wb6zlJAL-1.webp": {
+    "width": 185,
+    "height": 173
+  },
+  "/assets/photos/aseptic-fill.webp": {
+    "width": 1600,
+    "height": 1067
+  },
+  "/assets/photos/aseptic-warehouse.webp": {
+    "width": 1600,
+    "height": 686
+  },
+  "/assets/photos/book-meeting.webp": {
+    "width": 1280,
+    "height": 854
+  },
+  "/assets/photos/cft-evaporation.webp": {
+    "width": 1872,
+    "height": 1248
+  },
+  "/assets/photos/cft-filling.webp": {
+    "width": 1872,
+    "height": 1248
+  },
+  "/assets/photos/cft-line.webp": {
+    "width": 1600,
+    "height": 1067
+  },
+  "/assets/photos/cft-sorting.webp": {
+    "width": 1872,
+    "height": 1248
+  },
+  "/assets/photos/contact-field.webp": {
+    "width": 1536,
+    "height": 768
+  },
+  "/assets/photos/facility-aerial.webp": {
+    "width": 1600,
+    "height": 686
+  },
+  "/assets/photos/farm-sourcing.webp": {
+    "width": 1600,
+    "height": 1067
+  },
+  "/assets/photos/field-film-poster.webp": {
+    "width": 1280,
+    "height": 720
+  },
+  "/assets/photos/harvest-sunset.webp": {
+    "width": 1536,
+    "height": 1024
+  },
+  "/assets/photos/heritage-commodities.webp": {
+    "width": 2000,
+    "height": 1333
+  },
+  "/assets/photos/heritage-vine-poster.webp": {
+    "width": 1280,
+    "height": 720
+  },
+  "/assets/photos/life-01-learning.webp": {
+    "width": 1200,
+    "height": 905
+  },
+  "/assets/photos/life-02-teamwork.webp": {
+    "width": 1200,
+    "height": 905
+  },
+  "/assets/photos/life-03-recognition.webp": {
+    "width": 1200,
+    "height": 905
+  },
+  "/assets/photos/magnific_cluster-of-freshly-washed_jSxalEpLD0.webp": {
+    "width": 1600,
+    "height": 1600
+  },
+  "/assets/photos/magnific_exterior-of-a-large-moder_NZ917Pn6D9.webp": {
+    "width": 1280,
+    "height": 859
+  },
+  "/assets/photos/magnific_interior-of-a-modern-food_swLaKaNl8e.webp": {
+    "width": 1600,
+    "height": 1074
+  },
+  "/assets/photos/magnific_smooth-thick-fruit-purees_rl1tHSgxtc.webp": {
+    "width": 2000,
+    "height": 2000
+  },
+  "/assets/photos/magnific_ultrawide-cinematic-macro_poD3BhDehw.webp": {
+    "width": 1280,
+    "height": 543
+  },
+  "/assets/photos/origin-farmer-a.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/assets/photos/origin-farmer-b.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/assets/photos/origin-farmer-c.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/assets/photos/qc-lab.webp": {
+    "width": 1600,
+    "height": 1067
+  },
+  "/assets/photos/team-corridor.webp": {
+    "width": 1600,
+    "height": 1067
+  },
+  "/assets/photos/value-01-quality.webp": {
+    "width": 1500,
+    "height": 2000
+  },
+  "/assets/photos/value-02-partnership.webp": {
+    "width": 1500,
+    "height": 2000
+  },
+  "/assets/photos/value-03-accountability.webp": {
+    "width": 1500,
+    "height": 2000
+  },
+  "/assets/photos/value-04-innovation.webp": {
+    "width": 1500,
+    "height": 2000
+  },
+  "/assets/photos/value-05-empowerment.webp": {
+    "width": 1500,
+    "height": 2000
+  },
+  "/assets/photos/value-06-sustainability.webp": {
+    "width": 1500,
+    "height": 2000
+  },
+  "/assets/products/chilli/chilli-1.webp": {
+    "width": 1280,
+    "height": 960
+  },
+  "/assets/products/chilli/chilli-2.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/assets/products/chilli/chilli-3.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/assets/products/chilli/chilli-art-beaker.webp": {
+    "width": 858,
+    "height": 1100
+  },
+  "/assets/products/chilli/chilli-art-fruit.webp": {
+    "width": 700,
+    "height": 1039
+  },
+  "/assets/products/chilli/chilli-art-plate.webp": {
+    "width": 1100,
+    "height": 1101
+  },
+  "/assets/products/chilli/gallery-a.webp": {
+    "width": 2000,
+    "height": 1125
+  },
+  "/assets/products/chilli/gallery-b.webp": {
+    "width": 2000,
+    "height": 857
+  },
+  "/assets/products/chilli/gallery-c.webp": {
+    "width": 2000,
+    "height": 1125
+  },
+  "/assets/products/chilli/gallery-d.webp": {
+    "width": 2000,
+    "height": 857
+  },
+  "/assets/products/chilli/gallery-e.webp": {
+    "width": 2000,
+    "height": 857
+  },
+  "/assets/products/chilli/gallery-f.webp": {
+    "width": 2000,
+    "height": 857
+  },
+  "/assets/products/fruit-concentrates/apple-1.webp": {
+    "width": 1280,
+    "height": 960
+  },
+  "/assets/products/fruit-concentrates/apple-2.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/assets/products/fruit-concentrates/apple-3.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/assets/products/fruit-concentrates/apple-art-fruit.webp": {
+    "width": 700,
+    "height": 706
+  },
+  "/assets/products/fruit-concentrates/apple-art-plate.webp": {
+    "width": 1100,
+    "height": 1089
+  },
+  "/assets/products/fruit-concentrates/gallery-a.webp": {
+    "width": 1280,
+    "height": 720
+  },
+  "/assets/products/fruit-concentrates/gallery-b.webp": {
+    "width": 2000,
+    "height": 857
+  },
+  "/assets/products/fruit-concentrates/gallery-c.webp": {
+    "width": 2000,
+    "height": 1125
+  },
+  "/assets/products/fruit-concentrates/gallery-d.webp": {
+    "width": 2000,
+    "height": 1125
+  },
+  "/assets/products/fruit-concentrates/gallery-e.webp": {
+    "width": 2000,
+    "height": 857
+  },
+  "/assets/products/fruit-concentrates/gallery-f.webp": {
+    "width": 1280,
+    "height": 549
+  },
+  "/assets/products/fruit-concentrates/guava-1.webp": {
+    "width": 1280,
+    "height": 960
+  },
+  "/assets/products/fruit-concentrates/guava-2.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/assets/products/fruit-concentrates/guava-3.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/assets/products/fruit-concentrates/guava-art-fruit.webp": {
+    "width": 700,
+    "height": 707
+  },
+  "/assets/products/fruit-concentrates/guava-art-plate.webp": {
+    "width": 1100,
+    "height": 1039
+  },
+  "/assets/products/fruit-concentrates/mango-1.webp": {
+    "width": 1280,
+    "height": 960
+  },
+  "/assets/products/fruit-concentrates/mango-2.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/assets/products/fruit-concentrates/mango-3.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/assets/products/fruit-concentrates/mango-art-fruit.webp": {
+    "width": 700,
+    "height": 887
+  },
+  "/assets/products/fruit-concentrates/mango-art-plate.webp": {
+    "width": 1100,
+    "height": 1087
+  },
+  "/assets/products/fruit-concentrates/peach-1.webp": {
+    "width": 1280,
+    "height": 960
+  },
+  "/assets/products/fruit-concentrates/peach-2.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/assets/products/fruit-concentrates/peach-3.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/assets/products/fruit-concentrates/peach-art-fruit.webp": {
+    "width": 700,
+    "height": 674
+  },
+  "/assets/products/fruit-concentrates/peach-art-plate.webp": {
+    "width": 1100,
+    "height": 1100
+  },
+  "/assets/products/fruit-concentrates/strawberry-1.webp": {
+    "width": 1280,
+    "height": 960
+  },
+  "/assets/products/fruit-concentrates/strawberry-2.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/assets/products/fruit-concentrates/strawberry-3.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/assets/products/fruit-concentrates/strawberry-art-fruit.webp": {
+    "width": 700,
+    "height": 943
+  },
+  "/assets/products/fruit-concentrates/strawberry-art-plate.webp": {
+    "width": 1100,
+    "height": 1097
+  },
+  "/assets/products/fruit-purees/apple-1.webp": {
+    "width": 1280,
+    "height": 960
+  },
+  "/assets/products/fruit-purees/apple-2.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/assets/products/fruit-purees/apple-3.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/assets/products/fruit-purees/apple-art-fruit.webp": {
+    "width": 700,
+    "height": 683
+  },
+  "/assets/products/fruit-purees/apple-art-plate.webp": {
+    "width": 1100,
+    "height": 1103
+  },
+  "/assets/products/fruit-purees/apricot-1.webp": {
+    "width": 1280,
+    "height": 960
+  },
+  "/assets/products/fruit-purees/apricot-2.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/assets/products/fruit-purees/apricot-3.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/assets/products/fruit-purees/apricot-art-fruit.webp": {
+    "width": 700,
+    "height": 721
+  },
+  "/assets/products/fruit-purees/apricot-art-plate.webp": {
+    "width": 1100,
+    "height": 1072
+  },
+  "/assets/products/fruit-purees/gallery-a.webp": {
+    "width": 2000,
+    "height": 1125
+  },
+  "/assets/products/fruit-purees/gallery-b.webp": {
+    "width": 2000,
+    "height": 857
+  },
+  "/assets/products/fruit-purees/gallery-c.webp": {
+    "width": 2000,
+    "height": 1125
+  },
+  "/assets/products/fruit-purees/gallery-d.webp": {
+    "width": 2000,
+    "height": 1125
+  },
+  "/assets/products/fruit-purees/gallery-e.webp": {
+    "width": 2000,
+    "height": 857
+  },
+  "/assets/products/fruit-purees/gallery-f.webp": {
+    "width": 2000,
+    "height": 857
+  },
+  "/assets/products/fruit-purees/guava-1.webp": {
+    "width": 1280,
+    "height": 966
+  },
+  "/assets/products/fruit-purees/guava-2.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/assets/products/fruit-purees/guava-3.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/assets/products/fruit-purees/guava-art-fruit.webp": {
+    "width": 700,
+    "height": 705
+  },
+  "/assets/products/fruit-purees/guava-art-plate.webp": {
+    "width": 1100,
+    "height": 1101
+  },
+  "/assets/products/fruit-purees/mango-1.webp": {
+    "width": 1280,
+    "height": 966
+  },
+  "/assets/products/fruit-purees/mango-2.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/assets/products/fruit-purees/mango-3.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/assets/products/fruit-purees/mango-art-fruit.webp": {
+    "width": 700,
+    "height": 630
+  },
+  "/assets/products/fruit-purees/mango-art-plate.webp": {
+    "width": 1100,
+    "height": 1107
+  },
+  "/assets/products/fruit-purees/peach-1.webp": {
+    "width": 1280,
+    "height": 960
+  },
+  "/assets/products/fruit-purees/peach-2.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/assets/products/fruit-purees/peach-3.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/assets/products/fruit-purees/peach-art-fruit.webp": {
+    "width": 700,
+    "height": 696
+  },
+  "/assets/products/fruit-purees/peach-art-plate.webp": {
+    "width": 1100,
+    "height": 1086
+  },
+  "/assets/products/fruit-purees/strawberry-1.webp": {
+    "width": 1280,
+    "height": 960
+  },
+  "/assets/products/fruit-purees/strawberry-2.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/assets/products/fruit-purees/strawberry-3.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/assets/products/fruit-purees/strawberry-art-fruit.webp": {
+    "width": 700,
+    "height": 904
+  },
+  "/assets/products/fruit-purees/strawberry-art-plate.webp": {
+    "width": 1100,
+    "height": 1095
+  },
+  "/assets/products/packaging/bib.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/assets/products/packaging/drum.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/assets/products/packaging/ibc.webp": {
+    "width": 1280,
+    "height": 960
+  },
+  "/assets/products/tomato/coldbreak-1.webp": {
+    "width": 1280,
+    "height": 960
+  },
+  "/assets/products/tomato/coldbreak-2.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/assets/products/tomato/coldbreak-3.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/assets/products/tomato/coldbreak-art-plate.webp": {
+    "width": 1100,
+    "height": 1090
+  },
+  "/assets/products/tomato/coldbreak-art-tomato.webp": {
+    "width": 700,
+    "height": 705
+  },
+  "/assets/products/tomato/gallery-a.webp": {
+    "width": 2000,
+    "height": 1125
+  },
+  "/assets/products/tomato/gallery-b.webp": {
+    "width": 2000,
+    "height": 857
+  },
+  "/assets/products/tomato/gallery-c.webp": {
+    "width": 2000,
+    "height": 1125
+  },
+  "/assets/products/tomato/gallery-d.webp": {
+    "width": 2000,
+    "height": 1125
+  },
+  "/assets/products/tomato/gallery-e.webp": {
+    "width": 2000,
+    "height": 857
+  },
+  "/assets/products/tomato/gallery-f.webp": {
+    "width": 2000,
+    "height": 857
+  },
+  "/assets/products/tomato/hotbreak-1.webp": {
+    "width": 1280,
+    "height": 960
+  },
+  "/assets/products/tomato/hotbreak-2.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/assets/products/tomato/hotbreak-3.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/assets/products/tomato/hotbreak-art-beaker.webp": {
+    "width": 812,
+    "height": 1100
+  },
+  "/assets/products/tomato/hotbreak-art-plate.webp": {
+    "width": 1100,
+    "height": 1101
+  },
+  "/assets/products/tomato/hotbreak-art-tomato.webp": {
+    "width": 700,
+    "height": 659
+  },
+  "/assets/SDG Icons/E_SDG_Icons-01.webp": {
+    "width": 466,
+    "height": 466
+  },
+  "/assets/SDG Icons/E_SDG_Icons-02.webp": {
+    "width": 466,
+    "height": 466
+  },
+  "/assets/SDG Icons/E_SDG_Icons-03.webp": {
+    "width": 466,
+    "height": 466
+  },
+  "/assets/SDG Icons/E_SDG_Icons-04.webp": {
+    "width": 466,
+    "height": 466
+  },
+  "/assets/SDG Icons/E_SDG_Icons-05.webp": {
+    "width": 466,
+    "height": 466
+  },
+  "/assets/SDG Icons/E_SDG_Icons-06.webp": {
+    "width": 466,
+    "height": 466
+  },
+  "/assets/SDG Icons/E_SDG_Icons-07.webp": {
+    "width": 466,
+    "height": 466
+  },
+  "/assets/SDG Icons/E_SDG_Icons-08.webp": {
+    "width": 466,
+    "height": 466
+  },
+  "/assets/SDG Icons/E_SDG_Icons-09.webp": {
+    "width": 466,
+    "height": 466
+  },
+  "/assets/SDG Icons/E_SDG_Icons-10.webp": {
+    "width": 466,
+    "height": 466
+  },
+  "/assets/SDG Icons/E_SDG_Icons-11.webp": {
+    "width": 466,
+    "height": 466
+  },
+  "/assets/SDG Icons/E_SDG_Icons-12.webp": {
+    "width": 466,
+    "height": 466
+  },
+  "/assets/SDG Icons/E_SDG_Icons-13.webp": {
+    "width": 466,
+    "height": 466
+  },
+  "/assets/SDG Icons/E_SDG_Icons-14.webp": {
+    "width": 466,
+    "height": 466
+  },
+  "/assets/SDG Icons/E_SDG_Icons-15.webp": {
+    "width": 466,
+    "height": 466
+  },
+  "/assets/SDG Icons/E_SDG_Icons-16.webp": {
+    "width": 466,
+    "height": 466
+  },
+  "/assets/SDG Icons/E_SDG_Icons-17.webp": {
+    "width": 466,
+    "height": 466
+  },
+  "/api/media/file/21f768fec1-fruit-concentrates-hero.webp": {
+    "width": 1420,
+    "height": 1000
+  },
+  "/api/media/file/6cba83a7cf-fruit-purees-hero.webp": {
+    "width": 1420,
+    "height": 1000
+  },
+  "/api/media/file/b07baf51ed-tomato-concentrates-hero.webp": {
+    "width": 1420,
+    "height": 1000
+  },
+  "/api/media/file/67dcfb8e5c-brcgs.webp": {
+    "width": 1200,
+    "height": 900
+  },
+  "/api/media/file/0ab2c8de8a-fda.webp": {
+    "width": 1200,
+    "height": 900
+  },
+  "/api/media/file/d4d1ac6cec-fssc-22000.webp": {
+    "width": 1200,
+    "height": 900
+  },
+  "/api/media/file/04646d007b-halal.webp": {
+    "width": 1200,
+    "height": 900
+  },
+  "/api/media/file/9bc2c6f1de-iso-14001.webp": {
+    "width": 1200,
+    "height": 900
+  },
+  "/api/media/file/71af05e52a-iso-45001.webp": {
+    "width": 1200,
+    "height": 900
+  },
+  "/api/media/file/49f514e954-kosher.webp": {
+    "width": 1200,
+    "height": 900
+  },
+  "/api/media/file/100dfdd286-nfsa.webp": {
+    "width": 1200,
+    "height": 900
+  },
+  "/api/media/file/48bb5285df-sedex-smeta.webp": {
+    "width": 1200,
+    "height": 900
+  },
+  "/api/media/file/7431122545-hero-poster.webp": {
+    "width": 1280,
+    "height": 720
+  },
+  "/api/media/file/5c2035fab8-icon.svg": {
+    "width": 924,
+    "height": 791
+  },
+  "/api/media/file/477f95e016-logo-full.svg": {
+    "width": 1163,
+    "height": 314
+  },
+  "/api/media/file/05b7516acc-logo.webp": {
+    "width": 654,
+    "height": 381
+  },
+  "/api/media/file/6ed05aef98-aseptic-fill.webp": {
+    "width": 1600,
+    "height": 1067
+  },
+  "/api/media/file/a0fe78ac21-aseptic-warehouse.webp": {
+    "width": 1600,
+    "height": 686
+  },
+  "/api/media/file/4043ed37d9-book-meeting.webp": {
+    "width": 1280,
+    "height": 854
+  },
+  "/api/media/file/465961cde2-cft-evaporation.webp": {
+    "width": 1872,
+    "height": 1248
+  },
+  "/api/media/file/bf2dea3eee-cft-filling.webp": {
+    "width": 1872,
+    "height": 1248
+  },
+  "/api/media/file/e41d81343f-cft-line.webp": {
+    "width": 1600,
+    "height": 1067
+  },
+  "/api/media/file/bd3414be31-cft-sorting.webp": {
+    "width": 1872,
+    "height": 1248
+  },
+  "/api/media/file/b6ffa0ae0e-contact-field.webp": {
+    "width": 1536,
+    "height": 768
+  },
+  "/api/media/file/ed15b2b962-facility-aerial.webp": {
+    "width": 1600,
+    "height": 686
+  },
+  "/api/media/file/dd3af7b2c0-farm-sourcing.webp": {
+    "width": 1600,
+    "height": 1067
+  },
+  "/api/media/file/12d333dc64-field-film-poster.webp": {
+    "width": 1280,
+    "height": 720
+  },
+  "/api/media/file/79e981bfc6-harvest-sunset.webp": {
+    "width": 1536,
+    "height": 1024
+  },
+  "/api/media/file/4342d05d42-heritage-commodities.webp": {
+    "width": 2000,
+    "height": 1333
+  },
+  "/api/media/file/2b03473ee7-heritage-vine-poster.webp": {
+    "width": 1280,
+    "height": 720
+  },
+  "/api/media/file/e195bc463a-life-01-learning.webp": {
+    "width": 1200,
+    "height": 905
+  },
+  "/api/media/file/17829ca427-life-02-teamwork.webp": {
+    "width": 1200,
+    "height": 905
+  },
+  "/api/media/file/fc132d99b7-life-03-recognition.webp": {
+    "width": 1200,
+    "height": 905
+  },
+  "/api/media/file/91bdb84f08-magnific_cluster-of-freshly-washed_jSxalEpLD0.webp": {
+    "width": 1600,
+    "height": 1600
+  },
+  "/api/media/file/990559e1de-magnific_exterior-of-a-large-moder_NZ917Pn6D9.webp": {
+    "width": 1280,
+    "height": 859
+  },
+  "/api/media/file/a3155fbb5d-magnific_interior-of-a-modern-food_swLaKaNl8e.webp": {
+    "width": 1600,
+    "height": 1074
+  },
+  "/api/media/file/1348be2b2d-magnific_ultrawide-cinematic-macro_poD3BhDehw.webp": {
+    "width": 1280,
+    "height": 543
+  },
+  "/api/media/file/f57dc0fd51-origin-farmer-a.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/api/media/file/54e32588d5-qc-lab.webp": {
+    "width": 1600,
+    "height": 1067
+  },
+  "/api/media/file/015c338117-team-corridor.webp": {
+    "width": 1600,
+    "height": 1067
+  },
+  "/api/media/file/74738db7fc-value-01-quality.webp": {
+    "width": 1500,
+    "height": 2000
+  },
+  "/api/media/file/db107efe67-value-02-partnership.webp": {
+    "width": 1500,
+    "height": 2000
+  },
+  "/api/media/file/38b50b1f1c-value-03-accountability.webp": {
+    "width": 1500,
+    "height": 2000
+  },
+  "/api/media/file/4e17634eaf-value-04-innovation.webp": {
+    "width": 1500,
+    "height": 2000
+  },
+  "/api/media/file/e9106bbec3-value-05-empowerment.webp": {
+    "width": 1500,
+    "height": 2000
+  },
+  "/api/media/file/ea32fbaec9-value-06-sustainability.webp": {
+    "width": 1500,
+    "height": 2000
+  },
+  "/api/media/file/7b51d37998-chilli-1.webp": {
+    "width": 1280,
+    "height": 960
+  },
+  "/api/media/file/189ad4a6d1-chilli-2.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/api/media/file/884a35367f-chilli-3.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/api/media/file/20529f6be7-chilli-art-fruit.webp": {
+    "width": 700,
+    "height": 1039
+  },
+  "/api/media/file/444b5a3b22-chilli-art-plate.webp": {
+    "width": 1100,
+    "height": 1101
+  },
+  "/api/media/file/0cac67021b-gallery-a.webp": {
+    "width": 2000,
+    "height": 1125
+  },
+  "/api/media/file/05a795346b-apple-1.webp": {
+    "width": 1280,
+    "height": 960
+  },
+  "/api/media/file/1976adfc94-apple-2.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/api/media/file/eb45bf43af-apple-3.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/api/media/file/095e35708b-apple-art-fruit.webp": {
+    "width": 700,
+    "height": 706
+  },
+  "/api/media/file/9c11c8ec4d-apple-art-plate.webp": {
+    "width": 1100,
+    "height": 1089
+  },
+  "/api/media/file/fbc0c801fb-gallery-a.webp": {
+    "width": 1280,
+    "height": 720
+  },
+  "/api/media/file/be50712acf-gallery-b.webp": {
+    "width": 2000,
+    "height": 857
+  },
+  "/api/media/file/2181af4efe-gallery-c.webp": {
+    "width": 2000,
+    "height": 1125
+  },
+  "/api/media/file/74af572d92-gallery-d.webp": {
+    "width": 2000,
+    "height": 1125
+  },
+  "/api/media/file/2bf9a85fb1-gallery-e.webp": {
+    "width": 2000,
+    "height": 857
+  },
+  "/api/media/file/bec126e211-gallery-f.webp": {
+    "width": 1280,
+    "height": 549
+  },
+  "/api/media/file/3ab4f4343b-guava-1.webp": {
+    "width": 1280,
+    "height": 960
+  },
+  "/api/media/file/22f4d5a981-guava-2.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/api/media/file/bac7657f9b-guava-3.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/api/media/file/b93d7f64ee-guava-art-fruit.webp": {
+    "width": 700,
+    "height": 707
+  },
+  "/api/media/file/6f9535dbbf-guava-art-plate.webp": {
+    "width": 1100,
+    "height": 1039
+  },
+  "/api/media/file/a86bd26d45-mango-1.webp": {
+    "width": 1280,
+    "height": 960
+  },
+  "/api/media/file/3edf8b6e7f-mango-2.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/api/media/file/a48d602b41-mango-3.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/api/media/file/d21e0c3f92-mango-art-fruit.webp": {
+    "width": 700,
+    "height": 887
+  },
+  "/api/media/file/bf88801f9b-mango-art-plate.webp": {
+    "width": 1100,
+    "height": 1087
+  },
+  "/api/media/file/60a436a342-peach-1.webp": {
+    "width": 1280,
+    "height": 960
+  },
+  "/api/media/file/4a7b79b08c-peach-2.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/api/media/file/576acbc192-peach-3.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/api/media/file/2e903ec93a-peach-art-fruit.webp": {
+    "width": 700,
+    "height": 674
+  },
+  "/api/media/file/17360e4872-peach-art-plate.webp": {
+    "width": 1100,
+    "height": 1100
+  },
+  "/api/media/file/98c0822520-strawberry-1.webp": {
+    "width": 1280,
+    "height": 960
+  },
+  "/api/media/file/14983a2328-strawberry-2.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/api/media/file/b8506ff333-strawberry-3.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/api/media/file/09965ea302-strawberry-art-fruit.webp": {
+    "width": 700,
+    "height": 943
+  },
+  "/api/media/file/0b9fa123ec-strawberry-art-plate.webp": {
+    "width": 1100,
+    "height": 1097
+  },
+  "/api/media/file/3a94f0c022-apple-1.webp": {
+    "width": 1280,
+    "height": 960
+  },
+  "/api/media/file/757836f0d7-apple-2.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/api/media/file/a52e168196-apple-3.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/api/media/file/043e8b9fb5-apple-art-fruit.webp": {
+    "width": 700,
+    "height": 683
+  },
+  "/api/media/file/ea732323dd-apple-art-plate.webp": {
+    "width": 1100,
+    "height": 1103
+  },
+  "/api/media/file/99f8098767-apricot-1.webp": {
+    "width": 1280,
+    "height": 960
+  },
+  "/api/media/file/88559ed9f3-apricot-2.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/api/media/file/278f219562-apricot-3.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/api/media/file/f62e86b4b0-apricot-art-fruit.webp": {
+    "width": 700,
+    "height": 721
+  },
+  "/api/media/file/2daa38aeca-apricot-art-plate.webp": {
+    "width": 1100,
+    "height": 1072
+  },
+  "/api/media/file/75bcd11578-gallery-a.webp": {
+    "width": 2000,
+    "height": 1125
+  },
+  "/api/media/file/4c74b89c7a-gallery-b.webp": {
+    "width": 2000,
+    "height": 857
+  },
+  "/api/media/file/a5ab27f8be-gallery-c.webp": {
+    "width": 2000,
+    "height": 1125
+  },
+  "/api/media/file/d8afa3c452-gallery-d.webp": {
+    "width": 2000,
+    "height": 1125
+  },
+  "/api/media/file/40b05735d4-gallery-e.webp": {
+    "width": 2000,
+    "height": 857
+  },
+  "/api/media/file/12427144c7-gallery-f.webp": {
+    "width": 2000,
+    "height": 857
+  },
+  "/api/media/file/d5eb757c45-guava-1.webp": {
+    "width": 1280,
+    "height": 966
+  },
+  "/api/media/file/ba950d35c6-guava-2.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/api/media/file/820cbc31a9-guava-3.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/api/media/file/e6624c46bc-guava-art-fruit.webp": {
+    "width": 700,
+    "height": 705
+  },
+  "/api/media/file/897d794294-guava-art-plate.webp": {
+    "width": 1100,
+    "height": 1101
+  },
+  "/api/media/file/ee7b7cb7d9-mango-1.webp": {
+    "width": 1280,
+    "height": 966
+  },
+  "/api/media/file/a05f0c7be2-mango-2.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/api/media/file/d3044f4fd6-mango-3.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/api/media/file/a4b3e23151-mango-art-fruit.webp": {
+    "width": 700,
+    "height": 630
+  },
+  "/api/media/file/3fbad8cb5c-mango-art-plate.webp": {
+    "width": 1100,
+    "height": 1107
+  },
+  "/api/media/file/c0a1d918b2-peach-1.webp": {
+    "width": 1280,
+    "height": 960
+  },
+  "/api/media/file/4a16d8a76e-peach-2.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/api/media/file/2c0d7783e9-peach-3.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/api/media/file/a6c5faa55b-peach-art-fruit.webp": {
+    "width": 700,
+    "height": 696
+  },
+  "/api/media/file/300fb8d685-peach-art-plate.webp": {
+    "width": 1100,
+    "height": 1086
+  },
+  "/api/media/file/0e4e06083d-strawberry-1.webp": {
+    "width": 1280,
+    "height": 960
+  },
+  "/api/media/file/d3959afb04-strawberry-2.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/api/media/file/fb594a44a6-strawberry-3.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/api/media/file/abbee92a64-strawberry-art-fruit.webp": {
+    "width": 700,
+    "height": 904
+  },
+  "/api/media/file/5a8ef8d712-strawberry-art-plate.webp": {
+    "width": 1100,
+    "height": 1095
+  },
+  "/api/media/file/556fa4fe4d-bib.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/api/media/file/acb5f28007-drum.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/api/media/file/47d550ff97-ibc.webp": {
+    "width": 1280,
+    "height": 960
+  },
+  "/api/media/file/fb7f377229-coldbreak-1.webp": {
+    "width": 1280,
+    "height": 960
+  },
+  "/api/media/file/13d3313a05-coldbreak-2.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/api/media/file/f8838f0e20-coldbreak-3.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/api/media/file/9c5fa7acdb-coldbreak-art-plate.webp": {
+    "width": 1100,
+    "height": 1090
+  },
+  "/api/media/file/99a9315ffb-coldbreak-art-tomato.webp": {
+    "width": 700,
+    "height": 705
+  },
+  "/api/media/file/910e3bd43c-gallery-a.webp": {
+    "width": 2000,
+    "height": 1125
+  },
+  "/api/media/file/bf2f42d6c5-gallery-b.webp": {
+    "width": 2000,
+    "height": 857
+  },
+  "/api/media/file/221382ad0d-gallery-c.webp": {
+    "width": 2000,
+    "height": 1125
+  },
+  "/api/media/file/c4c37a6edb-gallery-d.webp": {
+    "width": 2000,
+    "height": 1125
+  },
+  "/api/media/file/12b657266e-gallery-e.webp": {
+    "width": 2000,
+    "height": 857
+  },
+  "/api/media/file/7aa314cf3a-gallery-f.webp": {
+    "width": 2000,
+    "height": 857
+  },
+  "/api/media/file/8dfe06e8e9-hotbreak-1.webp": {
+    "width": 1280,
+    "height": 960
+  },
+  "/api/media/file/91151cc3c0-hotbreak-2.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/api/media/file/8fc5f6f38d-hotbreak-3.webp": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/api/media/file/0f0aa6a460-hotbreak-art-plate.webp": {
+    "width": 1100,
+    "height": 1101
+  },
+  "/api/media/file/803222bc7f-hotbreak-art-tomato.webp": {
+    "width": 700,
+    "height": 659
+  }
+}

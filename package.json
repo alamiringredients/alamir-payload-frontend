@@ -1,0 +1,43 @@
+{
+  "name": "alamir-payload-frontend",
+  "private": true,
+  "type": "module",
+  "packageManager": "npm@latest",
+  "scripts": {
+    "dev": "node --import dotenv/config node_modules/next/dist/bin/next dev",
+    "build": "next build",
+    "start": "node --import dotenv/config node_modules/next/dist/bin/next start",
+    "lint": "eslint app components config i18n lib tests scripts proxy.ts next.config.ts --no-warn-ignored --no-error-on-unmatched-pattern",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test:layout-shift": "node --test tests/layout-shift.browser.test.mjs",
+    "test:media-loading": "node --test tests/media-loading.browser.test.mjs",
+    "test:category-gallery": "node --test tests/category-gallery.browser.test.mjs",
+    "test:product-filters": "node --test tests/product-filters.browser.test.mjs",
+    "test:forms": "node --test tests/holo-forms.browser.test.mjs"
+  },
+  "dependencies": {
+    "@payloadcms/richtext-lexical": "^3.90.2",
+    "dotenv": "16.4.7",
+    "next": "16.4.0",
+    "next-intl": "^4.14.2",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "sharp": "^0.35.4",
+    "three": "^0.160.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@types/three": "^0.160.0",
+    "eslint": "^9.17.0",
+    "globals": "^15.14.0",
+    "playwright": "^1.63.0",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.30.1"
+  },
+  "overrides": {
+    "esbuild": "^0.28.2"
+  }
+}

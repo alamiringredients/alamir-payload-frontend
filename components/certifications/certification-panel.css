@@ -1,0 +1,322 @@
+/* Shared certification component styles. */
+
+.crd-panel {
+  margin-top: 64px;
+  border: 1.5px solid var(--line);
+  background: var(--line);
+  color: var(--ink);
+  overflow: hidden;
+}
+
+.crd-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 16px 22px;
+  background: var(--navy);
+  color: var(--white);
+}
+.crd-bar span,
+.crd-bar a {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.crd-bar .end {
+  color: rgba(255, 255, 255, 0.5);
+}
+.crd-bar a.end {
+  color: rgba(255, 255, 255, 0.72);
+  transition: color 0.25s;
+}
+.crd-bar a.end:hover {
+  color: var(--white);
+}
+.crd-bar-logo {
+  display: flex;
+  align-items: center;
+  flex: none;
+}
+.crd-bar-logo img {
+  display: block;
+  width: auto;
+  height: clamp(28px, 2.6vw, 38px);
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  opacity: 0.92;
+}
+
+.crd-download {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 22px 26px;
+  background: var(--navy);
+  color: var(--white);
+  transition: background 0.25s;
+}
+.crd-download:hover {
+  background: var(--navy-dark);
+}
+.crd-download .nm {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.crd-download .no {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  color: rgba(255, 255, 255, 0.75);
+}
+.crd-logos {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5px;
+  background: var(--line);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 1px solid var(--line);
+}
+.crd-logo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 22px 20px;
+  background: var(--white);
+  transition: background 0.3s;
+}
+.crd-logo:hover {
+  background: var(--navy);
+}
+.crd-logo:hover .nm {
+  color: var(--white);
+}
+.crd-logo:hover .st {
+  color: rgba(255, 255, 255, 0.72);
+}
+.crd-logo:hover .tag {
+  background: rgba(255, 255, 255, 0.16);
+  color: var(--white);
+}
+.crd-logo:hover .plate {
+  background: var(--white);
+}
+.crd-logo .plate {
+  flex: 0 0 auto;
+  width: 104px;
+  height: 74px;
+  display: grid;
+  place-items: center;
+  background: var(--white);
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+.crd-logo .plate img {
+  width: auto;
+  height: auto;
+  max-width: 97%;
+  max-height: 97%;
+  object-fit: contain;
+  filter: none;
+  opacity: 1;
+  transition:
+    filter 0.4s,
+    opacity 0.4s;
+}
+.crd-logo:hover .plate img {
+  filter: none;
+  opacity: 1;
+}
+.crd-logo .nm {
+  display: block;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+.crd-logo .st {
+  display: block;
+  margin-top: 4px;
+  font-size: 11.5px;
+  line-height: 1.35;
+  color: #6b7178;
+}
+.crd-logo .dt {
+  display: block;
+  margin-top: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: #606971;
+  transition: color 0.35s;
+}
+.crd-logo:hover .dt {
+  color: rgba(255, 255, 255, 0.6);
+}
+.crd-logo .tag {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #8b949c;
+}
+@media (max-width: 1050px) {
+  .crd-logos {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 640px) {
+  .crd-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 14px 16px;
+  }
+  .crd-logos {
+    grid-template-columns: 1fr;
+  }
+  .crd-logo .plate {
+    width: 70px;
+    height: 54px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .crd-cell,
+  .crd-logo,
+  .crd-logo .plate img {
+    transition: none;
+  }
+  .cf-card,
+  .cf-dim {
+    transition: none;
+  }
+}
+.certflow {
+  --cf-w: 400px;
+  --cf-h: 400px;
+  position: relative;
+  width: 100%;
+  height: 580px;
+  margin-top: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1600px;
+  overflow: hidden;
+  outline: none;
+}
+.cf-stage {
+  position: relative;
+  width: var(--cf-w);
+  height: var(--cf-h);
+  transform-style: preserve-3d;
+}
+.cf-card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--cf-w);
+  height: var(--cf-h);
+  display: grid;
+  place-items: center;
+  padding: 34px;
+  border-radius: 30px;
+  overflow: hidden;
+  background: var(--white);
+  transform-style: preserve-3d;
+  transform-origin: center center;
+  box-shadow: 0 24px 56px rgba(4, 10, 18, 0.42);
+  cursor: pointer;
+  transition:
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.cf-card.is-active {
+  cursor: default;
+}
+.cf-card img {
+  width: 100%;
+  height: auto;
+  max-width: 88%;
+  max-height: 58%;
+  object-fit: contain;
+  display: block;
+  user-select: none;
+}
+.cf-title {
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  bottom: 24px;
+  font: 700 28px/1.1 var(--sans);
+  letter-spacing: -0.02em;
+  color: var(--navy);
+  white-space: pre-line;
+  pointer-events: none;
+}
+.cf-dim {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0.4;
+  pointer-events: none;
+  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.cf-card.is-active .cf-dim {
+  opacity: 0;
+}
+@media (max-width: 1100px) {
+  .certflow {
+    height: 500px;
+    --cf-w: 330px;
+    --cf-h: 330px;
+  }
+  .cf-card {
+    padding: 28px;
+    border-radius: 25px;
+  }
+  .cf-title {
+    font-size: 23px;
+  }
+}
+@media (max-width: 700px) {
+  .certflow {
+    height: 400px;
+    --cf-w: 250px;
+    --cf-h: 250px;
+  }
+  .cf-card {
+    padding: 22px;
+    border-radius: 19px;
+  }
+  .cf-title {
+    font-size: 19px;
+    left: 16px;
+    right: 16px;
+    bottom: 18px;
+  }
+}
+
+.crd-logo .plate.mono {
+  font: 700 12.5px/1 var(--sans);
+  letter-spacing: 0.06em;
+  color: var(--navy);
+  text-align: center;
+  padding: 0 6px;
+  transition: color 0.35s;
+}
+.crd-logo:hover .plate.mono {
+  color: var(--navy);
+}

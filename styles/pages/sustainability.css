@@ -1,0 +1,6 @@
+/* Route CSS stays loaded after navigation; apply it only to the sustainability index. */
+@scope (:root:has(.site-page[data-page="sustainability"])) to ([data-rich-content]) {
+/* Shared content-page styles live in styles/content-pages.css. */
+    @keyframes tab-in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+}
