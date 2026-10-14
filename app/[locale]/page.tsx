@@ -47,7 +47,7 @@ export default async function HomePage({params}: {params: Promise<{locale: strin
     <JsonLd data={pageSchema(localePath('/',locale),locale,seo.title[locale],seo.description[locale])}/>
     {renderWebsiteBrand(show('header', <><a className="skip" href="#main">Skip to content</a>{SiteHeader({catalog,locale,menus:layout.home.menus})}</>), settings, locale)}
     {meetingEvent&&show('overlays', EventAnnouncement({event:meetingEvent,locale}), {preserveUnknownText:true})} <PageOverlays locale={locale}/>
-    <FormScopeProvider forms={forms} countries={getFormCountries(forms,locale)}><PageBody page={cmsPage} locale={locale}/></FormScopeProvider>
+    <FormScopeProvider forms={forms} countries={await getFormCountries(forms,locale)}><PageBody page={cmsPage} locale={locale}/></FormScopeProvider>
     {renderWebsiteBrand(show('footer', SiteFooter({company:settings.company,locale,menus:layout.home.footerMenus})), settings, locale)}
     <SiteInteractions />
   </div>

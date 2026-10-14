@@ -30,7 +30,7 @@ export type Certification = {
 export type CertificationData = {types: CertificationType[]; certifications: Certification[]}
 export type CertificationEntry = Certification & {type: CertificationType}
 export type CertificationInterfaceLabels = {
-  group:string;facility:string;entries:string;target:string;unconfirmed:string;issued:string;expires:string;download:string;downloads:string;marks:string;pdf:string
+  heldToday:string;programme:string;group:string;facility:string;entries:string;target:string;unconfirmed:string;issued:string;expires:string;download:string;downloads:string;marks:string;pdf:string
   statuses:Record<CertificationStatus,string>
 }
 export function effectiveStatus(record: Certification, today = new Date().toISOString().slice(0, 10)): CertificationStatus {

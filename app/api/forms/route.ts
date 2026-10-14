@@ -15,5 +15,5 @@ export async function GET(request: Request) {
     scope = { purpose, collection, ownerId, slug } as FormScope;
   }
   const forms=await getForms(locale,scope);
-  return Response.json({forms,countries:getFormCountries(forms,locale)});
+  return Response.json({forms,countries:await getFormCountries(forms,locale)});
 }

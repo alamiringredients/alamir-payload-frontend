@@ -280,7 +280,7 @@
               "label": "Facebook",
               "source": "Facebook",
               "values": {
-                "$field": "page.footer.text25.values",
+                "$field": "interface.navigation.social.facebook",
                 "$localized": true
               }
             },
@@ -289,7 +289,7 @@
               "label": "Instagram",
               "source": "Instagram",
               "values": {
-                "$field": "page.footer.text26.values",
+                "$field": "interface.navigation.social.instagram",
                 "$localized": true
               }
             },
@@ -298,7 +298,7 @@
               "label": "LinkedIn",
               "source": "LinkedIn",
               "values": {
-                "$field": "page.footer.text27.values",
+                "$field": "interface.navigation.social.linkedin",
                 "$localized": true
               }
             },
@@ -307,7 +307,7 @@
               "label": "YouTube",
               "source": "YouTube",
               "values": {
-                "$field": "page.footer.text28.values",
+                "$field": "interface.navigation.social.youtube",
                 "$localized": true
               }
             },
@@ -316,7 +316,7 @@
               "label": "WhatsApp",
               "source": "WhatsApp",
               "values": {
-                "$field": "page.footer.text29.values",
+                "$field": "interface.navigation.social.whatsapp",
                 "$localized": true
               }
             }
@@ -7010,6 +7010,14 @@
               "$field": "page.certification.statuses.expired",
               "$localized": true
             }
+          },
+          "heldToday": {
+            "$field": "page.certification.heldToday",
+            "$localized": true
+          },
+          "programme": {
+            "$field": "page.certification.programme",
+            "$localized": true
           }
         }
       },

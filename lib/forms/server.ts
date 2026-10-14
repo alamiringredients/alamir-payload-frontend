@@ -11,7 +11,7 @@ function normalizeFields(fields: CmsForm['fields']) {
     return {...field, defaultValue: field.options?.some(option => option.value === value) ? value : undefined};
   });
 }
-export function getFormCountries(forms:CmsForm[],locale:SiteLocale){
+export async function getFormCountries(forms:CmsForm[],locale:SiteLocale){
  return forms.some(form=>form.fields.some(field=>field.blockType==='country'||('includeDialCode' in field&&field.includeDialCode)))?getCountryOptions(locale):[];
 }
 export type FormScope = { purpose: FormPurpose; collection: 'pages' | 'jobs' | 'events' | 'products'; ownerId?: number; slug?: string };

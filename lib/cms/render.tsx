@@ -1,11 +1,9 @@
 import {SiteIcon} from '@/components/site/site-icon'
 import {EmbeddedVideo} from '@/components/editor/embedded-video'
 import {Children, cloneElement, isValidElement, type ComponentProps, type ReactElement, type ReactNode} from 'react'
-import {translateContent} from '@/lib/content-translations'
 import type {HomeSectionContent, ManagedPageContent, WebsiteSettings} from './types'
 import type {SiteLocale} from '@/i18n/navigation'
 import {InlineContent} from '@/components/editor/inline-content'
-import {contentTranslation} from '@/lib/content-translation-values'
 import {SmartLink} from '@/components/site/smart-link'
 import {cmsCardHref} from './card-routes'
 import {PageHero} from '@/components/site/page-hero'
@@ -42,7 +40,6 @@ export function renderManagedSection(node: ReactNode, section: HomeSectionConten
   for(const field of section.texts){
     const replacement=field.values[locale]??''
     texts.set(normalize(field.source),replacement)
-    for(const language of ['ar','fr'] as const)texts.set(normalize(contentTranslation(language,field.source)),replacement)
   }
   const assets = new Map(section.assets.map((field) => [field.source, field.value]))
   const links = new Map(section.links.map((field) => [field.source, field.value]))
@@ -118,7 +115,6 @@ export function renderManagedPage(node:ReactNode,content:ManagedPageContent,loca
 
 export function renderWebsiteBrand(node: ReactNode, settings: WebsiteSettings, locale: SiteLocale): ReactNode {
   const visit = (child: ReactNode): ReactNode => {
-    if (typeof child === 'string') return translateContent(locale, child)
     if (Array.isArray(child)) return child.map(visit)
     if (!isValidElement(child)) return child
     const element = child as ReactElement<Record<string, unknown>>
@@ -127,11 +123,6 @@ export function renderWebsiteBrand(node: ReactNode, settings: WebsiteSettings, l
     if (element.props.src === '/assets/logo.webp') {if (!settings.groupLogo) return null; props.src = settings.groupLogo}
     if (element.props.src === '/assets/icon.svg') {if (!settings.icon) return null; props.src = settings.icon}
     if (typeof element.props.alt === 'string' && element.props.alt.includes('Alamir Ingredients')) props.alt = settings.siteName[locale]
-    for (const name of textProps) {
-      if (props[name] !== undefined) continue
-      const value = element.props[name]
-      if (typeof value === 'string') props[name] = translateContent(locale, value)
-    }
     if ('children' in element.props) props.children = Children.map(element.props.children as ReactNode, visit)
     return cloneElement(element, props)
   }

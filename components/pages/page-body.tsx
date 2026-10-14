@@ -35,7 +35,7 @@ export async function PageBody({page,locale,context={}}:{page:CmsPage;locale:Sit
  const blocks=page.layout.filter(block=>block.enabled!==false)
  const formIds=blocks.filter(block=>block.blockType==='form').map(formId)
  const forms=await getCustomForms(locale,[...new Set(formIds)])
- const countries=getFormCountries(forms,locale)
+ const countries=await getFormCountries(forms,locale)
  const formsById=new Map(forms.map(form=>[form.id,form]))
  const rendered=new Map(await Promise.all(blocks.map(async block=>[block.id,await Section({block,locale,page,context,countries,form:formsById.get(formId(block))})] as const)))
  const groups:PageBlock[][]=[]

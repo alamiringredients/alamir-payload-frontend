@@ -1,3 +1,4 @@
+import {getWebsiteSettings} from '@/lib/api/public';
 import { ContentImage } from "@/components/site/content-image";
 import { SmartLink } from "@/components/site/smart-link";
 import type { SiteLocale } from "@/i18n/navigation";
@@ -13,7 +14,7 @@ import type { CertificationInterfaceLabels } from "@/lib/certifications/types";
 import { CertificationCarouselFrame } from "./certification-carousel";
 import "./certification-panel.css";
 
-export function CertificationPanel({
+export async function CertificationPanel({
   data,
   holder,
   locale,
@@ -28,20 +29,10 @@ export function CertificationPanel({
 }) {
   const records = certificationEntries(data, holder);
   if (!records.length) return null;
-  const heldToday = {
-    en: "held today",
-    ar: "سارية اليوم",
-    fr: "détenues aujourd’hui",
-  }[locale];
-  const programme = {
-    en: "certification programme",
-    ar: "برنامج الاعتماد",
-    fr: "programme de certification",
-  }[locale];
-  const title =
-    holder === "group"
-      ? `${holderLabel(holder, labels)} — ${heldToday}`
-      : `Alamir Ingredients — ${programme}`;
+  const siteName=(await getWebsiteSettings(locale)).siteName[locale];
+  const title = holder === "group"
+    ? `${holderLabel(holder, labels)} — ${labels.heldToday}`
+    : `${siteName} — ${labels.programme}`;
   const date = (value: string) =>
     new Intl.DateTimeFormat(locale, {
       month: "short",
@@ -58,9 +49,9 @@ export function CertificationPanel({
             href="https://www.alamireg.com/"
             target="_blank"
             rel="noreferrer"
-            aria-label="Alamir Group"
+            aria-label={holderLabel("group",labels)}
           >
-            {groupLogo && <ContentImage src={groupLogo} alt="Alamir Group" />}
+            {groupLogo && <ContentImage src={groupLogo} alt={holderLabel("group",labels)} />}
           </a>
         ) : (
           <span className="end">

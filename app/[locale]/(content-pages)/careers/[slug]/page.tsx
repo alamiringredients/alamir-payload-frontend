@@ -31,5 +31,5 @@ export default async function Page({params}:Props){
     getForms(locale,{purpose:'application',collection:'jobs',slug}),
   ])
   if(!job)notFound()
-  return <FormScopeProvider forms={forms} countries={getFormCountries(forms,locale)}><SitePage structuredData={pageSchema(localePath(`/careers/${slug}`,locale),locale,job.content[locale].title,job.content[locale].summary)} page={`careers/${slug}`} locale={locale} home={home} settings={settings}><RecordLayout<JobRecord> collection="jobs" slug={job.slug} locale={locale} renderSection={(selected,section)=><CareerJobBody job={selected} jobs={jobs} content={content} locale={locale} labels={labels} section={section}/>}/></SitePage></FormScopeProvider>
+  return <FormScopeProvider forms={forms} countries={await getFormCountries(forms,locale)}><SitePage structuredData={pageSchema(localePath(`/careers/${slug}`,locale),locale,job.content[locale].title,job.content[locale].summary)} page={`careers/${slug}`} locale={locale} home={home} settings={settings}><RecordLayout<JobRecord> collection="jobs" slug={job.slug} locale={locale} renderSection={(selected,section)=><CareerJobBody job={selected} jobs={jobs} content={content} locale={locale} labels={labels} section={section}/>}/></SitePage></FormScopeProvider>
 }

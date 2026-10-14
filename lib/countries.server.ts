@@ -1,8 +1,14 @@
 import 'server-only'
 import {countries} from './countries'
-import {translateContent} from './content-translations'
+import {getInterface} from './payload/public'
 import type {SiteLocale} from '@/i18n/navigation'
 
-export function getCountryOptions(locale: SiteLocale) {
-  return countries.map(country => ({...country, name: translateContent(locale, country.name)}))
+export async function getCountryOptions(locale: SiteLocale) {
+  const labels=(await getInterface()).countries
+  const dialCodes=new Map(countries.map(country=>[country.name,country.dialCode]))
+  return labels.en.flatMap((country,index)=>{
+    const dialCode=dialCodes.get(country.value)
+    const name=labels[locale][index]?.label
+    return dialCode&&name?[{name,dialCode}]:[]
+  })
 }

@@ -82,3 +82,5 @@ Website pages are loaded from Payload’s Pages collection through the locale-aw
 Frontend forms are rendered from the owning Payload Form Builder definition with the existing brand classes. Definitions are loaded in one cached request per locale. Enquiries, CV applications and reservations submit to the official Form Submissions endpoint; search retains its GET query behavior.
 
 Email delivery is owned by the backend. Complete its [SMTP and email worker setup](../alamir-payload-backend/README.md#smtp-and-queued-emails) when deploying. Keep SMTP credentials and the email worker out of the frontend. A successful submission saves and queues the email; it does not wait for SMTP delivery.
+
+Translations load from Payload for English, Arabic and French. Shared interface text belongs to Shared translations; editorial copy belongs to its page or record, and form text belongs to Form Builder. There are no frontend translation JSON files or language overrides.

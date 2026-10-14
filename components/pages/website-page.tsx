@@ -38,5 +38,5 @@ export async function WebsitePage({params,searchParams}:WebsitePageProps){
  const purpose=({"contact-page":'contact',"careers-page":'application',"search-page":'search'} as Record<string,FormPurpose>)[page.sourceKey??'']
  const forms=purpose?await getForms(locale,{purpose,collection:'pages',ownerId:page.id}):[]
  const input=page.layout.some(block=>block.blockType.startsWith('search-') || block.blockType.startsWith('news-'))?await searchParams:{}
- return <SitePage page={path} locale={locale} home={home} settings={settings}><FormScopeProvider forms={forms} countries={getFormCountries(forms,locale)}><PageBody page={page} locale={locale} context={{query:input.q,tag:input.tag}}/></FormScopeProvider></SitePage>
+ return <SitePage page={path} locale={locale} home={home} settings={settings}><FormScopeProvider forms={forms} countries={await getFormCountries(forms,locale)}><PageBody page={page} locale={locale} context={{query:input.q,tag:input.tag}}/></FormScopeProvider></SitePage>
 }
