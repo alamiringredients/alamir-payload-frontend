@@ -1,3 +1,4 @@
+import {interfaceLabels} from '@/lib/payload/client'
 import { ContentImage } from "./content-image";
 import { SmartLink } from "./smart-link";
 import { DeferredQuoteForm } from "@/components/enquiries/deferred-quote-form";
@@ -5,13 +6,14 @@ import type { EventRecord } from "@/lib/events/types";
 import type { SiteLocale } from "@/i18n/navigation";
 import { InlineContent } from "@/components/editor/inline-content";
 
-export function EventAnnouncement({
+export async function EventAnnouncement({
   event,
   locale,
 }: {
   event: EventRecord;
   locale: SiteLocale;
 }) {
+  const labels = await interfaceLabels('page.overlays', locale)
   const start = new Date(event.starts_at),
     end = new Date(event.ends_at),
     short = new Intl.DateTimeFormat(locale, {
@@ -44,7 +46,7 @@ export function EventAnnouncement({
           className="ann-close"
           type="button"
           id="announce-close"
-          aria-label="Close announcement"
+          aria-label={labels.closeAnnouncement}
         >
           ×
         </button>
@@ -61,9 +63,9 @@ export function EventAnnouncement({
           </figcaption>
         </figure>
         <div className="ann-body">
-          <span className="ann-kicker">Upcoming event</span>
+          <span className="ann-kicker">{labels.upcomingEvent}</span>
           <h2 id="ann-title">
-            Meet us at{" "}
+            {labels.meetUsAt}{" "}
             <em>
               <InlineContent document={event.content.title[locale]} />.
             </em>
@@ -121,15 +123,15 @@ export function EventAnnouncement({
               className="btn"
               href={`/book-a-meeting?event=${event.slug}`}
             >
-              Book a meeting
+              {labels.bookMeeting}
             </SmartLink>
             <SmartLink className="btn ghost" href="/events">
-              View all
+              {labels.viewAll}
             </SmartLink>
           </div>
           <p className="ann-skip">
             <button type="button" data-ann-close>
-              Not right now
+              {labels.notNow}
             </button>
           </p>
         </div>
@@ -138,7 +140,8 @@ export function EventAnnouncement({
   );
 }
 
-export function PageOverlays({locale}:{locale:SiteLocale}) {
+export async function PageOverlays({locale}:{locale:SiteLocale}) {
+  const labels = await interfaceLabels('page.overlays', locale)
   return (
     <>
       <div
@@ -154,7 +157,7 @@ export function PageOverlays({locale}:{locale:SiteLocale}) {
             className="rq-close"
             type="button"
             id="rq-close"
-            aria-label="Close"
+            aria-label={labels.close}
           >
             <svg
               className="rq-close-icon"
@@ -171,13 +174,12 @@ export function PageOverlays({locale}:{locale:SiteLocale}) {
               />
             </svg>
           </button>
-          <div className="kicker">Request a quote</div>
+          <div className="kicker">{labels.quoteKicker}</div>
           <h2 id="rq-title">
-            Tell us what you <em>need.</em>
+            {labels.quoteHeading} <em>{labels.quoteHeadingEmphasis}</em>
           </h2>
           <p>
-            Sealed 1&nbsp;kg sample plus the technical data sheet within five
-            business days. No obligation.
+            {labels.quoteDescription}
           </p>
           <DeferredQuoteForm locale={locale}/>
         </div>
@@ -186,19 +188,18 @@ export function PageOverlays({locale}:{locale:SiteLocale}) {
         className="cookie"
         id="cookie-notice"
         role="region"
-        aria-label="Cookie notice"
+        aria-label={labels.cookieLabel}
       >
         <p>
-          We use essential cookies to run this site and optional analytics
-          cookies to understand which pages buyers use. Read the{" "}
-          <SmartLink href="/cookies">cookie notice</SmartLink>.
+          {labels.cookieDescription}{" "}
+          <SmartLink href="/cookies">{labels.cookieLink}</SmartLink>.
         </p>
         <div className="acts">
           <button className="btn" type="button" data-cookie="all">
-            Accept all
+            {labels.acceptAll}
           </button>
           <button className="btn ghost" type="button" data-cookie="essential">
-            Essential only
+            {labels.essentialOnly}
           </button>
         </div>
       </div>

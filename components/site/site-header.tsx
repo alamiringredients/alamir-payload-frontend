@@ -1,3 +1,5 @@
+import {sectionText} from '@/lib/cms/section-text'
+import type {HomeSectionContent} from '@/lib/cms/types'
 import {navigationHref,navigationLabel} from '@/lib/cms/navigation'
 import {Fragment} from 'react'
 import {CatalogNavigation} from '@/components/catalog/catalog-navigation'
@@ -7,7 +9,8 @@ import type {SiteLocale} from '@/i18n/navigation'
 import {ContentImage} from './content-image'
 import {SmartLink} from './smart-link'
 
-export function SiteHeader({catalog,locale,page='',menus}: {catalog:NavigationCatalog;locale:SiteLocale;page?:string;menus?:{left:NavigationItem[];right:NavigationItem[]}}) {
+export function SiteHeader({catalog,locale,page='',menus,section}: {section:HomeSectionContent;catalog:NavigationCatalog;locale:SiteLocale;page?:string;menus?:{left:NavigationItem[];right:NavigationItem[]}}) {
+  const copy = (source: string) => sectionText(section, source, locale)
   const navigationProps = (href:string, desktop=false) => {
     const path = `/${page}`
     const exact = path === href
@@ -27,29 +30,29 @@ export function SiteHeader({catalog,locale,page='',menus}: {catalog:NavigationCa
   }
   return (<><header className="site-header" id="header">
   <div className="wrap header-inner">
-    <nav className="nav-left" aria-label="Primary navigation">
+    <nav className="nav-left" aria-label={copy("Primary navigation")}>
       {menus?.left.map(item=>link(item,true))}
     </nav>
-    <SmartLink className="brand" href="/" aria-label="Alamir Ingredients home">
-      <ContentImage src="/assets/logo-full.svg" alt="Alamir Ingredients" />
+    <SmartLink className="brand" href="/" aria-label={copy("Alamir Ingredients home")}>
+      <ContentImage src="/assets/logo-full.svg" alt={copy("Alamir Ingredients")} />
     </SmartLink>
-    <nav className="nav-right" aria-label="Secondary navigation">
+    <nav className="nav-right" aria-label={copy("Secondary navigation")}>
       {menus?.right.map(item=>link(item,true))}
-      <SmartLink className="header-action" href="/contact" data-quote>Get in touch</SmartLink>
+      <SmartLink className="header-action" href="/contact" data-quote>{copy("Get in touch")}</SmartLink>
     </nav>
-    <button className="menu-button" id="menu-open" type="button" aria-label="Open navigation" aria-expanded="false">
+    <button className="menu-button" id="menu-open" type="button" aria-label={copy("Open navigation")} aria-expanded="false">
       <span /><span />
     </button>
   </div>
 </header>
 <div className="mobile-menu" id="mobile-menu" aria-hidden="true">
   <div className="mobile-top">
-    <SmartLink className="brand" href="/"><ContentImage src="/assets/logo-full.svg" alt="Alamir Ingredients" /></SmartLink>
-    <button className="mobile-close" id="menu-close" type="button" aria-label="Close navigation">×</button>
+    <SmartLink className="brand" href="/"><ContentImage src="/assets/logo-full.svg" alt={copy("Alamir Ingredients")} /></SmartLink>
+    <button className="mobile-close" id="menu-close" type="button" aria-label={copy("Close navigation")}>×</button>
   </div>
-  <nav className="mobile-links" aria-label="Mobile navigation">
+  <nav className="mobile-links" aria-label={copy("Mobile navigation")}>
     {[...(menus?.left??[]),...(menus?.right??[])].map(item=>link(item,false))}
   </nav>
-  <div className="mobile-meta"><span>Sadat City, Egypt</span><span>Est. 1970</span></div>
+  <div className="mobile-meta"><span>{copy("Sadat City, Egypt")}</span><span>{copy("Est. 1970")}</span></div>
 </div>
 </>)}

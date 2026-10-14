@@ -21,7 +21,9 @@ const eventPath = (event: EventRecord) => `/events/${event.slug}`;
 function EventCard({
   event,
   locale,
+  labels,
 }: {
+  labels: Record<string,string>;
   event: EventRecord;
   locale: SiteLocale;
 }) {
@@ -54,7 +56,7 @@ function EventCard({
         </span>
         <span className="evcard-st">{event.content.summary[locale]}</span>
         <span className="evcard-go">
-          {event.kind === "recap" ? "Recap" : "Details"} →
+          {event.kind === "recap" ? labels.recap : labels.details} →
         </span>
       </div>
     </SmartLink>
@@ -64,7 +66,9 @@ function EventCard({
 export function EventsPageBody({
   events,
   locale,
+  labels,
 }: {
+  labels: Record<string,string>;
   events: EventRecord[];
   locale: SiteLocale;
 }) {
@@ -105,7 +109,7 @@ export function EventsPageBody({
         />
         <CardGrid>
           {upcoming.map((event) => (
-            <EventCard key={event.id} event={event} locale={locale} />
+            <EventCard key={event.id} event={event} locale={locale} labels={labels} />
           ))}
         </CardGrid>
         {upcoming.length === 0 && (
@@ -131,7 +135,7 @@ export function EventsPageBody({
         />
         <div className="cards c4 reveal">
           {past.map((event) => (
-            <EventCard key={event.id} event={event} locale={locale} />
+            <EventCard key={event.id} event={event} locale={locale} labels={labels} />
           ))}
         </div>
       </ContentSection>
@@ -170,10 +174,12 @@ export function EventsPageBody({
 
 export function EventDetailBody({
   event,
+  brandName,
   locale,
   labels,
   section,
 }: {
+  brandName: string;
   section?:string;
   event: EventRecord;
   locale: SiteLocale;
@@ -205,7 +211,7 @@ export function EventDetailBody({
           </h1>
           <p>{content.summary[locale]}</p>
           <div className="art-byline">
-            <span className="av">AI</span>
+            <span className="av" aria-hidden="true">{brandName.split(/\s+/).slice(0,2).map(word=>word[0]).join('')}</span>
             <div>
               <div className="who">{content.venue[locale]}</div>
               <div className="when">{content.stand[locale] || date}</div>

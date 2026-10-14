@@ -35,7 +35,7 @@ function hasContent(node: ReactNode): boolean {
   return Boolean(props.src) || hasContent(props.children as ReactNode)
 }
 
-export function renderManagedSection(node: ReactNode, section: HomeSectionContent, locale: SiteLocale, options: {preserveUnknownText?: boolean} = {}): ReactNode {
+export function renderManagedSection(node: ReactNode, section: HomeSectionContent, locale: SiteLocale): ReactNode {
   const texts = new Map<string,string>()
   for(const field of section.texts){
     const replacement=field.values[locale]??''
@@ -53,7 +53,7 @@ export function renderManagedSection(node: ReactNode, section: HomeSectionConten
       if (['×', '✕', '✖'].includes(symbol)) return <SiteIcon name="close"/>
       if (['.', '/', '|', '•', '·', '…', '+', '−', '—', '–', '*'].includes(symbol)) return child
       const replacement = texts.get(normalize(child))
-      return replacement !== undefined ? withWhitespace(child, replacement) : (/^\s*$/.test(child) || options.preserveUnknownText ? child : '')
+      return replacement !== undefined ? withWhitespace(child, replacement) : (/^\s*$/.test(child) ? child : '')
     }
     if (Array.isArray(child)) return child.map(visit)
     if (!isValidElement(child)) return child
@@ -64,7 +64,7 @@ export function renderManagedSection(node: ReactNode, section: HomeSectionConten
     const props: Record<string, unknown> = {}
     for (const name of textProps) {
       const value = element.props[name]
-      if (typeof value === 'string') props[name] = texts.get(normalize(value)) ?? (options.preserveUnknownText ? value : '')
+      if (typeof value === 'string') props[name] = texts.get(normalize(value)) ?? ''
     }
     // Keep the brand placeholder for renderWebsiteBrand to resolve from Website settings.
     if (typeof element.props.src === 'string' && assets.has(element.props.src)) props.src = assets.get(element.props.src)
@@ -83,7 +83,7 @@ export function renderManagedSection(node: ReactNode, section: HomeSectionConten
         <p>{card.description[locale]}</p>
       </SmartLink>)
     } else if ('children' in element.props) props.children = rich?<InlineContent document={rich.values[locale]}/>:Children.map(element.props.children as ReactNode, visit)
-    if (typeof element.props.src === 'string' && !props.src && !options.preserveUnknownText) return null
+    if (typeof element.props.src === 'string' && !props.src) return null
     if (typeof element.type === 'string' && ['p', 'h1', 'h2', 'h3', 'figure', 'li'].includes(element.type) && !rich && !hasContent(props.children as ReactNode)) return null
     if (element.type === 'iframe') {
       const video = {...element.props, ...props}
@@ -105,7 +105,7 @@ export function renderManagedPage(node:ReactNode,content:ManagedPageContent,loca
     if(expanded!==element)return visit(expanded)
     if(element.type==='section'){
       const section=content.sections[sectionIndex++]
-      return section?.enabled?renderManagedSection(element,section,locale,{preserveUnknownText:true}):null
+      return section?.enabled?renderManagedSection(element,section,locale):null
     }
     if(!('children' in element.props))return element
     return cloneElement(element,{children:Children.map(element.props.children as ReactNode,visit)})

@@ -5,8 +5,8 @@ import {renderInlineNode} from './inline-content'
 import {AboutProfileBlock,ActionsBlock,CalloutBlock,ColumnBlock,ColumnsBlock,ContentSectionBlock,DataTableBlock,FactsBlock,GalleryBlock,ImageBlock,SectionHeaderBlock,TextStatisticsBlock,ValuesRailBlock,VideoBlock} from './custom-blocks'
 export {InlineContent} from './inline-content'
 type BlockRenderer = (node: ContentNode) => ReactNode
-export function ContentRenderer({document,renderBlock,groupLogo}:{document:ContentDocument;renderBlock?:BlockRenderer;groupLogo?:string}) {
-  return <div data-rich-content="" className={styles.document}>{document.content.map((node,i)=><Fragment key={node.attrs?.id ? String(node.attrs.id) : i}>{renderNode(node,renderBlock,groupLogo)}</Fragment>)}</div>
+export function ContentRenderer({document,renderBlock,groupLogo,fullWidth=false}:{document:ContentDocument;renderBlock?:BlockRenderer;groupLogo?:string;fullWidth?:boolean}) {
+  return <div data-rich-content="" className={`${styles.document}${fullWidth?` ${styles.fullWidth}`:''}`}>{document.content.map((node,i)=><Fragment key={node.attrs?.id ? String(node.attrs.id) : i}>{renderNode(node,renderBlock,groupLogo)}</Fragment>)}</div>
 }
 function renderNode(node:ContentNode,renderBlock?:BlockRenderer,groupLogo?:string):ReactNode {
   const a=node.attrs ?? {}

@@ -1,5 +1,5 @@
 import {type ReactNode} from 'react'
-import {sectionContent} from '@/lib/payload/client'
+import {interfaceLabels,sectionContent} from '@/lib/payload/client'
 import type {HomeCmsData} from '@/lib/cms/types'
 import {getHomeCatalog,getHomepagePayload} from '@/lib/api/public'
 import {renderManagedSection} from '@/lib/cms/render'
@@ -21,12 +21,13 @@ export async function renderSection({block,locale,source,definition,settings}:Se
   const content=sectionContent<HomeCmsData>(source,block),section=content.sections.find(section=>section.key===name)!
   const home=await getHomepagePayload(locale)
   const productCatalog=name==='products'?await getHomeCatalog(locale):undefined
+  const globeLabel=name==='reach'?(await interfaceLabels('page.shared',locale)).globeLabel:''
   const renderers:Record<string,()=>ReactNode>={
    hero:()=>HomeHero({poster:section.assets.find(asset=>asset.source==='/assets/hero-poster.webp')?.value,videos:section.videos?.filter(Boolean)}),
    figures:()=>KeyFigures({section,locale,groupLogo:settings.groupLogo}),story:StorySection,
    products:()=>ProductCollection({catalog:productCatalog!,locale}),
    certifications:()=>CertificationSection({data:home.certifications,locale,labels:home.certificationLabels}),
-   sourcing:SourcingSection,process:ProcessSection,quality:QualitySection,reach:GlobalReachSection,
+   sourcing:SourcingSection,process:ProcessSection,quality:QualitySection,reach:()=>GlobalReachSection({globeLabel}),
    contact:()=>ContactSection({locale,company:settings.company}),
   }
   return name==='figures'?renderers[name]():renderManagedSection(renderers[name](),section,locale)

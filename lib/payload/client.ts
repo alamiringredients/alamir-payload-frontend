@@ -10,6 +10,7 @@ import { textContent, type ContentNode, type ContentDocument } from '@/lib/edito
 
 type Value = string | number | boolean | null | Value[] | { [key: string]: Value }
 import type {Document} from './types'
+import type {SiteLocale} from '@/i18n/navigation'
 export type {Document} from './types'
 
 export function backendOrigin() {
@@ -111,6 +112,10 @@ export const translationContent=cache(async ():Promise<Document> => {
   }
   return result
 })
+export async function interfaceLabels(path: string, locale: SiteLocale): Promise<Record<string, string>> {
+  const labels = fieldValue(await translationContent(), path) as Record<string, Record<string, string>> | undefined
+  return Object.fromEntries(Object.entries(labels ?? {}).map(([key, value]) => [key, value[locale] ?? '']))
+}
 export const recordDocuments=cache(async(slug:keyof typeof templates.collections):Promise<Document[]>=>{
  const sort=['products','categories','news','sustainability','jobs','events'].includes(slug)?'_order':'createdAt'
  const [response,interfaceText,media]=await Promise.all([request(`${slug}?locale=all&depth=0&limit=1000&pagination=false&joins=false&sort=${sort}`),translationContent(),mediaDocuments()])

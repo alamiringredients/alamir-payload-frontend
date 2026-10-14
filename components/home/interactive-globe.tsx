@@ -3,7 +3,7 @@
 import {useEffect, useRef} from 'react'
 import type {LandData} from './globe-renderer'
 
-export function InteractiveGlobe() {
+export function InteractiveGlobe({label}:{label:string}) {
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -57,7 +57,7 @@ export function InteractiveGlobe() {
     }
   }, [])
 
-  return <div ref={containerRef} className="globe-3d" id="globe3d" role="img" aria-label="Interactive globe showing Alamir export regions">
+  return <div ref={containerRef} className="globe-3d" id="globe3d" role="img" aria-label={label}>
     <svg className="gfb" width={280} height={280} viewBox="0 0 240 240" aria-hidden="true">
       <circle cx={120} cy={120} r={98} fill="none" stroke="rgba(201,218,232,.34)" strokeWidth="1.2" />
       <ellipse cx={120} cy={120} rx={98} ry={38} fill="none" stroke="rgba(201,218,232,.2)" strokeWidth={1} />

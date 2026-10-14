@@ -16,9 +16,9 @@ export async function renderSection({block,locale,source,definition,settings}:Se
   const document=placeMedia({type:'doc',content:nodes},block.mediaPosition,locale)
   if(pageSlug==='quality'){
    const data=await getQualityPayload(locale)
-   return <ContentRenderer document={document} renderBlock={qualityBlockRenderer(data.certifications,locale,data.labels,settings.groupLogo)}/>
+   return <ContentRenderer fullWidth document={document} renderBlock={qualityBlockRenderer(data.certifications,locale,data.labels,settings.groupLogo)}/>
   }
-  return <ContentRenderer document={document} groupLogo={settings.groupLogo}/>
+  return <ContentRenderer fullWidth document={document} groupLogo={settings.groupLogo}/>
  }
 
 }

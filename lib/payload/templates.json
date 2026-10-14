@@ -1870,24 +1870,44 @@
           "key": "contact",
           "label": "Contact and enquiry form",
           "links": [],
-          "texts": {
-            "$rows": "page.contact.labels",
-            "$template": {
-              "id": {
-                "$field": "id"
-              },
-              "label": {
-                "$field": "label"
-              },
-              "source": {
-                "$field": "label"
-              },
+          "texts": [
+            {
+              "id": "home-contact-badge",
+              "label": "Start a conversation",
+              "source": "Start a conversation",
               "values": {
-                "$field": "text",
+                "$translation": "page.homeContact.badge",
+                "$localized": true
+              }
+            },
+            {
+              "id": "home-contact-button",
+              "label": "Contact the team",
+              "source": "Contact the team",
+              "values": {
+                "$translation": "page.homeContact.button",
+                "$localized": true
+              }
+            },
+            {
+              "id": "home-contact-exportDesk",
+              "label": "Export desk",
+              "source": "Export desk",
+              "values": {
+                "$translation": "page.homeContact.exportDesk",
+                "$localized": true
+              }
+            },
+            {
+              "id": "home-contact-enquiryDetails",
+              "label": "Enquiry details",
+              "source": "Enquiry details",
+              "values": {
+                "$translation": "page.homeContact.enquiryDetails",
                 "$localized": true
               }
             }
-          },
+          ],
           "assets": [
             {
               "id": "asset-2992cede51",
@@ -5528,6 +5548,33 @@
                 "$field": "page.related.text3.values",
                 "$localized": true
               }
+            },
+            {
+              "id": "no-upcoming-events",
+              "label": "No upcoming events",
+              "source": "No upcoming events are published.",
+              "values": {
+                "$translation": "page.events.noUpcoming",
+                "$localized": true
+              }
+            },
+            {
+              "id": "page.events.bookMeeting",
+              "label": "Arrange a meeting",
+              "source": "Arrange a meeting",
+              "values": {
+                "$translation": "page.events.bookMeeting",
+                "$localized": true
+              }
+            },
+            {
+              "id": "page.events.requestQuote",
+              "label": "Request a quote",
+              "source": "Request a quote",
+              "values": {
+                "$translation": "page.events.requestQuote",
+                "$localized": true
+              }
             }
           ],
           "assets": [],
@@ -6244,7 +6291,7 @@
               "source": "Back to home",
               "values": {
                 "$localized": true,
-                "$translation": "page.notFoundTranslations.item_1.baseline"
+                "$translation": "page.notFoundTranslations.item_1.translations"
               }
             },
             {

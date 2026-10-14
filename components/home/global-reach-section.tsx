@@ -1,9 +1,9 @@
 import {InteractiveGlobe} from '@/components/home/interactive-globe'
 
-export function GlobalReachSection(){return (<section className="reach" id="reach">
+export function GlobalReachSection({globeLabel}:{globeLabel:string}){return (<section className="reach" id="reach">
   <div className="wrap reach-layout reveal">
     <div className="globe-wrap">
-      <InteractiveGlobe />
+      <InteractiveGlobe label={globeLabel}/>
       <div className="globe-cap">Sadat City · Egypt</div>
     </div>
     <div className="globe-copy">

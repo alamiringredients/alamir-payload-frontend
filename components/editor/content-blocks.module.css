@@ -899,14 +899,12 @@
     text-wrap: balance;
   }
 }
-@container (min-width:1000px) {
-  .document .content-section {
-    margin-top: 0;
-    padding: clamp(72px, 9vw, 128px) 0;
-  }
-  .document .content-section-inner {
-    width: var(--wrap);
-  }
+.document.fullWidth > .content-section {
+  margin-top: 0;
+  padding: clamp(72px, 9vw, 128px) 0;
+}
+.document.fullWidth > .content-section > .content-section-inner {
+  width: var(--wrap);
 }
 @media (max-width: 700px) {
   .document .content-statistics-grid > [data-statistics-grid] {
