@@ -5,6 +5,27 @@ export type CatalogItem = {label?: LocalizedValue; value: LocalizedValue;documen
 export type CatalogBlock = HomeSectionContent & {kind?:'specifications'|'applications'|'prose';items?: CatalogItem[]}
 export type ProductGalleryItem = {image: string; caption: LocalizedValue;alt?:LocalizedValue}
 export type CatalogPageContent = {blocks: CatalogBlock[]}
+export type CatalogSection = {
+  eyebrow: LocalizedValue
+  heading: LocalizedDocument
+  description: LocalizedValue
+  image: string
+  imageAlt: LocalizedValue
+  emptyMessage: LocalizedValue
+}
+export type CatalogFold = {heading:LocalizedDocument;items:LocalizedDocument[];pairs:{label:LocalizedValue;value:LocalizedValue}[]}
+export type CatalogRecordPage = {
+  hero:CatalogSection
+  overview:CatalogSection
+  range:CatalogSection
+  gallery:CatalogSection
+  related:CatalogSection
+  enquiry:CatalogSection
+  allProducts:CatalogSection
+  folds:CatalogFold[]
+  downloadSpecifications:LocalizedValue
+  specifications:CatalogFold
+}
 export type CatalogSeo = {title: LocalizedValue; description: LocalizedValue}
 export type CategoryPageCopy = {
   heroHeading?:LocalizedDocument
@@ -18,9 +39,9 @@ export type CategoryPageCopy = {
 }
 export type CatalogCard = {name: LocalizedValue; description: LocalizedValue; seo: CatalogSeo; artwork: CatalogBlock}
 export type CategoryAppearance = 'standard' | 'muted'
-export type CategoryContent = CatalogCard & {appearance:CategoryAppearance;page: CatalogPageContent; pageCopy:CategoryPageCopy; icon: string; gallery: ProductGalleryItem[]}
+export type CategoryContent = CatalogCard & {appearance:CategoryAppearance;page?: CatalogRecordPage; icon: string; gallery: ProductGalleryItem[]}
 export type ProductContent = CatalogCard & {
-  page: CatalogPageContent
+  page?: CatalogRecordPage
   applications: string[]
   concentrations: string[]
   gallery: ProductGalleryItem[]
@@ -79,7 +100,7 @@ export function productHeroImage(product: {content:Pick<ProductContent,'gallery'
   return product.content.gallery?.[0]?.image ?? ''
 }
 export function categoryHeroImage(category: Category) {
-  return category.content.page.blocks.find((block) => block.key === 'section-0')?.assets[0]?.value ?? ''
+  return category.content.page?.hero.image??''
 }
 
 export type CategoryCard=Pick<Category,'id'|'slug'> & {content:Pick<CategoryContent,'name'|'description'|'icon'|'artwork'>}

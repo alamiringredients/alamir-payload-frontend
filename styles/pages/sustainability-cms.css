@@ -36,7 +36,7 @@
     .sus-body .content-table{margin:40px 0 0;width:100%;border-collapse:collapse;font-size:14.5px}
     .sus-body .content-table caption{caption-side:top;text-align:start;padding-bottom:14px;font:700 10.5px/1 var(--sans);
       letter-spacing:.18em;text-transform:uppercase;color:#606971}
-    .sus-body .content-table th,.sus-body .content-table td{text-align:start;padding:14px 16px 14px 0;border-bottom:1px solid var(--line);
+    .sus-body .content-table th,.sus-body .content-table td{text-align:start;padding-block:14px;padding-inline:0 16px;border-bottom:1px solid var(--line);
       vertical-align:top;color:#4c545b}
     .sus-body .content-table thead th{border-bottom:1.5px solid var(--navy);font:700 11px/1.3 var(--sans);
       letter-spacing:.14em;text-transform:uppercase;color:var(--navy)}

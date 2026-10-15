@@ -7,7 +7,7 @@ import type {SiteLocale} from '@/i18n/navigation'
 import {CatalogBrowsingInteractions} from './catalog-browsing-interactions'
 
 type Context = {catalog:Catalog;locale:SiteLocale;category?:Category;product?:Product}
-type BrowserProps = Context & {emptyMessage:string}
+type BrowserProps = Context & {emptyMessage:string;id:string}
 
 export function ProductCards(context:Context){
  const categoriesByID=new Map(context.catalog.categories.map(category=>[category.id,category]))
@@ -15,7 +15,7 @@ export function ProductCards(context:Context){
  return products.map(product=>{
   const category=categoriesByID.get(product.category_id)
   if(!category)return null
-  const name=product.content.name[context.locale],images=product.content.artwork.assets.filter(item=>item.value)
+  const name=product.content.name[context.locale],images=product.content.artwork.enabled?product.content.artwork.assets.filter(item=>item.value):[]
   return <article key={product.id} className="pcard pcard--art" data-cat={category.slug} data-app={product.content.applications.join(' ')} data-brix={product.content.concentrations.join(' ')} data-search={`${name} ${product.content.description[context.locale]} ${category.content.name[context.locale]}`.toLocaleLowerCase(context.locale)}>
    <SmartLink className="cover" href={productPath(product,category)} aria-label={name}/>
    <figure className={`pcard-art${product.sort_order%2===0?' flip':''}`} aria-hidden="true">{images.map((image,index)=><ContentImage className={index?'pa-fruit':'pa-plate'} src={image.value} alt="" loading="lazy" key={image.id}/>)}</figure>
@@ -24,11 +24,11 @@ export function ProductCards(context:Context){
  })
 }
 
-function Controls({catalog,locale,category,dialog=false}:{catalog:Catalog;locale:SiteLocale;category?:Category;dialog?:boolean}) {
+function Controls({catalog,locale,category,dialog=false,id}:{catalog:Catalog;locale:SiteLocale;category?:Category;dialog?:boolean;id:string}) {
  const labels=catalog.settings.labels
  const products=catalog.products.filter(product=>!category||product.category_id===category.id)
  const applications=new Set(products.flatMap(product=>product.content.applications)),concentrations=new Set(products.flatMap(product=>product.content.concentrations))
- const navigating=!dialog&&!!category,searchId=dialog?'product-catalog-search':'cat-q'
+ const navigating=!dialog&&!!category,searchId=`${id}-search`
  const searchLabel=dialog?labels.searchProducts[locale]:labels.allProducts[locale]
  return <>
   <div className="tab-rail" role="group" aria-label={labels.productCategory[locale]}>{!navigating&&<button className="tab" type="button" data-cat="all" aria-pressed="true">{labels.allProducts[locale]}</button>}{catalog.categories.map(item=>navigating?<SmartLink key={item.id} className="tab" href={categoryPath(item,catalog.products)} aria-current={item.id===category.id?'page':undefined}>{item.content.name[locale]}</SmartLink>:<button key={item.id} className="tab" type="button" data-cat={item.slug} aria-pressed="false">{item.content.name[locale]}</button>)}</div>
@@ -43,24 +43,24 @@ function Controls({catalog,locale,category,dialog=false}:{catalog:Catalog;locale
  </>
 }
 
-function Results({emptyMessage,columns,...context}:BrowserProps&{columns:2|3}) {
+function Results({emptyMessage,columns,...context}:Omit<BrowserProps,'id'>&{columns:2|3}) {
  return <><div className={`pcards c${columns} cat-grid`}>{ProductCards(context)}</div><div className="cat-empty" hidden><strong>{emptyMessage}</strong></div></>
 }
 
-export function CatalogPageBrowser({emptyMessage,...context}:BrowserProps) {
+export function CatalogPageBrowser({emptyMessage,id,...context}:BrowserProps) {
  const {category,catalog,locale}=context
- return <div id="catalogue" className={category?undefined:'view on'} data-view-panel={category?undefined:'products'}>
+ return <div id={id} className={`catalog-browser${category?'':' view on'}`} data-view-panel={category?undefined:'products'}>
   <TwoColumns collapseAt={1050} as="div" columns="minmax(0,244px) minmax(0,1fr)" gap="clamp(40px,5vw,80px)" align="start" className="cat-shell">
-   <aside className="cat-side" aria-label={catalog.settings.labels.allProducts[locale]}><Controls {...context}/></aside>
+   <aside className="cat-side" aria-label={catalog.settings.labels.allProducts[locale]}><Controls {...context} id={id}/></aside>
    <div className="cat-main"><Results {...context} emptyMessage={emptyMessage} columns={2}/></div>
   </TwoColumns>
   <CatalogBrowsingInteractions useHash/>
  </div>
 }
 
-export function CatalogDialogBrowser({emptyMessage,...context}:BrowserProps) {
+export function CatalogDialogBrowser({emptyMessage,id,...context}:BrowserProps) {
  return <>
-  <div className="pmodal-tools"><div className="wrap"><Controls {...context} dialog/></div></div>
+  <div className="pmodal-tools"><div className="wrap"><Controls {...context} id={id} dialog/></div></div>
   <div className="pmodal-body"><div className="wrap"><Results {...context} category={undefined} emptyMessage={emptyMessage} columns={3}/></div></div>
   <CatalogBrowsingInteractions initialCategory={context.category?.slug}/>
  </>

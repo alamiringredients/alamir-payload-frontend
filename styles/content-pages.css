@@ -896,13 +896,14 @@
   }
   .spec th,
   .spec td {
-    text-align: left;
+    text-align: start;
     padding: 9px 0;
     border-bottom: 1px solid var(--line);
     vertical-align: top;
   }
   .spec th {
     width: 44%;
+    padding-inline-end: 16px;
     font-weight: 700;
     color: #5c6267;
     font-size: 12.5px;
@@ -2494,10 +2495,10 @@
     display: block;
     box-shadow: 0 16px 38px rgba(16, 24, 32, 0.11);
   }
-  #gallery .band-head {
+  .catalog-gallery-section .band-head {
     max-width: none;
   }
-  #gallery .band-head h2 {
+  .catalog-gallery-section .band-head h2 {
     white-space: nowrap;
     font-size: clamp(26px, 3.1vw, 46px);
   }
@@ -2856,7 +2857,7 @@
   html:not(.js) .view-copy {
     display: block;
   }
-  #view-categories .product-grid {
+  .catalog-category-view .product-grid {
     margin-top: clamp(96px, 9vw, 120px);
   }
   .pcards {
@@ -3161,13 +3162,14 @@
   }
   .pdp-facts th,
   .pdp-facts td {
-    text-align: left;
+    text-align: start;
     padding: 11px 0;
     vertical-align: top;
     border-bottom: 1px solid var(--line);
   }
   .pdp-facts th {
     width: 46%;
+    padding-inline-end: 16px;
     font: 700 11.5px/1.4 var(--sans);
     letter-spacing: 0.06em;
     color: #606971;
@@ -3493,7 +3495,7 @@
     text-transform: uppercase;
     color: #606971;
   }
-  #catalogue {
+  .catalog-browser {
     scroll-margin-top: 104px;
   }
   .cat-grid {
@@ -3529,6 +3531,7 @@
     gap: clamp(14px, 1.8vw, 22px);
     overflow-x: auto;
     scroll-snap-type: x proximity;
+    scroll-padding-inline: 4px;
     scroll-behavior: smooth;
     padding: clamp(84px, 7.4vw, 114px) 4px 26px;
     margin: 0 -4px;
@@ -4405,7 +4408,7 @@
     .pcards.c3 {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
-    #view-categories .product-grid {
+    .catalog-category-view .product-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 110px 24px;
       margin-top: 130px;
@@ -4563,7 +4566,7 @@
       padding-top: 24px;
       border-top: 1px solid var(--line);
     }
-    #gallery .band-head h2 {
+    .catalog-gallery-section .band-head h2 {
       white-space: normal;
       font-size: clamp(28px, 7vw, 40px);
     }
@@ -4598,7 +4601,7 @@
     .pcards.c3 {
       grid-template-columns: 1fr;
     }
-    #view-categories .product-grid {
+    .catalog-category-view .product-grid {
       grid-template-columns: 1fr;
       gap: 115px;
       margin-top: 140px;

@@ -73,7 +73,6 @@ async function renderCatalogRoute(page: string, locale: SiteLocale) {
       catalog={catalog}
       locale={locale}
       settings={settings}
-      content={resolved.content}
       category={resolved.category}
       product={resolved.product}
     /></>

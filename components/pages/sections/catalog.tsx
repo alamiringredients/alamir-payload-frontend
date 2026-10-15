@@ -1,18 +1,10 @@
-import {CatalogInteractions} from '@/components/catalog/catalog-interactions'
-import {sectionContent} from '@/lib/payload/client'
-import type {ManagedPageContent} from '@/lib/cms/types'
+import type {Document} from '@/lib/payload/types'
 import {getCatalogPayload} from '@/lib/api/public'
-import {CatalogIndexSections} from '@/components/catalog/catalog-content'
+import {CatalogIndexSection} from '@/components/catalog/catalog-content'
 import {type SectionArgs} from '../section-utils'
 
-export async function renderSection({block,locale,source,definition,settings}:SectionArgs){
- const {name,pageSlug}=definition
- if(pageSlug==='products'){
-  const data=await getCatalogPayload(locale,'products'),content=sectionContent<ManagedPageContent>(source,block)
-  const blocks=content.sections.map((section,index)=>({...section,key:`section-${index}`}))
-  const sectionName=({collection:'range',deep:'gallery'} as Record<string,string>)[name]??name
-  const section=CatalogIndexSections({content:{blocks},context:{catalog:data.catalog,locale,certifications:data.certifications,certificationLabels:data.certificationLabels,settings},section:sectionName})
-  return <>{section}{name==='collection'&&<CatalogInteractions/>}</>
- }
-
+export async function renderSection({block,locale,definition,settings,source}:SectionArgs){
+ if(definition.pageSlug!=='products')return null
+ const data=await getCatalogPayload(locale,'products')
+ return <CatalogIndexSection id={block.id} mediaRefs={source.mediaRefs as Map<number,Document>|undefined} content={block.content??{}} section={definition.name} context={{catalog:data.catalog,locale,certifications:data.certifications,certificationLabels:data.certificationLabels,settings}}/>
 }

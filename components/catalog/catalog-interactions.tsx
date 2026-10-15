@@ -1,22 +1,27 @@
 'use client'
 
-import {useEffect} from 'react'
-import {usePathname} from 'next/navigation'
+import {useEffect, useRef} from 'react'
 import {registerOverlay} from '@/lib/browser/overlay'
 
-export function CatalogInteractions() {
-  const pathname = usePathname()
+export function CatalogInteractions({kind}: {kind: 'view' | 'gallery' | 'rail' | 'dialog'}) {
+  const marker = useRef<HTMLSpanElement>(null)
 
   useEffect(() => {
+    const root = marker.current?.parentElement
+    if (!root) return
+    const find = (selector: string) => [
+      ...(root.matches(selector) ? [root] : []),
+      ...root.querySelectorAll<HTMLElement>(selector),
+    ]
     const cleanups: Array<() => void> = []
     const listen = <T extends EventTarget>(target: T, event: string, handler: EventListener) => {
       target.addEventListener(event, handler)
       cleanups.push(() => target.removeEventListener(event, handler))
     }
 
-    document.querySelectorAll<HTMLElement>('.view-switch').forEach(rail=>{
+    if (kind === 'view') find('.view-switch').forEach(rail=>{
       const tabs=[...rail.querySelectorAll<HTMLButtonElement>('.vtab[data-view]')]
-      const section=rail.closest('section')??document
+      const section=root
       const panels=[...section.querySelectorAll<HTMLElement>('[data-view-panel]')]
       const show=(view:string,focus=false)=>{
         tabs.forEach(tab=>{
@@ -39,16 +44,16 @@ export function CatalogInteractions() {
       show('products')
     })
 
-    const catalogTriggers = [...document.querySelectorAll<HTMLButtonElement>('[data-product-catalog-open]')]
-    document.querySelectorAll<HTMLElement>('[data-product-catalog]').forEach(dialog => {
-      const triggers = catalogTriggers.filter(trigger => trigger.getAttribute('aria-controls') === dialog.id)
+    if (kind === 'dialog') find('[data-product-catalog]').forEach(dialog => {
+      const owner = dialog.closest('.cms-section') ?? dialog.parentElement ?? dialog
+      const triggers = [...owner.querySelectorAll<HTMLButtonElement>('[data-product-catalog-open]')].filter(trigger => trigger.getAttribute('aria-controls') === dialog.id)
       const overlay = registerOverlay(dialog, {triggers, initialFocus: '[data-product-catalog-close]'})
       triggers.forEach(trigger => listen(trigger, 'click', () => overlay.open(trigger)))
       dialog.querySelectorAll<HTMLElement>('[data-product-catalog-close]').forEach(button => listen(button, 'click', overlay.close))
       cleanups.push(overlay.dispose)
     })
 
-    document.querySelectorAll<HTMLElement>('[data-pgal]').forEach(gallery => {
+    if (kind === 'gallery') find('[data-pgal]').forEach(gallery => {
       const slides = [...gallery.querySelectorAll<HTMLElement>('.pgal-slide')]
       const dots = [...gallery.querySelectorAll<HTMLButtonElement>('.pgal-dots button')]
       const caption = gallery.querySelector<HTMLElement>('.pgal-cap')
@@ -89,7 +94,7 @@ export function CatalogInteractions() {
       gallery.querySelectorAll<HTMLButtonElement>('[data-pgal-go]').forEach(button => listen(button, 'click', () => show(active + (button.dataset.pgalGo === 'next' ? 1 : -1))))
     })
 
-    document.querySelectorAll<HTMLElement>('[data-prail]').forEach(rail => {
+    if (kind === 'rail') find('[data-prail]').forEach(rail => {
       const track=rail.querySelector<HTMLElement>('.prail-track')
       const cards=[...rail.querySelectorAll<HTMLElement>('.pcard')]
       const current=rail.querySelector<HTMLElement>('.prail-count b')
@@ -97,15 +102,18 @@ export function CatalogInteractions() {
       const previous=rail.querySelector<HTMLButtonElement>('[data-prail-go="prev"]')
       const next=rail.querySelector<HTMLButtonElement>('[data-prail-go="next"]')
       if(!track||!cards.length)return
+      const direction=getComputedStyle(track).direction==='rtl'?-1:1
       const update=()=>{
-        const left=track.scrollLeft,max=Math.max(0,track.scrollWidth-track.clientWidth)
-        const index=cards.reduce((nearest,card,i)=>Math.abs(card.offsetLeft-left)<Math.abs(cards[nearest].offsetLeft-left)?i:nearest,0)
+        const max=Math.max(0,track.scrollWidth-track.clientWidth)
+        const position=Math.min(max,Math.max(0,track.scrollLeft*direction))
+        const offset=(card:HTMLElement)=>(card.offsetLeft-cards[0].offsetLeft)*direction
+        const index=cards.reduce((nearest,card,i)=>Math.abs(offset(card)-position)<Math.abs(offset(cards[nearest])-position)?i:nearest,0)
         if(current)current.textContent=String(index+1).padStart(2,'0')
-        if(progress)progress.style.width=`${max?Math.max(8,left/max*100):100}%`
-        if(previous)previous.disabled=left<=2
-        if(next)next.disabled=left>=max-2
+        if(progress)progress.style.width=`${max?Math.max(8,position/max*100):100}%`
+        if(previous)previous.disabled=position<=2
+        if(next)next.disabled=position>=max-2
       }
-      const move=(direction:number)=>track.scrollBy({left:direction*((cards[0]?.offsetWidth??0)+parseFloat(getComputedStyle(track).gap||'0')),behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})
+      const move=(step:number)=>track.scrollBy({left:step*direction*(cards[0].offsetWidth+parseFloat(getComputedStyle(track).gap||'0')),behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})
       if(previous)listen(previous,'click',()=>move(-1))
       if(next)listen(next,'click',()=>move(1))
       listen(track,'scroll',update)
@@ -114,7 +122,7 @@ export function CatalogInteractions() {
     })
 
     return () => cleanups.forEach(cleanup => cleanup())
-  }, [pathname])
+  }, [kind])
 
-  return <span hidden data-catalog-interactions=""/>
+  return <span ref={marker} hidden/>
 }

@@ -9,11 +9,12 @@ import {selectFormDefinition} from '@/lib/forms/ownership';
 const Context = createContext<{
   forms: CmsForm[];
   countries: readonly CountryOption[];
+  pathname?: string;
   refresh: (scope?: FormScope) => void;
 }>({ forms: [], countries: [], refresh: () => {} });
-export function FormScopeProvider({ forms, countries, children }: { forms: CmsForm[]; countries?:readonly CountryOption[]; children: ReactNode }) {
+export function FormScopeProvider({ forms, countries, pathname, children }: { forms: CmsForm[]; countries?:readonly CountryOption[]; pathname?:string; children: ReactNode }) {
   const parent = useContext(Context);
-  return <Context.Provider value={{ ...parent, countries:countries?.length?countries:parent.countries, forms: [...parent.forms, ...forms] }}>{children}</Context.Provider>;
+  return <Context.Provider value={{ ...parent, pathname:pathname??parent.pathname, countries:countries?.length?countries:parent.countries, forms: [...parent.forms, ...forms] }}>{children}</Context.Provider>;
 }
 export function FormsProvider({
   children,
@@ -56,8 +57,9 @@ export function FormsProvider({
   );
 }
 export function useFormDefinition(purpose: FormPurpose, ownerId?: number, enabled=true) {
-  const { forms, countries, refresh } = useContext(Context);
-  const pathname = usePathname();
+  const { forms, countries, refresh, pathname:scopedPathname } = useContext(Context);
+  const currentPathname = usePathname();
+  const pathname = scopedPathname??currentPathname;
   const {definition, scope} = selectFormDefinition(forms, purpose, pathname, ownerId);
   useEffect(() => {
     if (enabled && !definition) refresh(scope);

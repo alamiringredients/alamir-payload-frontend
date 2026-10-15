@@ -132,14 +132,14 @@ const catalog = cache(async (path = ""): Promise<Catalog> => {
   const categories = categoryDocs.map((doc) =>
     presentRecord<Category>(
       "categories",
-      recordSource(doc),
+      doc,
       doc.id === selectedCategory?.id ? undefined : "card",
     ),
   );
   const products = productDocs.map((doc) =>
     presentRecord<Product>(
       "products",
-      recordSource(doc),
+      doc,
       doc.id === selectedProduct?.id ? undefined : "card",
     ),
   );
@@ -332,16 +332,14 @@ export const getHomepagePayload = cache(async (locale: SiteLocale) => {
 export const getCatalogPayload = cache(
   async (locale: SiteLocale, page: string) => {
     const ui = await getInterface();
-    const [c, certs, managedContent] = await Promise.all([
+    const [c, certs] = await Promise.all([
       catalog(page),
       certifications(),
-      global<ManagedPageContent>("products-page"),
     ]);
     return {
       catalog: c,
       certifications: certs,
       certificationLabels: ui.certification[locale],
-      managedContent,
     };
   },
 );
@@ -540,12 +538,6 @@ export const getManagedPageContent = (
   key: ManagedPageKey,
   locale: SiteLocale,
 ) => {
-  if (key === "products")
-    return getCatalogPayload(locale, "products").then((data) => {
-      if (!data.managedContent)
-        throw new Error("Managed products page missing");
-      return data.managedContent;
-    });
   if (key === "events" || key === "book-a-meeting") {
     return getEventsPayload(locale, key).then((data) => {
       if (!data.managedContent) throw new Error("Managed event page missing");

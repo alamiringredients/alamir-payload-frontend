@@ -3,8 +3,8 @@ import {getForms,getFormCountries} from '@/lib/forms/server'
 import {pageFormScope} from '@/lib/forms/ownership'
 import {hasLocale} from 'next-intl'
 import {notFound} from 'next/navigation'
-import {locales,localePath} from '@/i18n/navigation'
-import {pageBySlug} from '@/lib/payload/client'
+import {locales,localePath,type SiteLocale} from '@/i18n/navigation'
+import {pageBySlug,type CmsPage} from '@/lib/payload/client'
 import {getSiteShell,getWebsiteSettings} from '@/lib/api/public'
 import {SitePage} from '@/components/site/site-page'
 import {PageBody} from '@/components/pages/page-body'
@@ -12,6 +12,7 @@ import type {Metadata} from 'next'
 import type {LocalizedValue} from '@/lib/cms/types'
 
 export type WebsitePageProps={params:Promise<{locale:string;slug:string[]}>;searchParams:Promise<{q?:string;tag?:string}>}
+type PageSearchParams=WebsitePageProps['searchParams']
 export async function websitePageMetadata({params}:WebsitePageProps):Promise<Metadata>{
  const {locale,slug}=await params
  if(!hasLocale(locales,locale))notFound()
@@ -31,9 +32,14 @@ export async function WebsitePage({params,searchParams}:WebsitePageProps){
  const path=slug.join('/')
  const page=await pageBySlug(path)
  if(!page)notFound()
+ return <WebsitePageContent page={page} locale={locale} searchParams={searchParams}/>
+}
+export async function WebsitePageContent({page,locale,searchParams}:{page:CmsPage;locale:SiteLocale;searchParams:PageSearchParams}){
+ const path=page.slug!
  const [home,settings]=await Promise.all([getSiteShell(),getWebsiteSettings()])
  const scope=pageFormScope(page)
  const forms=scope?await getForms(locale,scope):[]
  const input=page.layout.some(block=>block.blockType.startsWith('search-') || block.blockType.startsWith('news-'))?await searchParams:{}
- return <SitePage page={path} pageStyle={page.sourceKey?.replace(/-page$/, '').replace(/^booking$/, 'book-a-meeting') ?? ''} locale={locale} home={home} settings={settings}><FormScopeProvider forms={forms} countries={await getFormCountries(forms,locale)}><PageBody page={page} locale={locale} context={{query:input.q,tag:input.tag}}/></FormScopeProvider></SitePage>
+ const owner=forms.find(form=>form.owner?.relationTo==='pages' && form.owner.value.id===page.id)?.owner?.value
+ return <SitePage page={path} pageStyle={page.sourceKey?.replace(/-page$/, '').replace(/^booking$/, 'book-a-meeting') ?? ''} locale={locale} home={home} settings={settings}><FormScopeProvider forms={forms} countries={await getFormCountries(forms,locale)} pathname={`/${owner?.slug??path}`}><PageBody page={page} locale={locale} context={{query:input.q,tag:input.tag}}/></FormScopeProvider></SitePage>
 }

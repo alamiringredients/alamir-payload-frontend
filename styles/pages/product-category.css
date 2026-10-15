@@ -3,10 +3,10 @@
 /* Shared content-page styles live in styles/content-pages.css. */
 
     @media (max-width:1050px){
-      #gallery>.wrap{width:min(100% - 40px,900px)}
+      .catalog-gallery-section>.wrap{width:min(100% - 40px,900px)}
     }
     @media (max-width:700px){
-      #gallery>.wrap{width:calc(100% - 32px)}
+      .catalog-gallery-section>.wrap{width:calc(100% - 32px)}
     }
     details[id]{scroll-margin-top:104px}
     @keyframes view-in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}

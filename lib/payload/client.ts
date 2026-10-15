@@ -1,3 +1,4 @@
+import {presentCatalogRecord} from '@/lib/catalog/presentation'
 import type {CatalogLabels} from '@/lib/catalog/types'
 import {richText} from '@/lib/editor/lexical'
 export {richText} from '@/lib/editor/lexical'
@@ -9,6 +10,7 @@ import sections from './sections.json'
 import {applyRecordSection, pagePresentationSource, pageSectionTemplate, pageSections, recordPresentationSource, type TemplateValue} from './section-projection'
 import { textContent, type ContentNode, type ContentDocument } from '@/lib/editor/document'
 
+type RecordCollection = 'products' | 'categories' | 'certification-types' | 'certifications' | 'news-taxonomies' | 'news' | 'sustainability' | 'jobs' | 'events'
 type Value = TemplateValue
 import type {Document} from './types'
 import type {SiteLocale} from '@/i18n/navigation'
@@ -120,7 +122,7 @@ export const recordIdentities=cache(async(slug:IdentityResource):Promise<Documen
  const docs=await publishedIdentities(slug)
  return slug==='jobs'?docs.filter(doc=>doc.availability==='open'):docs
 })
-export const recordDocuments=cache(async(slug:keyof typeof templates.collections):Promise<Document[]>=>{
+export const recordDocuments=cache(async(slug:RecordCollection):Promise<Document[]>=>{
  const [documents,interfaceText,media]=await Promise.all([publishedDocuments(slug),translationContent(),mediaDocuments()])
  let docs=documents.map((doc:Document)=>resolveMediaReferences(doc,media)) as Document[]
  const own=new Map(docs.map(doc=>[doc.id,doc]))
@@ -147,7 +149,8 @@ function articleBody(value:unknown,locale:string,introStyle:unknown):ContentDocu
  if(first?.type==='paragraph' && introStyle==='lead')first.attrs={...first.attrs,variant:'lead'}
  return document
 }
-export function presentRecord<T>(slug:keyof typeof templates.collections,doc:Document,view?:'card'|'meta'):T{
+export function presentRecord<T>(slug:RecordCollection,doc:Document,view?:'card'|'meta'):T{
+ if(slug==='products'||slug==='categories')return presentCatalogRecord(slug,doc,undefined,view) as T
  const layouts=templates.collections[slug] as unknown as Record<string,Value>
   let template = layouts[String(doc.sourceId)] ?? Object.values(layouts)[0]
   if(view && (slug==='news'||slug==='sustainability')){
@@ -182,8 +185,6 @@ export function presentRecord<T>(slug:keyof typeof templates.collections,doc:Doc
   const result = hydrate(template, doc) as Record<string, unknown>
   // Component contracts use the historical reference IDs; submissions use Payload IDs.
   result.id=doc.sourceId ?? doc.id
-  if (slug === 'categories') (result.content as Record<string,unknown>).appearance=doc.appearance ?? 'standard'
-  if (slug === 'products' && typeof doc.category === 'object' && doc.category) result.category_id=(doc.category as { sourceId?: number; id: number }).sourceId ?? (doc.category as {id:number}).id
   if (slug === 'certifications' && typeof doc.certificationType === 'object' && doc.certificationType) result.type_id=(doc.certificationType as {sourceId?:number;id:number}).sourceId ?? (doc.certificationType as {id:number}).id
   if (slug === 'jobs') {
     result.status=doc.availability
@@ -195,28 +196,11 @@ export function presentRecord<T>(slug:keyof typeof templates.collections,doc:Doc
     const localized=(result.content as {locales:Record<string,Record<string,unknown>>}).locales
     for(const language of ['en','ar','fr']){const image=images?.[language];localized[language].gallery=image?.url?[{src:image.url,alt:(doc.heroAlt as Record<string,string>)?.[language]??'',caption:(doc.heroCaption as Record<string,string>)?.[language]??''}]:[]}
   }
-  if (['products','categories','sustainability'].includes(slug)) {
-    const content=result.content as Record<string,unknown>
-    if(slug==='products' || slug==='categories'){
-      const images=(doc.page as {artwork?:{images?:{image:{url?:string};alt?:Record<string,string>}[]}})?.artwork?.images
-      const artwork=content.artwork as {assets:unknown[]}
-      artwork.assets=(images??[]).map((item,index)=>({id:String(index),kind:'image',label:'Image',source:'',value:publicMediaURL(item.image,doc)}))
-    }
+  if(slug==='sustainability'){
     const photos=doc.gallery as {image:{url?:string};caption:Record<string,string>;alt:Record<string,string>}[]|undefined
     if(Array.isArray(photos)) {
-    if(slug === 'sustainability') {
-      const localized=content.locales as Record<string,Record<string,unknown>>
+      const localized=(result.content as {locales:Record<string,Record<string,unknown>>}).locales
       for(const language of ['en','ar','fr'])localized[language].gallery=photos.map(photo=>({src:publicMediaURL(photo.image,doc),alt:photo.alt?.[language]??'',caption:photo.caption?.[language]??''}))
-    } else content.gallery=photos.map(photo=>({image:publicMediaURL(photo.image,doc),caption:photo.caption,alt:photo.alt}))
-    }
-    if(slug === 'products' || slug === 'categories') {
-    const gallery=doc.gallery as typeof photos
-    const blocks=(content.page as {blocks?: {key:string;assets:unknown[];texts:unknown[]}[]}|undefined)?.blocks
-    const block=blocks?.find(block=>block.key==='section-2')
-    if(block && Array.isArray(gallery)) {
-      block.assets=gallery.map((photo,index)=>({id:String(index),kind:'image',label:'Image',source:'',alt:photo.alt,value:publicMediaURL(photo.image,doc)}))
-      block.texts=[...block.texts.slice(0,5),...gallery.map((photo,index)=>({id:`caption-${index}`,label:'Caption',source:'',values:photo.caption}))]
-    }
     }
   }
   if(slug==='events' && !view){
@@ -254,23 +238,24 @@ export function presentRecord<T>(slug:keyof typeof templates.collections,doc:Doc
   }
   return result as T
 }
-export const records=cache(async<T>(slug:keyof typeof templates.collections,view?:'card'|'meta'):Promise<T[]> => (await recordDocuments(slug)).map(doc=>presentRecord<T>(slug,recordSource(doc),view)))
-export const record=cache(async<T>(collection:keyof typeof templates.collections,slug:string,view?:'card'|'meta'):Promise<T|null>=>{
+export const records=cache(async<T>(slug:RecordCollection,view?:'card'|'meta'):Promise<T[]> => (await recordDocuments(slug)).map(doc=>presentRecord<T>(slug,slug==='products'||slug==='categories'?doc:recordSource(doc),view)))
+export const record=cache(async<T>(collection:RecordCollection,slug:string,view?:'card'|'meta'):Promise<T|null>=>{
  const doc=(await recordDocuments(collection)).find(doc=>doc.slug===slug)
- return doc?presentRecord<T>(collection,recordSource(doc),view):null
+ return doc?presentRecord<T>(collection,collection==='products'||collection==='categories'?doc:recordSource(doc),view):null
 })
 const recordPresentation = cache(recordPresentationSource)
 export function recordSource(doc:Document,selected?:PageBlock):Document {
  const source=recordPresentation(doc)
  return selected?applyRecordSection(source,selected):source
 }
-const recordContent=cache((collection:keyof typeof templates.collections,doc:Document)=>presentRecord(collection,recordSource(doc)))
+const recordContent=cache((collection:RecordCollection,doc:Document)=>presentRecord(collection,collection==='products'||collection==='categories'?doc:recordSource(doc)))
 const recordSectionCounts=cache((doc:Document)=>{
  const counts=new Map<string,number>()
  for(const block of (doc.layout??[]) as PageBlock[])counts.set(block.blockType,(counts.get(block.blockType)??0)+1)
  return counts
 })
-export const recordSectionContent=cache(<T>(collection:keyof typeof templates.collections,doc:Document,block:PageBlock):T=>
+export const recordSectionContent=cache(<T>(collection:RecordCollection,doc:Document,block:PageBlock):T=>
+ collection==='products'||collection==='categories'?recordSectionCounts(doc).get(block.blockType)===1?recordContent(collection,doc) as T:presentCatalogRecord(collection,doc,block) as T:
  recordSectionCounts(doc).get(block.blockType)===1?recordContent(collection,doc) as T:presentRecord<T>(collection,recordSource(doc,block)))
 
 function fieldValue(doc: Document, path: string): unknown {
@@ -280,7 +265,7 @@ function fieldValue(doc: Document, path: string): unknown {
 export type PageBlock={id:string;blockType:string;enabled?:boolean;mediaPosition?:'original'|'left'|'right';content?:Record<string,unknown>;[key:string]:unknown}
 export type CmsPage=Document & {title:Record<string,string>;sourceKey?:string;layout:PageBlock[];page:Record<string,unknown>}
 export const pageIdentities=cache(async ():Promise<(Document & Pick<CmsPage,'title'|'sourceKey'>)[]> => await publishedSummary('pages') as (Document & Pick<CmsPage,'title'|'sourceKey'>)[])
-const resolvePage=cache(async(doc:Document):Promise<CmsPage>=>{
+export const preparePage=cache(async(doc:Document):Promise<CmsPage>=>{
  const [interfaceText,media]=await Promise.all([translationContent(),mediaDocuments()])
  const page=resolveMediaReferences(doc,media) as CmsPage
  const goals=(page.relationships as {goals?:number[]}|undefined)?.goals
@@ -289,7 +274,7 @@ const resolvePage=cache(async(doc:Document):Promise<CmsPage>=>{
 })
 const pageByID=cache(async(id:number):Promise<CmsPage|undefined>=>{
  const doc=await publishedPage(id)
- return doc?resolvePage(doc):undefined
+ return doc?preparePage(doc):undefined
 })
 export const pageBySlug=cache(async(slug:string):Promise<CmsPage|undefined>=> {
  const page=(await pageIdentities()).find(page=>page.slug===slug)

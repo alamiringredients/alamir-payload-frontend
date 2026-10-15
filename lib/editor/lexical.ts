@@ -2,7 +2,7 @@ import {
   textContent,
   type ContentNode,
   type ContentDocument,
-} from "./document";
+} from "./document.ts";
 type LexicalNode = {
   type: string;
   text?: string;
