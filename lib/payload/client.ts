@@ -255,21 +255,24 @@ function fieldValue(doc: Document, path: string): unknown {
 export type PageBlock={id:string;blockType:string;enabled?:boolean;mediaPosition?:'original'|'left'|'right';content?:Record<string,unknown>;[key:string]:unknown}
 export type CmsPage=Document & {title:Record<string,string>;sourceKey?:string;layout:PageBlock[];page:Record<string,unknown>}
 export const pageIdentities=cache(async ():Promise<(Document & Pick<CmsPage,'title'|'sourceKey'>)[]> => (await request<Document & Pick<CmsPage,'title'|'sourceKey'>>('pages?locale=all&depth=0&pagination=false&select[slug]=true&select[sourceKey]=true&select[title]=true')).docs)
-const pageByID=cache(async(id:number):Promise<CmsPage|undefined>=>{
- const [response,interfaceText,media]=await Promise.all([request(`pages?where[id][equals]=${id}&locale=all&depth=0&limit=1&pagination=false&joins=false`),translationContent(),mediaDocuments()])
- if(!response.docs[0])return
- const page=resolveMediaReferences(response.docs[0],media) as CmsPage
+const resolvePage=cache(async(doc:Document):Promise<CmsPage>=>{
+ const [interfaceText,media]=await Promise.all([translationContent(),mediaDocuments()])
+ const page=resolveMediaReferences(doc,media) as CmsPage
  const goals=(page.relationships as {goals?:number[]}|undefined)?.goals
  if(goals?.length){const references=new Map((await payloadDocuments('sustainability-goals','',0)).map(doc=>[doc.id,resolveMediaReferences(doc,media)]));page.relationships={...(page.relationships as Record<string,unknown>),goals:goals.map(id=>references.get(id)).filter(Boolean)}}
  return {...page,interface:interfaceText,mediaRefs:media}
+})
+const pageByID=cache(async(id:number):Promise<CmsPage|undefined>=>{
+ const response=await request(`pages?where[id][equals]=${id}&locale=all&depth=0&limit=1&pagination=false&joins=false`)
+ return response.docs[0]?resolvePage(response.docs[0]):undefined
 })
 export const pageBySlug=cache(async(slug:string):Promise<CmsPage|undefined>=> {
  const page=(await pageIdentities()).find(page=>page.slug===slug)
  return page?await pageByID(page.id):undefined
 })
 export const pageBySourceKey=cache(async(key:string):Promise<CmsPage|undefined>=>{
- const page=(await pageIdentities()).find(page=>page.sourceKey===key)
- return page?await pageByID(page.id):undefined
+ const response=await request(`pages?where[sourceKey][equals]=${encodeURIComponent(key)}&locale=all&depth=0&limit=1&pagination=false&joins=false`)
+ return response.docs[0]?resolvePage(response.docs[0]):undefined
 })
 export const pageLinks=cache(async ():Promise<{slug:string}[]> => (await pageIdentities()).map(page=>({slug:page.slug!})))
 function sourceDocument(page:CmsPage,selected?:PageBlock):Document {

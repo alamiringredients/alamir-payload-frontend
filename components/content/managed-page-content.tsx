@@ -1,3 +1,4 @@
+import {Fragment, type ReactNode} from 'react'
 import {TwoColumns} from '@/components/layout/two-columns'
 import {SectionCopy} from '@/components/editor/section-copy'
 import type {CompanyInformation} from '@/lib/cms/types'
@@ -8,7 +9,7 @@ import { SmartLink } from "@/components/site/smart-link";
 import type { ManagedPageContent } from "@/lib/cms/types";
 import type { SearchResult } from "@/lib/search/match";
 import type { SiteLocale } from "@/i18n/navigation";
-import type { ReactNode } from "react";
+
 import {
   ActionGroup,
   CardGrid,
@@ -147,87 +148,91 @@ export function LegalPageContent({
   content,
   locale,
   page,
+  section: selectedSection,
 }: {
   content: ManagedPageContent;
   locale: SiteLocale;
   page: "privacy" | "terms" | "cookies";
+  section?: string;
 }) {
-  return (
-    <main id="main">
-      <ManagedPageHero content={content} locale={locale} />
-      {section(content, "section-2")?.enabled && (
-        <LegalSection content={content} locale={locale} page={page} />
-      )}
-    </main>
-  );
+  const sections: Record<string, () => ReactNode> = {
+    hero: () => (<ManagedPageHero content={content} locale={locale} />),
+    body: () => (section(content, "section-2")?.enabled && (
+      <LegalSection content={content} locale={locale} page={page} />
+    ))
+  };
+  return selectedSection ? sections[selectedSection]?.() ?? null : <main id="main">{Object.entries(sections).map(([key, render]) => <Fragment key={key}>{render()}</Fragment>)}</main>;
 }
 
 export function ThankYouPageContent({
   content,
   locale,
+  section: selectedSection,
 }: {
   content: ManagedPageContent;
   locale: SiteLocale;
+  section?: string;
 }) {
   const cards = section(content, "section-2"),
     t = (index: number) => value(content, "section-2", index, locale);
-  return (
-    <main id="main">
-      <PageHero layout="plain">
-        <div className="status">
-          <div className="mark" aria-hidden="true">
-            ✓
-          </div>
-          <h1><SectionCopy section={section(content,"hero")} locale={locale} kind="heading"/></h1>
-          <p><SectionCopy section={section(content,"hero")} locale={locale} kind="body" index={2}/></p>
-          <ActionGroup
-            reveal={false}
-            actions={[
-              {
-                href: "/",
-                label: content.interface?.backHome[locale]??"",
-                variant: "secondary",
-              },
-              {
-                href: "/downloads",
-                label: content.interface?.browseDownloads[locale]??"",
-                variant: "secondary",
-              },
-            ]}
-          />
+  const sections: Record<string, () => ReactNode> = {
+    hero: () => (<PageHero layout="plain">
+      <div className="status">
+        <div className="mark" aria-hidden="true">
+          ✓
         </div>
-      </PageHero>
-      {cards?.enabled && (
-        <ContentSection>
-          <SectionHeading
-            kicker={t(0)}
-            title={<SectionCopy section={cards} locale={locale} kind="heading"/>}
-          />
-          <CardGrid>
-            {[0, 1, 2].map((_, index) => (
-              <SmartLink
-                className="card"
-                href={["/quality", "/products", "/events"][index]}
-                key={index}
-              >
-                <div className="no">{String(index+1).padStart(2,"0")}</div>
-                <h3><SectionCopy section={cards} locale={locale} index={index*3+4}/></h3>
-                <p><SectionCopy section={cards} locale={locale} index={index*3+5}/></p>
-              </SmartLink>
-            ))}
-          </CardGrid>
-        </ContentSection>
-      )}
-    </main>
-  );
+        <h1><SectionCopy section={section(content, "hero")} locale={locale} kind="heading" /></h1>
+        <p><SectionCopy section={section(content, "hero")} locale={locale} kind="body" index={2} /></p>
+        <ActionGroup
+          reveal={false}
+          actions={[
+            {
+              href: "/",
+              label: content.interface?.backHome[locale] ?? "",
+              variant: "secondary",
+            },
+            {
+              href: "/downloads",
+              label: content.interface?.browseDownloads[locale] ?? "",
+              variant: "secondary",
+            },
+          ]}
+        />
+      </div>
+    </PageHero>),
+    body: () => (cards?.enabled && (
+      <ContentSection>
+        <SectionHeading
+          kicker={t(0)}
+          title={<SectionCopy section={cards} locale={locale} kind="heading" />}
+        />
+        <CardGrid>
+          {[0, 1, 2].map((_, index) => (
+            <SmartLink
+              className="card"
+              href={["/quality", "/products", "/events"][index]}
+              key={index}
+            >
+              <div className="no">{String(index + 1).padStart(2, "0")}</div>
+              <h3><SectionCopy section={cards} locale={locale} index={index * 3 + 4} /></h3>
+              <p><SectionCopy section={cards} locale={locale} index={index * 3 + 5} /></p>
+            </SmartLink>
+          ))}
+        </CardGrid>
+      </ContentSection>
+    ))
+  };
+  return selectedSection ? sections[selectedSection]?.() ?? null : <main id="main">{Object.entries(sections).map(([key, render]) => <Fragment key={key}>{render()}</Fragment>)}</main>;
 }
 
 export function NotFoundPageContent({
   content,
   locale,
+  section: selectedSection,
 }: {
   content: ManagedPageContent;
   locale: SiteLocale;
+  section?: string;
 }) {
   const cards = section(content, "section-2")?.cards ?? [],
     paths = [
@@ -238,45 +243,44 @@ export function NotFoundPageContent({
       "/news",
       "/contact",
     ];
-  return (
-    <main id="main">
-      <PageHero layout="plain">
-        <div className="status">
-          <div className="big">404</div>
-          <h1><SectionCopy section={section(content,"hero")} locale={locale} kind="heading"/></h1>
-          <p><SectionCopy section={section(content,"hero")} locale={locale} kind="body" index={2}/></p>
-          <ActionGroup
-            reveal={false}
-            actions={[
-              { href: "/", label: content.interface?.backHome[locale]??"" },
-              {
-                href: "/search",
-                label: content.interface?.searchSite[locale]??"",
-                variant: "secondary",
-              },
-            ]}
-          />
-        </div>
-      </PageHero>
-      {cards.length > 0 && (
-        <ContentSection>
-          <CardGrid>
-            {cards.map((card, index) => (
-              <SmartLink
-                className="card"
-                href={paths[index] ?? "/"}
-                key={card.id}
-              >
-                <div className="no">{String(index + 1).padStart(2, "0")}</div>
-                <h2>{card.title[locale]}</h2>
-                <p>{card.description[locale]}</p>
-              </SmartLink>
-            ))}
-          </CardGrid>
-        </ContentSection>
-      )}
-    </main>
-  );
+  const sections: Record<string, () => ReactNode> = {
+    hero: () => (<PageHero layout="plain">
+      <div className="status">
+        <div className="big">404</div>
+        <h1><SectionCopy section={section(content, "hero")} locale={locale} kind="heading" /></h1>
+        <p><SectionCopy section={section(content, "hero")} locale={locale} kind="body" index={2} /></p>
+        <ActionGroup
+          reveal={false}
+          actions={[
+            { href: "/", label: content.interface?.backHome[locale] ?? "" },
+            {
+              href: "/search",
+              label: content.interface?.searchSite[locale] ?? "",
+              variant: "secondary",
+            },
+          ]}
+        />
+      </div>
+    </PageHero>),
+    body: () => (cards.length > 0 && (
+      <ContentSection>
+        <CardGrid>
+          {cards.map((card, index) => (
+            <SmartLink
+              className="card"
+              href={paths[index] ?? "/"}
+              key={card.id}
+            >
+              <div className="no">{String(index + 1).padStart(2, "0")}</div>
+              <h2>{card.title[locale]}</h2>
+              <p>{card.description[locale]}</p>
+            </SmartLink>
+          ))}
+        </CardGrid>
+      </ContentSection>
+    ))
+  };
+  return selectedSection ? sections[selectedSection]?.() ?? null : <main id="main">{Object.entries(sections).map(([key, render]) => <Fragment key={key}>{render()}</Fragment>)}</main>;
 }
 
 export function SearchPageContent({
@@ -285,55 +289,56 @@ export function SearchPageContent({
   results,
   query,
   action,
+  section: selectedSection,
 }: {
   content: ManagedPageContent;
   locale: SiteLocale;
   results: SearchResult[];
   query: string;
   action: string;
+  section?: string;
 }) {
   const empty = section(content, "section-2");
-  return (
-    <main id="main">
-      <ManagedPageHero content={content} locale={locale} />
-      <ContentSection>
-        <SearchForm
-          query={query}
-          action={action}
-        />
-        <div
-          className="stack reveal"
-          style={{ marginTop: 34 }}
-          aria-live="polite"
-        >
-          {results.map((result, index) => (
-            <a
-              className="result"
-              key={`${result.href}-${index}`}
-              href={result.href}
-            >
-              <span className="crumb">{result.section}</span>
-              <span className="nm">{result.title}</span>
-              <span className="sn">{result.description}</span>
-            </a>
-          ))}
-        </div>
-        {empty?.enabled && (
-          <div
-            className="empty reveal"
-            id="no-results"
-            hidden={!query.trim() || results.length > 0}
+  const sections: Record<string, () => ReactNode> = {
+    hero: () => (<ManagedPageHero content={content} locale={locale} />),
+    body: () => (<ContentSection>
+      <SearchForm
+        query={query}
+        action={action}
+      />
+      <div
+        className="stack reveal"
+        style={{ marginTop: 34 }}
+        aria-live="polite"
+      >
+        {results.map((result, index) => (
+          <a
+            className="result"
+            key={`${result.href}-${index}`}
+            href={result.href}
           >
-            {value(content, "section-2", 0, locale)}{" "}
-            <SmartLink href="/contact">
-              {value(content, "section-2", 1, locale)}
-            </SmartLink>{" "}
-            {value(content, "section-2", 2, locale)}
-          </div>
-        )}
-      </ContentSection>
-    </main>
-  );
+            <span className="crumb">{result.section}</span>
+            <span className="nm">{result.title}</span>
+            <span className="sn">{result.description}</span>
+          </a>
+        ))}
+      </div>
+      {empty?.enabled && (
+        <div
+          className="empty reveal"
+          id="no-results"
+          hidden={!query.trim() || results.length > 0}
+        >
+          {value(content, "section-2", 0, locale)}{" "}
+          <SmartLink href="/contact">
+            {value(content, "section-2", 1, locale)}
+          </SmartLink>{" "}
+          {value(content, "section-2", 2, locale)}
+        </div>
+      )}
+    </ContentSection>)
+  };
+  return selectedSection ? sections[selectedSection]?.() ?? null : <main id="main">{Object.entries(sections).map(([key, render]) => <Fragment key={key}>{render()}</Fragment>)}</main>;
 }
 
 export function ContactPageContent({
@@ -341,37 +346,38 @@ export function ContactPageContent({
   locale,
   form,
   company,
+  section: selectedSection,
 }: {
   content: ManagedPageContent;
   locale: SiteLocale;
   form: ReactNode;
   company: CompanyInformation;
+  section?: string;
 }) {
   const details = section(content, "section-2"),
     t = (source: string) => details?.texts.find(field => field.source === source)?.values[locale] ?? "";
-  return (
-    <main id="main">
-      <ManagedPageHero content={content} locale={locale} image />
-      <section className="band">
-        <div className="wrap">
-          <TwoColumns collapseAt={1050} as="div" columns="minmax(0,.8fr) minmax(0,1.2fr)" gap="clamp(30px,5vw,72px)" align="start" className="contact-grid">
-            <div className="reveal">
-              <div className="kicker">{t("Contact details")}</div>
-              <div className="contact-list">
-                {company.email && <div><span>{t("Email")}</span><a href={`mailto:${company.email}`} dir="ltr">{company.email}</a></div>}
-                {company.phone && <div><span>{t("Phone")}</span><a href={`tel:${company.phone.replace(/[^+\d]/g, "")}`} dir="ltr">{company.phone}</a></div>}
-                {company.website && <div><span>{t("Website")}</span><a href={company.website} dir="ltr">{new URL(company.website).host}</a></div>}
-                <div><span>{t("Address")}</span><p style={{whiteSpace:"pre-line"}}>{company.address[locale]}</p></div>
-                <div><span>{t("Follow us")}</span><SocialLinks className="footer-social ct-social" urls={company.socialLinks} locale={locale}/></div>
-              </div>
+  const sections: Record<string, () => ReactNode> = {
+    hero: () => (<ManagedPageHero content={content} locale={locale} image />),
+    body: () => (<section className="band">
+      <div className="wrap">
+        <TwoColumns collapseAt={1050} as="div" columns="minmax(0,.8fr) minmax(0,1.2fr)" gap="clamp(30px,5vw,72px)" align="start" className="contact-grid">
+          <div className="reveal">
+            <div className="kicker">{t("Contact details")}</div>
+            <div className="contact-list">
+              {company.email && <div><span>{t("Email")}</span><a href={`mailto:${company.email}`} dir="ltr">{company.email}</a></div>}
+              {company.phone && <div><span>{t("Phone")}</span><a href={`tel:${company.phone.replace(/[^+\d]/g, "")}`} dir="ltr">{company.phone}</a></div>}
+              {company.website && <div><span>{t("Website")}</span><a href={company.website} dir="ltr">{new URL(company.website).host}</a></div>}
+              <div><span>{t("Address")}</span><p style={{ whiteSpace: "pre-line" }}>{company.address[locale]}</p></div>
+              <div><span>{t("Follow us")}</span><SocialLinks className="footer-social ct-social" urls={company.socialLinks} locale={locale} /></div>
             </div>
-            <div>
-              <div className="kicker">{t("Enquiry form")}</div>
-              {form}
-            </div>
-          </TwoColumns>
-        </div>
-      </section>
-    </main>
-  );
+          </div>
+          <div>
+            <div className="kicker">{t("Enquiry form")}</div>
+            {form}
+          </div>
+        </TwoColumns>
+      </div>
+    </section>)
+  };
+  return selectedSection ? sections[selectedSection]?.() ?? null : <main id="main">{Object.entries(sections).map(([key, render]) => <Fragment key={key}>{render()}</Fragment>)}</main>;
 }

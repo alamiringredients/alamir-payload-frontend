@@ -9,7 +9,7 @@ import type {SiteLocale} from '@/i18n/navigation'
 import {ContentImage} from './content-image'
 import {SmartLink} from './smart-link'
 
-export function SiteHeader({catalog,locale,page='',menus,section}: {section:HomeSectionContent;catalog:NavigationCatalog;locale:SiteLocale;page?:string;menus?:{left:NavigationItem[];right:NavigationItem[]}}) {
+export function SiteHeader({catalog,locale,page='',menus,section,logo,siteName}: {logo:string;siteName:string;section:HomeSectionContent;catalog:NavigationCatalog;locale:SiteLocale;page?:string;menus?:{left:NavigationItem[];right:NavigationItem[]}}) {
   const copy = (source: string) => sectionText(section, source, locale)
   const navigationProps = (href:string, desktop=false) => {
     const path = `/${page}`
@@ -34,7 +34,7 @@ export function SiteHeader({catalog,locale,page='',menus,section}: {section:Home
       {menus?.left.map(item=>link(item,true))}
     </nav>
     <SmartLink className="brand" href="/" aria-label={copy("Alamir Ingredients home")}>
-      <ContentImage src="/assets/logo-full.svg" alt={copy("Alamir Ingredients")} />
+      {logo && <ContentImage src={logo} alt={siteName} />}
     </SmartLink>
     <nav className="nav-right" aria-label={copy("Secondary navigation")}>
       {menus?.right.map(item=>link(item,true))}
@@ -47,7 +47,7 @@ export function SiteHeader({catalog,locale,page='',menus,section}: {section:Home
 </header>
 <div className="mobile-menu" id="mobile-menu" aria-hidden="true">
   <div className="mobile-top">
-    <SmartLink className="brand" href="/"><ContentImage src="/assets/logo-full.svg" alt={copy("Alamir Ingredients")} /></SmartLink>
+    <SmartLink className="brand" href="/">{logo && <ContentImage src={logo} alt={siteName} />}</SmartLink>
     <button className="mobile-close" id="menu-close" type="button" aria-label={copy("Close navigation")}>×</button>
   </div>
   <nav className="mobile-links" aria-label={copy("Mobile navigation")}>

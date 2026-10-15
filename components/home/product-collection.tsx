@@ -1,15 +1,15 @@
+import {SectionCopy,type SectionContentProps} from '@/components/editor/section-copy'
 import {CatalogCategories} from '@/components/catalog/catalog-content'
 import type {CategoryCatalog} from '@/lib/catalog/types'
-import type {SiteLocale} from '@/i18n/navigation'
 
-export function ProductCollection({catalog,locale}: {catalog:CategoryCatalog;locale:SiteLocale}){return (<section className="collection" id="products">
+export function ProductCollection({catalog,locale,section}: SectionContentProps & {catalog:CategoryCatalog}){return (<section className="collection" id="products">
   <div className="wrap">
     <div className="collection-head reveal">
       <div>
-        <div className="kicker">Our products</div>
-        <h2>Pure character. Precise results.</h2>
+        <div className="kicker">{section.texts[0]?.values[locale] ?? ''}</div>
+        <h2><SectionCopy section={section} locale={locale} richIndex={0}/></h2>
       </div>
-      <p>A focused ingredient portfolio for sauces, beverages, dairy, bakery and prepared food applications, available in industrial aseptic formats.</p>
+      <p><SectionCopy section={section} locale={locale} richIndex={1}/></p>
     </div>
     <div className="product-grid reveal"><CatalogCategories catalog={catalog} locale={locale} /></div>
   </div>

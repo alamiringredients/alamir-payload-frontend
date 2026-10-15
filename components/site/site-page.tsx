@@ -6,7 +6,6 @@ import {SiteFooter} from '@/components/site/site-footer'
 import {SiteHeader} from '@/components/site/site-header'
 import {SiteInteractions} from '@/components/site-interactions'
 import {getNavigationCatalog} from '@/lib/api/public'
-import {renderWebsiteBrand} from '@/lib/cms/render'
 import type {HomeCmsData, WebsiteSettings} from '@/lib/cms/types'
 import type {CategoryAppearance} from '@/lib/catalog/types'
 import type {SchemaNode} from '@/lib/seo/structured-data'
@@ -27,11 +26,11 @@ export async function SitePage({children, page, locale, home, settings, catalogS
   const sections = new Map(home.sections.map(section => [section.key, section]))
 
   return <div className="site-page" data-page={pageStyle} data-catalog-style={catalogStyle} data-catalog-appearance={catalogAppearance}>
-    {sections.get('header')?.enabled && renderWebsiteBrand(<><a className="skip" href="#main">{sectionText(sections.get('header')!, 'Skip to content', locale)}</a>{SiteHeader({catalog, locale, page,menus:home.menus,section:sections.get('header')!})}</>, settings, locale)}
+    {sections.get('header')?.enabled && <><a className="skip" href="#main">{sectionText(sections.get('header')!, 'Skip to content', locale)}</a>{SiteHeader({logo:settings.logo,siteName:settings.siteName[locale],catalog, locale, page,menus:home.menus,section:sections.get('header')!})}</>}
     <PageOverlays locale={locale}/>
     {structuredData && <JsonLd data={structuredData}/>} 
     {children}
-    {sections.get('footer')?.enabled && renderWebsiteBrand(SiteFooter({company:settings.company,locale,menus:home.footerMenus,section:sections.get('footer')!}), settings, locale)}
+    {sections.get('footer')?.enabled && SiteFooter({logo:settings.logo,groupLogo:settings.groupLogo,siteName:settings.siteName[locale],company:settings.company,locale,menus:home.footerMenus,section:sections.get('footer')!})}
     <SiteInteractions/>
   </div>
 }

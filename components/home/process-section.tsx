@@ -1,15 +1,16 @@
-export function ProcessSection(){return (<section className="process" id="process">
+import {SectionCopy,type SectionContentProps} from '@/components/editor/section-copy'
+export function ProcessSection({section,locale}:SectionContentProps){return (<section className="process" id="process">
   <div className="wrap">
     <div className="process-title reveal">
-      <div className="kicker">From crop to concentrate</div>
-      <h2>CFT Technology</h2>
-      <p>New infrastructure and CFT Italian processing technology create a controlled path from incoming produce to export-ready aseptic ingredients.</p>
+      <div className="kicker">{section.texts[0]?.values[locale] ?? ''}</div>
+      <h2><SectionCopy section={section} locale={locale} richIndex={0}/></h2>
+      <p><SectionCopy section={section} locale={locale} richIndex={1}/></p>
     </div>
     <div className="process-steps reveal">
-      <article className="step"><span>01</span><h3>Select</h3><p>Raw materials are assessed against product and processing requirements.</p></article>
-      <article className="step"><span>02</span><h3>Prepare</h3><p>Careful washing and preparation protect the natural crop profile.</p></article>
-      <article className="step"><span>03</span><h3>Transform</h3><p>Controlled concentration delivers repeatable colour, body and flavour.</p></article>
-      <article className="step"><span>04</span><h3>Protect</h3><p>Aseptic handling prepares finished ingredients for global shipment.</p></article>
+      <article className="step"><span aria-hidden="true"/><h3><SectionCopy section={section} locale={locale} richIndex={2}/></h3><p><SectionCopy section={section} locale={locale} richIndex={3}/></p></article>
+      <article className="step"><span aria-hidden="true"/><h3><SectionCopy section={section} locale={locale} richIndex={4}/></h3><p><SectionCopy section={section} locale={locale} richIndex={5}/></p></article>
+      <article className="step"><span aria-hidden="true"/><h3><SectionCopy section={section} locale={locale} richIndex={6}/></h3><p><SectionCopy section={section} locale={locale} richIndex={7}/></p></article>
+      <article className="step"><span aria-hidden="true"/><h3><SectionCopy section={section} locale={locale} richIndex={8}/></h3><p><SectionCopy section={section} locale={locale} richIndex={9}/></p></article>
     </div>
   </div>
 </section>

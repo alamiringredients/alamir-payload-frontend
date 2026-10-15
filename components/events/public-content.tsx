@@ -1,3 +1,6 @@
+import {Fragment,type ReactNode} from 'react'
+import type {ManagedPageContent} from '@/lib/cms/types'
+import {SectionCopy} from '@/components/editor/section-copy'
 import {TwoColumns} from '@/components/layout/two-columns'
 import { ContentImage } from "@/components/site/content-image";
 import { SmartLink } from "@/components/site/smart-link";
@@ -68,10 +71,14 @@ export function EventsPageBody({
   events,
   locale,
   labels,
+  content,
+  section: selectedSection,
 }: {
-  labels: Record<string,string>;
-  events: EventRecord[];
-  locale: SiteLocale;
+    labels: Record<string, string>;
+    events: EventRecord[];
+    locale: SiteLocale;
+    content: ManagedPageContent;
+  section?: string;
 }) {
   const now = new Date(),
     upcoming = events.filter(
@@ -85,28 +92,23 @@ export function EventsPageBody({
         event.published &&
         (event.kind === "recap" || new Date(event.ends_at) <= now),
     );
-  return (
-    <main id="main">
-      <PageHero image="/assets/photos/team-corridor.webp" imageAlt="">
-        <div className="kicker">Company news & events</div>
-        <h1>
-          Where to <em>meet us.</em>
-        </h1>
-        <p>
-          Trade shows, facility visits and company announcements. If you are
-          evaluating us as a supplier, meeting the export team at a show is the
-          fastest way to taste the product and see the specifications side by
-          side.
-        </p>
-      </PageHero>
-      <ContentSection>
+  const sections: Record<string, () => ReactNode> = {
+    hero: () => {
+      const section = content.sections.find(item => item.key === 'hero');
+      if (!section?.enabled) return null;
+      return (<PageHero image={section.assets[0]?.value} imageAlt="">
+        <div className="kicker">{section.texts[0]?.values[locale] ?? ''}</div>
+        <h1><SectionCopy section={section} locale={locale} richIndex={0} /></h1>
+        <p><SectionCopy section={section} locale={locale} richIndex={1} /></p>
+      </PageHero>);
+    },
+    related: () => {
+      const section = content.sections.find(item => item.key === 'section-2');
+      if (!section?.enabled) return null;
+      return (<ContentSection>
         <SectionHeading
-          kicker="Upcoming"
-          title={
-            <>
-              Book a slot before the <em>show fills up.</em>
-            </>
-          }
+          kicker={section.texts[0]?.values[locale] ?? ''}
+          title={<SectionCopy section={section} locale={locale} richIndex={0} />}
         />
         <CardGrid>
           {upcoming.map((event) => (
@@ -114,53 +116,44 @@ export function EventsPageBody({
           ))}
         </CardGrid>
         {upcoming.length === 0 && (
-          <p className="lead">No upcoming events are published.</p>
+          <p className="lead">{section.texts[3]?.values[locale] ?? ''}</p>
         )}
         <FormActions className="reveal" style={{ marginTop: 36 }}>
           <SmartLink className="btn" href="/book-a-meeting">
-            Arrange a meeting
-          </SmartLink>
+            {section.texts[4]?.values[locale] ?? ''}</SmartLink>
           <button className="btn ghost" data-quote="" type="button">
-            Request a quote
-          </button>
+            {section.texts[5]?.values[locale] ?? ''}</button>
         </FormActions>
-      </ContentSection>
-      <ContentSection theme="tint">
+      </ContentSection>);
+    },
+    enquiry: () => {
+      const section = content.sections.find(item => item.key === 'section-3');
+      if (!section?.enabled) return null;
+      return (<ContentSection theme="tint">
         <SectionHeading
-          kicker="Past events"
-          title={
-            <>
-              Where we have <em>been.</em>
-            </>
-          }
+          kicker={section.texts[0]?.values[locale] ?? ''}
+          title={<SectionCopy section={section} locale={locale} richIndex={0} />}
         />
         <div className="cards c4 reveal">
           {past.map((event) => (
             <EventCard key={event.id} event={event} locale={locale} labels={labels} />
           ))}
         </div>
-      </ContentSection>
-      <ContentSection>
+      </ContentSection>);
+    },
+    more: () => {
+      const section = content.sections.find(item => item.key === 'section-4');
+      if (!section?.enabled) return null;
+      return (<ContentSection>
         <SectionHeading
-          kicker="Gallery"
-          title={
-            <>
-              The stand, the line, <em>the team.</em>
-            </>
-          }
+          kicker={section.texts[0]?.values[locale] ?? ''}
+          title={<SectionCopy section={section} locale={locale} richIndex={0} />}
         />
         <div className="ev-gallery reveal">
-          {[
-            "team-corridor.webp",
-            "cft-line.webp",
-            "aseptic-fill.webp",
-            "qc-lab.webp",
-            "facility-aerial.webp",
-            "farm-sourcing.webp",
-          ].map((image) => (
-            <figure key={image}>
+          {section.assets.filter(asset => asset.value).map((image) => (
+            <figure key={image.id}>
               <ContentImage
-                src={`/assets/photos/${image}`}
+                src={image.value}
                 alt=""
                 loading="lazy"
                 decoding="async"
@@ -168,9 +161,10 @@ export function EventsPageBody({
             </figure>
           ))}
         </div>
-      </ContentSection>
-    </main>
-  );
+      </ContentSection>);
+    }
+};
+  return selectedSection ? sections[selectedSection]?.() ?? null : <main id="main">{Object.entries(sections).map(([key, render]) => <Fragment key={key}>{render()}</Fragment>)}</main>;
 }
 
 export function EventDetailBody({

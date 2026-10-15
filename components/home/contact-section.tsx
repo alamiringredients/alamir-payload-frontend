@@ -1,8 +1,8 @@
+import {SectionCopy,type SectionContentProps} from '@/components/editor/section-copy'
 import {TwoColumns} from '@/components/layout/two-columns'
 import {ContentImage} from '@/components/site/content-image'
 import {SmartLink} from '@/components/site/smart-link'
 import {HomeEnquiryForm} from '@/components/enquiries/home-enquiry-form'
-import type {SiteLocale} from '@/i18n/navigation'
 import type {CompanyInformation} from '@/lib/cms/types'
 
 function CompanyPhone({phone}:{phone:string}) {
@@ -11,24 +11,24 @@ function CompanyPhone({phone}:{phone:string}) {
 
 
 
-export function ContactSection({locale, company}: {locale: SiteLocale; company: CompanyInformation}){return (<section className="contact" id="contact">
+export function ContactSection({locale, company,section}: SectionContentProps & {company: CompanyInformation}){return (<section className="contact" id="contact">
   <div className="wrap">
     <TwoColumns collapseAt={1050} as="div" columns="minmax(0,1fr) minmax(340px,.72fr)" gap="clamp(26px,3vw,54px)" align="center" className="contact-card reveal">
       <div className="contact-media" aria-hidden="true">
-        <ContentImage src="/assets/photos/contact-field.webp" alt="" loading="lazy" decoding="async" />
+        {section.assets[0]?.value && <ContentImage src={section.assets[0].value} alt="" loading="lazy" decoding="async" />}
       </div>
       <div className="contact-pitch">
-        <span className="contact-badge">Start a conversation</span>
-        <h2>Let's <em>get in touch.</em></h2>
-        <p>Send us the product, the volume, the target Brix and the destination port. Our export desk comes back with specification, lead time and pricing.</p>
-        <SmartLink className="contact-button" href="/contact"><span>Contact the team</span></SmartLink>
+        <span className="contact-badge">{section.texts[0]?.values[locale] ?? ''}</span>
+        <h2><SectionCopy section={section} locale={locale} richIndex={0}/></h2>
+        <p><SectionCopy section={section} locale={locale} richIndex={1}/></p>
+        <SmartLink className="contact-button" href="/contact"><span>{section.texts[1]?.values[locale] ?? ''}</span></SmartLink>
       </div>
-      <aside className="enquiry-panel" aria-label="Enquiry details">
-        <div className="enquiry-index"><span>Export desk</span></div>
-        <h3>Start with four details.</h3>
+      <aside className="enquiry-panel" aria-label={section.texts[3]?.values[locale] ?? ''}>
+        <div className="enquiry-index"><span>{section.texts[2]?.values[locale] ?? ''}</span></div>
+        <h3><SectionCopy section={section} locale={locale} richIndex={2}/></h3>
         <HomeEnquiryForm locale={locale}/>
         <div className="enquiry-foot">
-          <p>Industrial and export enquiries</p>
+          <p><SectionCopy section={section} locale={locale} richIndex={3}/></p>
           <CompanyPhone phone={company.exportPhone}/>
         </div>
       </aside>

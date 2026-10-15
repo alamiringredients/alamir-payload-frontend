@@ -1,3 +1,4 @@
+import {Fragment, type ReactNode} from 'react'
 import {TwoColumns} from '@/components/layout/two-columns'
 import {ContentImage} from '@/components/site/content-image'
 import {PageHero} from '@/components/site/page-hero'
@@ -16,16 +17,21 @@ function NewsCard({article,locale,labels}:{article:NewsRecord;locale:SiteLocale;
   const v=article.published[locale]!
   return <article className="card post-card"><SmartLink className="cover" href={`/news/${article.slug}`} aria-label={textContent(v.title)}/><figure className="thumb">{v.hero&&<ContentImage src={v.hero} alt={v.heroAlt} sizes="(max-width: 700px) calc(100vw - 32px), (max-width: 1050px) calc(50vw - 31px), (max-width: 1384px) calc(33.33vw - 36px), 426px"/>}<span className="tag">{v.badge}</span></figure><div className="body"><div className="date">{v.cardDate}</div><h3><InlineContent document={v.cardTitle}/></h3><p>{v.cardSummary}</p><span className="go">{labels.readMore} <span className="arrow" aria-hidden="true">→</span></span></div></article>
 }
-export function NewsIndexBody({articles,taxonomies,page,heroImage,sectionVisibility,locale,labels,tag}:{articles:NewsRecord[];taxonomies:NewsTaxonomy[];page:NewsPageLocale;heroImage:string;sectionVisibility:NewsPageContent['sectionVisibility'];locale:SiteLocale;labels:Labels;tag?:string}){
+export function NewsIndexBody({articles,taxonomies,page,heroImage,sectionVisibility,locale,labels,tag, section: selectedSection}:{articles:NewsRecord[];taxonomies:NewsTaxonomy[];page:NewsPageLocale;heroImage:string;sectionVisibility:NewsPageContent['sectionVisibility'];locale:SiteLocale;labels:Labels;tag?:string; section?: string}){
   const filtered=tag?articles.filter(a=>a.content.tagIds.some(id=>taxonomies.some(t=>t.id===id&&t.slug===tag))):articles
   const featured=!tag?filtered.find(a=>a.content.featured):undefined,v=featured?.published[locale]
   const categories=taxonomies.filter(t=>t.kind==='category')
-  return <main id="main">{sectionVisibility.hero&&<PageHero as="header" image={heroImage} imageAlt={page.heroAlt}><div className="kicker">{page.kicker}</div><h1><InlineContent document={page.title}/></h1><p>{page.description}</p></PageHero>}<section className="band"><div className="wrap">
+  const sections: Record<string, () => ReactNode> = {
+hero: () => (sectionVisibility.hero&&<PageHero as="header" image={heroImage} imageAlt={page.heroAlt}><div className="kicker">{page.kicker}</div><h1><InlineContent document={page.title}/></h1><p>{page.description}</p></PageHero>),
+articles: () => (<section className="band"><div className="wrap">
     {featured&&v&&<article className="feature"><SmartLink className="cover" href={`/news/${featured.slug}`} aria-label={textContent(v.title)}/><figure className="thumb">{v.hero&&<ContentImage src={v.hero} alt={v.heroAlt} loading="eager" fetchPriority="low" sizes="(max-width: 700px) calc(100vw - 32px), (max-width: 1050px) calc(100vw - 40px), (max-width: 1384px) calc(57.5vw - 37px), 759px"/>}</figure><div className="body"><div className="kicker">{v.cardDate} · {v.badge}</div><h2><InlineContent document={v.cardTitle}/></h2><p>{v.cardSummary}</p><span className="go">{labels.readStory} <span className="arrow" aria-hidden="true">→</span></span></div></article>}
     {tag&&<p><SmartLink href="/news">{labels.clearFilter}</SmartLink></p>}
     <NewsTabs categories={categories.map(c=>({id:c.id,slug:c.slug,name:c.content[locale].name}))} label={labels.categories} panels={categories.map(c=><div key={c.id}><p className="tab-intro">{c.content[locale].description}</p><CardGrid reveal={false}>{filtered.filter(a=>a.id!==featured?.id&&a.content.categoryId===c.id).map(a=><NewsCard key={a.id} article={a} locale={locale} labels={labels}/>)}</CardGrid>{!filtered.some(a=>a.id!==featured?.id&&a.content.categoryId===c.id)&&<p>{page.empty}</p>}</div>)}/>
     {!categories.length&&<p>{page.empty}</p>}
-  </div></section>{sectionVisibility.events&&<CallToActionSection theme="tint" kicker={page.eventsKicker} title={<InlineContent document={page.eventsTitle}/>} description={page.eventsDescription} actions={[{href:'/events',label:labels.events},{href:'/contact',label:labels.visit,variant:'secondary'}]}/>}</main>
+  </div></section>),
+events: () => (sectionVisibility.events&&<CallToActionSection theme="tint" kicker={page.eventsKicker} title={<InlineContent document={page.eventsTitle}/>} description={page.eventsDescription} actions={[{href:'/events',label:labels.events},{href:'/contact',label:labels.visit,variant:'secondary'}]}/>)
+};
+  return selectedSection ? sections[selectedSection]?.() ?? null : <main id="main">{Object.entries(sections).map(([key,render]) => <Fragment key={key}>{render()}</Fragment>)}</main>;
 }
 export function NewsArticleBody({record,version,articles,taxonomies,page,sectionVisibility,locale,labels,section}:{section?:string;record:NewsRecord;version:NewsVersion;articles:NewsRecord[];taxonomies:NewsTaxonomy[];page:NewsPageLocale;sectionVisibility:NewsPageContent['sectionVisibility'];locale:SiteLocale;labels:Labels}) {
   const heading=documentHeadings(version.body),position=articles.findIndex(a=>a.id===record.id)

@@ -1,5 +1,6 @@
+import {Fragment, type ReactNode} from 'react'
 import {TwoColumns} from '@/components/layout/two-columns'
-import { Fragment } from "react";
+
 import { PageHero } from "@/components/site/page-hero";
 import { SmartLink } from "@/components/site/smart-link";
 import { HeroActions } from "@/components/site/hero-actions";
@@ -67,66 +68,67 @@ export function CareersPageBody({
   jobs,
   locale,
   labels,
+  section: selectedSection,
 }: {
   content: CareersContent;
   jobs: JobCard[];
   locale: SiteLocale;
   labels: Record<string, string>;
+  section?: string;
 }) {
-  return (
-    <main id="main">
-      {content.sectionVisibility.hero && (
-        <EditorialPageHero
-          kicker={content.hero.kicker[locale]}
-          title={content.hero.title[locale]}
-          description={content.hero.description[locale]}
-          image={content.hero.image}
-          imageAlt={content.hero.alt[locale]}
-          actions={[
-            {
-              href: "#positions",
-              label: labels.viewPositions ?? "View open positions",
-            },
-            {
-              href: "#apply",
-              label: labels.sendSpeculativeCv ?? "Send a speculative CV",
-              variant: "secondary",
-            },
-          ]}
+  const sections: Record<string, () => ReactNode> = {
+    hero: () => (content.sectionVisibility.hero && (
+      <EditorialPageHero
+        kicker={content.hero.kicker[locale]}
+        title={content.hero.title[locale]}
+        description={content.hero.description[locale]}
+        image={content.hero.image}
+        imageAlt={content.hero.alt[locale]}
+        actions={[
+          {
+            href: "#positions",
+            label: labels.viewPositions ?? "View open positions",
+          },
+          {
+            href: "#apply",
+            label: labels.sendSpeculativeCv ?? "Send a speculative CV",
+            variant: "secondary",
+          },
+        ]}
+      />
+    )),
+    jobs: () => (content.sectionVisibility.jobs && (
+      <ContentSection id="positions">
+        <SectionHeading
+          kicker={
+            <>
+              {content.jobsKicker[locale]} · {jobs.length}
+            </>
+          }
+          title={<InlineContent document={content.jobsTitle[locale]} />}
+          description={<InlineContent document={content.jobsIntro[locale]} />}
         />
-      )}{" "}
-      {content.sectionVisibility.jobs && (
-        <ContentSection id="positions">
-          <SectionHeading
-            kicker={
-              <>
-                {content.jobsKicker[locale]} · {jobs.length}
-              </>
-            }
-            title={<InlineContent document={content.jobsTitle[locale]} />}
-            description={<InlineContent document={content.jobsIntro[locale]} />}
-          />
-          {jobs.length ? (
-            <JobRows jobs={jobs} locale={locale} labels={labels} />
-          ) : (
-            <p>{content.empty[locale]}</p>
-          )}
-        </ContentSection>
-      )}{" "}
-      {content.sectionVisibility.apply && (
-        <ContentSection id="apply" theme="tint">
-          <SectionHeading
-            kicker={content.applyKicker[locale]}
-            title={<InlineContent document={content.applyTitle[locale]} />}
-            description={
-              <InlineContent document={content.applyIntro[locale]} />
-            }
-          />
-          <ApplicationForm locale={locale} />
-        </ContentSection>
-      )}
-    </main>
-  );
+        {jobs.length ? (
+          <JobRows jobs={jobs} locale={locale} labels={labels} />
+        ) : (
+          <p>{content.empty[locale]}</p>
+        )}
+      </ContentSection>
+    )),
+    apply: () => (content.sectionVisibility.apply && (
+      <ContentSection id="apply" theme="tint">
+        <SectionHeading
+          kicker={content.applyKicker[locale]}
+          title={<InlineContent document={content.applyTitle[locale]} />}
+          description={
+            <InlineContent document={content.applyIntro[locale]} />
+          }
+        />
+        <ApplicationForm locale={locale} />
+      </ContentSection>
+    ))
+  };
+  return selectedSection ? sections[selectedSection]?.() ?? null : <main id="main">{Object.entries(sections).map(([key, render]) => <Fragment key={key}>{render()}</Fragment>)}</main>;
 }
 export function CareerJobBody({
   job,

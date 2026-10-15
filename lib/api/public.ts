@@ -1,7 +1,6 @@
 import type { Document } from "@/lib/payload/types";
 import "server-only";
 import { cache } from "react";
-import { preparePublicContent } from "@/lib/payload/public-site";
 import {
   globalContent as global,
   records,
@@ -266,12 +265,6 @@ const certifications = cache(async (): Promise<CertificationData> => {
   };
 });
 
-async function prepare(group: string) {
-  const pending = preparePublicContent(group);
-  const ui = await getInterface();
-  await pending;
-  return ui;
-}
 export const getLayoutPayload = cache(async () => {
   const [settings, home, c] = await Promise.all([
     global<WebsiteSettings>("website-settings"),
@@ -286,7 +279,7 @@ export const getLayoutPayload = cache(async () => {
 });
 
 export const getHomepagePayload = cache(async (locale: SiteLocale) => {
-  const ui = await prepare("home");
+  const ui = await getInterface();
   const [home, certs, events, media] = await Promise.all([
     global<HomeCmsData>("home-page", "meta"),
     certifications(),
@@ -324,7 +317,7 @@ export const getHomepagePayload = cache(async (locale: SiteLocale) => {
 
 export const getCatalogPayload = cache(
   async (locale: SiteLocale, page: string) => {
-    const ui = await prepare("catalog");
+    const ui = await getInterface();
     const [c, certs, managedContent] = await Promise.all([
       catalog(page),
       certifications(),
@@ -341,7 +334,7 @@ export const getCatalogPayload = cache(
 
 export const getNewsPayload = cache(
   async (locale: SiteLocale, slug?: string) => {
-    const ui = await prepare("news");
+    const ui = await getInterface();
     const [articles, page, taxonomies] = await Promise.all([
       records<PublicNewsRecord>("news"),
       global<NewsPageContent>("news-page"),
@@ -359,7 +352,7 @@ export const getNewsPayload = cache(
 
 export const getSustainabilityPayload = cache(
   async (locale: SiteLocale, slug?: string) => {
-    const ui = await prepare("sustainability");
+    const ui = await getInterface();
     const [articles, page] = await Promise.all([
       records<PublicSustainabilityArticle>("sustainability"),
       global<SustainabilityPageContent>("sustainability-page"),
@@ -375,7 +368,7 @@ export const getSustainabilityPayload = cache(
 
 export const getCareersPayload = cache(
   async (locale: SiteLocale, slug?: string) => {
-    const ui = await prepare("careers");
+    const ui = await getInterface();
     const [jobs, content] = await Promise.all([
       records<JobRecord>("jobs"),
       global<CareersContent>("careers-page"),
@@ -391,7 +384,7 @@ export const getCareersPayload = cache(
 
 export const getEventsPayload = cache(
   async (locale: SiteLocale, page = "events", slug?: string) => {
-    const ui = await prepare("events");
+    const ui = await getInterface();
     const [events, slotDocs, managedContent, eventDocs] = await Promise.all([
       records<EventRecord>("events"),
       payloadDocuments("meeting-slots", "", 0),
@@ -502,7 +495,7 @@ export const getSearchPayload = cache(
 );
 
 export const getQualityPayload = cache(async (locale: SiteLocale) => {
-  const ui = await prepare("quality");
+  const ui = await getInterface();
   const [content, certs] = await Promise.all([
     global<QualityPageContent>("quality-page"),
     certifications(),
@@ -510,7 +503,7 @@ export const getQualityPayload = cache(async (locale: SiteLocale) => {
   return { content, certifications: certs, labels: ui.certification[locale] };
 });
 export const getDownloadsPayload = cache(async (locale: SiteLocale) => {
-  const ui = await prepare("catalog");
+  const ui = await getInterface();
   const [content, c, certs] = await Promise.all([
     global<DownloadsPageContent>("downloads-page"),
     catalog(),

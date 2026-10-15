@@ -14,7 +14,7 @@ const site=cache(async(query:string):Promise<Record<string,Row|Collection>>=>{
 })
 const requestLocale=cache(async()=>{try{return await rootLocale()??'all'}catch{return 'all'}})
 const shared=cache(async()=>site(`scope=shared&locale=${await requestLocale()}`))
-const loaded=cache(()=>new Map<string,Promise<Record<string,Row|Collection>>>())
+const loaded=cache(()=>new Map<string,Promise<Row|Collection>>())
 const groups:Record<string,string[]>={
  home:['pages','certifications','certification-types','events'],
  catalog:['pages','products','categories','product-applications','product-concentrations','certifications','certification-types'],
@@ -26,17 +26,17 @@ const groups:Record<string,string[]>={
  page:['pages'],
 }
 const groupFor=(key:string)=>key==='home-page'?'home':key==='products-page'||key==='downloads-page'?'catalog':key==='quality-page'?'quality':key==='careers-page'?'careers':key==='events-page'||key==='booking-page'?'events':key==='news-page'?'news':key==='sustainability-page'?'sustainability':'page'
-export function preparePublicContent(group:string,pending=loaded()){
+async function preparePublicContent(group:string,pending:ReturnType<typeof loaded>){
  const resources=groups[group]
- if(resources.every(resource=>pending.has(resource)))return pending.get(resources[0])!
- const result=requestLocale().then(locale=>site(`scope=content&resources=${resources.join(',')}&locale=${locale}`))
- for(const resource of resources)if(!pending.has(resource))pending.set(resource,result)
- return result
-}
-export function preparePublicPage(path:string){
- const root=path.split('/')[0]
- const group=({home:'home',products:'catalog',downloads:'catalog',quality:'quality',news:'news',careers:'careers',events:'events','book-a-meeting':'events',sustainability:'sustainability'} as Record<string,string>)[root]??'page'
- return preparePublicContent(group)
+ const missing=resources.filter(resource=>!pending.has(resource))
+ if(missing.length){
+  const result=requestLocale().then(locale=>site(`scope=content&resources=${missing.sort().join(',')}&locale=${locale}`))
+  for(const resource of missing)pending.set(resource,result.then(content=>{
+   if(!content[resource])throw new Error(`Missing public resource: ${resource}`)
+   return content[resource]
+  }))
+ }
+ await Promise.all(resources.map(resource=>pending.get(resource)!))
 }
 const summaryFields:Record<string,string[]>={pages:['slug','sourceKey','title'],products:['name','slug','sourceId','category','gallery'],categories:['name','slug','sourceId','icon','description','page.artwork'],media:['url','width','height','mimeType','filename','prefix','alt'],translations:['key','text']}
 async function resourceContent(resource:string,params:URLSearchParams){
@@ -52,12 +52,13 @@ async function resourceContent(resource:string,params:URLSearchParams){
  if(!pending.has(resource)){
   let group=({products:'catalog',categories:'catalog',jobs:'careers',news:'news','news-taxonomies':'news',events:'events','meeting-slots':'events',sustainability:'sustainability','sustainability-goals':'sustainability','certifications':'quality','certification-types':'quality','product-applications':'catalog','product-concentrations':'catalog'} as Record<string,string>)[resource]??'page'
   if(resource==='pages'){
-   const id=params.get('where[id][equals]'),page=(metadata.pages as Collection).docs.find(page=>String(page.id)===id)
+   const id=params.get('where[id][equals]'),sourceKey=params.get('where[sourceKey][equals]')
+   const page=(metadata.pages as Collection).docs.find(page=>id?String(page.id)===id:page.sourceKey===sourceKey)
    group=groupFor(String(page?.sourceKey??''))
   }
-  preparePublicContent(group,pending)
+  await preparePublicContent(group,pending)
  }
- return (await pending.get(resource)!)[resource]
+ return pending.get(resource)!
 }
 
 function valueAt(value:unknown,path:string):unknown{

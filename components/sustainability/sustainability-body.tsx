@@ -1,3 +1,4 @@
+import {Fragment, type ReactNode} from 'react'
 import {TwoColumns} from '@/components/layout/two-columns'
 import type {SustainabilityCard} from '@/lib/api/public'
 import {readingText} from '@/lib/news/presentation'
@@ -17,14 +18,16 @@ function SustainabilityCards({articles,page,locale,labels}:Props){
  return <>{articles.map((a,i)=>{const v=a.published[locale];if(!v)return null;const featured=i===0&&a.content.featured,title=textContent(v.cardTitle)||textContent(v.title),image=v.gallery[0],date=new Intl.DateTimeFormat(locale,{month:'short',year:'numeric',timeZone:process.env.NEXT_PUBLIC_APP_TIMEZONE || undefined}).format(new Date(a.content.date));return <article className={featured?'feature reveal':'card post-card reveal'} key={a.id}><SmartLink className="cover" href={`/sustainability/${a.slug}`} aria-label={title}/><figure className="thumb">{image&&<ContentImage src={image.src} alt={image.alt} width={800} height={500}/>}<span className="tag">{v.badge}</span><span className="sdg-tag"><GoalImages ids={[...new Set([a.content.primaryGoal,...a.content.goalIds])].filter(Boolean).slice(0,3)} page={page} locale={locale}/></span></figure><div className="body"><div className={featured?'kicker':'date'}>{date}{featured?` · ${v.badge}`:''}</div>{featured?<h2><InlineContent document={textContent(v.cardTitle)?v.cardTitle:v.title}/></h2>:<h3><InlineContent document={textContent(v.cardTitle)?v.cardTitle:v.title}/></h3>}<p>{v.cardSummary||v.summary}</p><span className="go">{labels.read} <span className="arrow" aria-hidden="true">{locale==='ar'?'←':'→'}</span></span></div></article>})}</>
 }
 function CardsLayout(props:Props){const featured=props.articles[0]?.content.featured;return <>{featured&&<SustainabilityCards {...props} articles={props.articles.slice(0,1)}/>}<CardGrid reveal={false}><SustainabilityCards {...props} articles={props.articles.slice(featured?1:0)}/></CardGrid></>}
-export function SustainabilityIndexBody(props:Props){
+export function SustainabilityIndexBody(props:Props & {section?: string}){
+ const {section:selectedSection}=props;
  const {page,locale}=props,section=(key:string)=>page.sections.find(item=>item.key===key),value=(key:string,index:number)=>section(key)?.texts[index]?.values[locale]??'',rich=(key:string,index:number)=>section(key)?.richTexts?.[index]?.values[locale]
  const hero=section('section-0'),heroTitle=rich('section-0',0),heroDescription=rich('section-0',1)
- return <main id="main">
-  {hero?.enabled&&heroTitle&&heroDescription&&<PageHero layout="vortex" media={<SustainabilityRing icons={page.heroIcons}/>}><h1><InlineContent document={heroTitle}/></h1><div className="hero-description"><InlineContent document={heroDescription}/></div></PageHero>} 
-  {section('section-1')?.enabled&&<ContentSection className="sus-articles"><SectionHeading kicker={value('section-1',0)} title={<InlineContent document={rich('section-1',0)!}/>}/><CardsLayout {...props}/></ContentSection>}
-  {section('section-2')?.enabled&&<CallToActionSection kicker={value('section-2',0)} title={<InlineContent document={rich('section-2',0)!}/>} description={<InlineContent document={rich('section-2',1)!}/>} actions={[{href:'/contact',label:value('section-2',1)},{href:'/quality',label:value('section-2',2),variant:'secondary'}]}/>}
- </main>
+ const sections: Record<string, () => ReactNode> = {
+hero: () => (hero?.enabled&&heroTitle&&heroDescription&&<PageHero layout="vortex" media={<SustainabilityRing icons={page.heroIcons}/>}><h1><InlineContent document={heroTitle}/></h1><div className="hero-description"><InlineContent document={heroDescription}/></div></PageHero>),
+content: () => (section('section-1')?.enabled&&<ContentSection className="sus-articles"><SectionHeading kicker={value('section-1',0)} title={<InlineContent document={rich('section-1',0)!}/>}/><CardsLayout {...props}/></ContentSection>),
+related: () => (section('section-2')?.enabled&&<CallToActionSection kicker={value('section-2',0)} title={<InlineContent document={rich('section-2',0)!}/>} description={<InlineContent document={rich('section-2',1)!}/>} actions={[{href:'/contact',label:value('section-2',1)},{href:'/quality',label:value('section-2',2),variant:'secondary'}]}/>)
+};
+  return selectedSection ? sections[selectedSection]?.() ?? null : <main id="main">{Object.entries(sections).map(([key,render]) => <Fragment key={key}>{render()}</Fragment>)}</main>;
 }
 export function SustainabilityArticleBody({record,version:v,section,...props}:Props&{record:SustainabilityCard;version:SustainabilityVersion;section?:string}){
  const {page,locale,labels}=props,headings=documentHeadings(v.body),primary=page.goals.find(g=>g.id===record.content.primaryGoal),minutes=Math.max(1,Math.ceil([readingText(v.title),v.summary,readingText(v.body)].join(' ').trim().split(/\s+/u).length/200)),articleLookup=new Map(props.articles.map(article=>[article.id,article])),related=record.content.relatedArticleIds.map(id=>articleLookup.get(id)).filter((article):article is SustainabilityCard=>Boolean(article)&&article!.id!==record.id)

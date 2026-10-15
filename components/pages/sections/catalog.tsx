@@ -10,8 +10,8 @@ export async function renderSection({block,locale,source,definition,settings}:Se
  if(pageSlug==='products'){
   const data=await getCatalogPayload(locale,'products'),content=sectionContent<ManagedPageContent>(source,block)
   const blocks=content.sections.map((section,index)=>({...section,key:`section-${index}`}))
-  const index=['hero','collection','deep'].indexOf(name)
-  const section=CatalogIndexSections({content:{blocks},context:{catalog:data.catalog,locale,certifications:data.certifications,certificationLabels:data.certificationLabels,settings}})[index]
+  const sectionName=({collection:'range',deep:'gallery'} as Record<string,string>)[name]??name
+  const section=CatalogIndexSections({content:{blocks},context:{catalog:data.catalog,locale,certifications:data.certifications,certificationLabels:data.certificationLabels,settings},section:sectionName})
   return <>{section}{name==='collection'&&<CatalogInteractions/>}</>
  }
 

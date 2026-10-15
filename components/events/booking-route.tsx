@@ -1,4 +1,16 @@
 import type {ReactNode} from 'react'
 import {PageHero} from '@/components/site/page-hero'
+import {SectionCopy} from '@/components/editor/section-copy'
+import type {ManagedPageContent} from '@/lib/cms/types'
+import type {SiteLocale} from '@/i18n/navigation'
 
-export function BookingPageBody(widget:ReactNode){return <main id="main"><PageHero className="bk-hero" image="/assets/photos/book-meeting.webp" imageAlt="An Alamir Ingredients export manager and a buyer reviewing a specification sheet beside tomato and mango samples"><div className="kicker">Book a meeting</div><h1>Thirty minutes with the <em>export team.</em></h1><p>Pick a slot that works in your time zone. We will confirm by email with a calendar invite, and if you are meeting us at a show the same slot holds a seat on the stand.</p></PageHero><section className="band bk-band"><div className="wrap">{widget}</div></section></main>}
+export function BookingPageBody({widget,content,locale,section:selectedSection}:{widget?:ReactNode;content:ManagedPageContent;locale:SiteLocale;section?:string}){
+ const sections:Record<string,()=>ReactNode>={
+  hero:()=>{
+   const section=content.sections.find(item=>item.key==='hero')
+   return section?.enabled?<PageHero className="bk-hero" image={section.assets[0]?.value} imageAlt={section.texts[0]?.values[locale]}><div className="kicker">{section.texts[1]?.values[locale]}</div><h1><SectionCopy section={section} locale={locale} richIndex={0}/></h1><p><SectionCopy section={section} locale={locale} richIndex={1}/></p></PageHero>:null
+  },
+  bk_band:()=>content.sections.find(item=>item.key==='bk-band')?.enabled?<section className="band bk-band"><div className="wrap">{widget}</div></section>:null,
+ }
+ return selectedSection?sections[selectedSection]?.()??null:<main id="main">{sections.hero()}{sections.bk_band()}</main>
+}

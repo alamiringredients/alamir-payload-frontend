@@ -2,7 +2,6 @@ import {type ReactNode} from 'react'
 import {interfaceLabels,sectionContent} from '@/lib/payload/client'
 import type {HomeCmsData} from '@/lib/cms/types'
 import {getNavigationCatalog,getHomepagePayload} from '@/lib/api/public'
-import {renderManagedSection} from '@/lib/cms/render'
 import {HomeHero} from '@/components/home/home-hero'
 import {KeyFigures} from '@/components/home/key-figures'
 import {StorySection} from '@/components/home/story-section'
@@ -23,14 +22,14 @@ export async function renderSection({block,locale,source,definition,settings}:Se
   const productCatalog=name==='products'?await getNavigationCatalog():undefined
   const globeLabel=name==='reach'?(await interfaceLabels('page.shared',locale)).globeLabel:''
   const renderers:Record<string,()=>ReactNode>={
-   hero:()=>HomeHero({poster:section.assets.find(asset=>asset.source==='/assets/hero-poster.webp')?.value,videos:section.videos?.filter(Boolean)}),
-   figures:()=>KeyFigures({section,locale,groupLogo:settings.groupLogo}),story:StorySection,
-   products:()=>ProductCollection({catalog:productCatalog!,locale}),
-   certifications:()=>CertificationSection({data:home.certifications,locale,labels:home.certificationLabels}),
-   sourcing:SourcingSection,process:ProcessSection,quality:QualitySection,reach:()=>GlobalReachSection({globeLabel}),
-   contact:()=>ContactSection({locale,company:settings.company}),
+   hero:()=> <HomeHero section={section} locale={locale}/>,
+   figures:()=>KeyFigures({section,locale,groupLogo:settings.groupLogo}),story:()=> <StorySection section={section} locale={locale}/>,
+   products:()=><ProductCollection catalog={productCatalog!} locale={locale} section={section}/>,
+   certifications:()=><CertificationSection data={home.certifications} locale={locale} labels={home.certificationLabels} section={section}/>,
+   sourcing:()=> <SourcingSection section={section} locale={locale}/>,process:()=> <ProcessSection section={section} locale={locale}/>,quality:()=> <QualitySection section={section} locale={locale}/>,reach:()=><GlobalReachSection globeLabel={globeLabel} section={section} locale={locale}/>,
+   contact:()=><ContactSection locale={locale} company={settings.company} section={section}/>,
   }
-  return name==='figures'?renderers[name]():renderManagedSection(renderers[name](),section,locale)
+  return renderers[name]?.() ?? null
  }
 
 }

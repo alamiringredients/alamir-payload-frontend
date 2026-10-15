@@ -12,7 +12,6 @@ import {SiteFooter} from '@/components/site/site-footer'
 import {SiteHeader} from '@/components/site/site-header'
 import {SiteInteractions} from '@/components/site-interactions'
 import type {Metadata} from 'next'
-import {renderWebsiteBrand} from '@/lib/cms/render'
 import {localizedPageMetadata} from '@/lib/cms/metadata'
 import {hasLocale} from 'next-intl'
 import {notFound} from 'next/navigation'
@@ -38,10 +37,10 @@ export default async function HomePage({params}: {params: Promise<{locale: strin
   if(!cmsPage)notFound()
   return <div className="site-page">
     <JsonLd data={pageSchema(localePath('/',locale),locale,seo.title[locale],seo.description[locale])}/>
-    {sections.get('header')?.enabled && renderWebsiteBrand(<><a className="skip" href="#main">{sectionText(sections.get('header')!, 'Skip to content', locale)}</a>{SiteHeader({catalog,locale,menus:layout.home.menus,section:sections.get('header')!})}</>, settings, locale)}
+    {sections.get('header')?.enabled && <><a className="skip" href="#main">{sectionText(sections.get('header')!, 'Skip to content', locale)}</a>{SiteHeader({logo:settings.logo,siteName:settings.siteName[locale],catalog,locale,menus:layout.home.menus,section:sections.get('header')!})}</>}
     {meetingEvent && <EventAnnouncement event={meetingEvent} locale={locale}/>} <PageOverlays locale={locale}/>
     <FormScopeProvider forms={forms} countries={await getFormCountries(forms,locale)}><PageBody page={cmsPage} locale={locale}/></FormScopeProvider>
-    {sections.get('footer')?.enabled && renderWebsiteBrand(SiteFooter({company:settings.company,locale,menus:layout.home.footerMenus,section:sections.get('footer')!}), settings, locale)}
+    {sections.get('footer')?.enabled && SiteFooter({logo:settings.logo,groupLogo:settings.groupLogo,siteName:settings.siteName[locale],company:settings.company,locale,menus:layout.home.footerMenus,section:sections.get('footer')!})}
     <SiteInteractions />
   </div>
 }

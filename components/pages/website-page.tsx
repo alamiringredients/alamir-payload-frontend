@@ -4,7 +4,6 @@ import type {FormPurpose} from '@/lib/forms/types'
 import {hasLocale} from 'next-intl'
 import {notFound} from 'next/navigation'
 import {locales,localePath} from '@/i18n/navigation'
-import {preparePublicPage} from '@/lib/payload/public-site'
 import {pageBySlug} from '@/lib/payload/client'
 import {getSiteShell,getWebsiteSettings} from '@/lib/api/public'
 import {SitePage} from '@/components/site/site-page'
@@ -17,7 +16,6 @@ export async function websitePageMetadata({params}:WebsitePageProps):Promise<Met
  const {locale,slug}=await params
  if(!hasLocale(locales,locale))notFound()
  const path=slug.join('/')
- preparePublicPage(path)
  const page=await pageBySlug(path)
  if(!page)notFound()
  const seo=page.page?.seo as {title?:LocalizedValue;description?:LocalizedValue;socialImage?:{url?:string}}|undefined
@@ -31,7 +29,6 @@ export async function WebsitePage({params,searchParams}:WebsitePageProps){
  const {locale,slug}=await params
  if(!hasLocale(locales,locale))notFound()
  const path=slug.join('/')
- preparePublicPage(path)
  const page=await pageBySlug(path)
  if(!page)notFound()
  const [home,settings]=await Promise.all([getSiteShell(),getWebsiteSettings()])

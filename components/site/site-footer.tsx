@@ -13,7 +13,7 @@ function FooterCompanyContact({company,locale}:{company:CompanyInformation;local
   return <><ul>{[company.exportPhone,company.secondaryPhone].filter(Boolean).map(phone=><li key={phone}><SmartLink href={`tel:${phone.replace(/[^+\d]/g,'')}`} dir="ltr">{phone}</SmartLink></li>)}<li style={{whiteSpace:'pre-line'}}>{company.address[locale]}</li></ul><SocialLinks urls={company.socialLinks} locale={locale}/></>
 }
 
-export function SiteFooter({company,locale,menus,section}:{section:HomeSectionContent;company:CompanyInformation;locale:SiteLocale;menus?:{explore:NavigationItem[];company:NavigationItem[];legal:NavigationItem[]}}){
+export function SiteFooter({company,locale,menus,section,logo,groupLogo,siteName}:{logo:string;groupLogo:string;siteName:string;section:HomeSectionContent;company:CompanyInformation;locale:SiteLocale;menus?:{explore:NavigationItem[];company:NavigationItem[];legal:NavigationItem[]}}){
   const copy = (source: string) => sectionText(section, source, locale)
   const description = section.richTexts?.find(field => field.source === 'Tomato, fruit purees and concentrates, manufactured in Sadat City, Egypt.')
   const links=(items:NavigationItem[])=>items.map(item=>{const href=navigationHref(item);return href?<li key={item.id}><SmartLink href={href}>{navigationLabel(item,locale)}</SmartLink></li>:null})
@@ -21,11 +21,11 @@ export function SiteFooter({company,locale,menus,section}:{section:HomeSectionCo
     <div className="wrap">
       <div className="footer-grid">
         <div>
-          <SmartLink className="brand" href="/"><ContentImage src="/assets/logo-full.svg" alt={copy("Alamir Ingredients")}/></SmartLink>
+          <SmartLink className="brand" href="/">{logo && <ContentImage src={logo} alt={siteName}/>}</SmartLink>
           {description && <p><InlineContent document={description.values[locale]}/></p>}
           <SmartLink className="parent-card" href="https://www.alamireg.com/" target="_blank" rel="noopener">
             <span className="pc-label">{copy("Part of")}</span>
-            <span className="pc-logo"><ContentImage src="/assets/logo.webp" alt={copy("Alamir Group")} loading="lazy" decoding="async"/></span>
+            <span className="pc-logo">{groupLogo && <ContentImage src={groupLogo} alt={copy("Alamir Group")} loading="lazy" decoding="async"/>}</span>
             <span className="pc-go">{copy("Visit site")} <span className="arrow">→</span></span>
           </SmartLink>
         </div>
