@@ -58,17 +58,17 @@ export function DownloadsContent({
 }: {
   content: DownloadsPageContent;
   fileSizes?: Record<string, number>;
-  data: CertificationData;
-  catalog: Catalog;
+  data?: CertificationData;
+  catalog?: Catalog;
   settings: WebsiteSettings;
   locale: SiteLocale;
   labels: CertificationInterfaceLabels;
   section?: string;
 }) {
-  const certificates = downloadableCertifications(data);
-  const products = catalog.products.filter(
+  const certificates = data ? downloadableCertifications(data) : [];
+  const products = catalog?.products.filter(
     (product) => product.content.tds[locale],
-  );
+  ) ?? [];
   const sections: Record<string, () => ReactNode> = {
     hero: () => (content.sectionVisibility.hero && (
       <PageHero

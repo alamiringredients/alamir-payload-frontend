@@ -20,7 +20,6 @@ export type FormField = {
   mimeTypes?: { mimeType: string }[];
   message?: unknown;
   maxFileSize?: number;
-  multiple?: boolean;
 };
 export type CmsForm = {
  ui?:Record<string,string>;

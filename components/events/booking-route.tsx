@@ -8,9 +8,9 @@ export function BookingPageBody({widget,content,locale,section:selectedSection}:
  const sections:Record<string,()=>ReactNode>={
   hero:()=>{
    const section=content.sections.find(item=>item.key==='hero')
-   return section?.enabled?<PageHero className="bk-hero" image={section.assets[0]?.value} imageAlt={section.texts[0]?.values[locale]}><div className="kicker">{section.texts[1]?.values[locale]}</div><h1><SectionCopy section={section} locale={locale} richIndex={0}/></h1><p><SectionCopy section={section} locale={locale} richIndex={1}/></p></PageHero>:null
+   return section?.enabled?<PageHero className="bk-hero" image={section.images.image} imageAlt={section.text.text?.[locale]}><div className="kicker">{section.text.text2?.[locale]}</div><h1><SectionCopy section={section} locale={locale} field="heading"/></h1><p><SectionCopy section={section} locale={locale} field="body"/></p></PageHero>:null
   },
-  bk_band:()=>content.sections.find(item=>item.key==='bk-band')?.enabled?<section className="band bk-band"><div className="wrap">{widget}</div></section>:null,
+  bk_band:()=>content.sections.find(item=>item.key==='bk_band')?.enabled?<section className="band bk-band"><div className="wrap">{widget}</div></section>:null,
  }
  return selectedSection?sections[selectedSection]?.()??null:<main id="main">{sections.hero()}{sections.bk_band()}</main>
 }

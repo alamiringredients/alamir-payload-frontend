@@ -1,3 +1,8 @@
+import {presentEditorialPage} from '../cms/editorial-page'
+import {object,localizedText} from '../cms/fields'
+import {presentSustainabilityPage} from '../cms/sustainability-page'
+import {presentNativeRecord} from './record-presentation'
+import {presentManagedPage} from '../cms/managed-page'
 import {presentCatalogRecord} from '@/lib/catalog/presentation'
 import type {CatalogLabels} from '@/lib/catalog/types'
 import {richText} from '@/lib/editor/lexical'
@@ -6,11 +11,12 @@ import 'server-only'
 import { cache } from 'react'
 import {publishedSummary,publishedIdentities,publishedDocuments,publishedGlobal,publishedPage,type IdentityResource} from './public-site'
 import templates from './templates.json'
-import sections from './sections.json'
-import {applyRecordSection, pagePresentationSource, pageSectionTemplate, pageSections, recordPresentationSource, type TemplateValue} from './section-projection'
+import {presentCareersPage, presentDownloadsPage, presentNewsPage, pageSeo} from '../cms/page-content'
+import {applyRecordSection, recordPresentationSource, type TemplateValue} from './section-projection'
 import { textContent, type ContentNode, type ContentDocument } from '@/lib/editor/document'
 
 type RecordCollection = 'products' | 'categories' | 'certification-types' | 'certifications' | 'news-taxonomies' | 'news' | 'sustainability' | 'jobs' | 'events'
+const nativePages = {'about-page': presentEditorialPage, 'quality-page': presentEditorialPage, 'products-page': presentManagedPage, 'sustainability-page': presentSustainabilityPage, 'contact-page': presentManagedPage, 'search-page': presentManagedPage, 'privacy-page': presentManagedPage, 'terms-page': presentManagedPage, 'cookies-page': presentManagedPage, 'thank-you-page': presentManagedPage, 'not-found-page': presentManagedPage, 'events-page': presentManagedPage, 'booking-page': presentManagedPage, 'home-page': (page: CmsPage, origin: string) => ({seo: pageSeo(page, origin), sections: []}), 'careers-page': presentCareersPage, 'downloads-page': presentDownloadsPage, 'news-page': presentNewsPage}
 type Value = TemplateValue
 import type {Document} from './types'
 import type {SiteLocale} from '@/i18n/navigation'
@@ -78,10 +84,14 @@ function hydrate(template: Value, doc: Document, locale?: string): unknown {
   }
   return Object.fromEntries(Object.entries(template).map(([key,value]) => [key,hydrate(value,doc,locale)]))
 }
-export const globalContent = cache(async <T>(slug: keyof typeof templates.globals,view?:'meta'): Promise<T> => {
+export const globalContent = cache(async <T>(slug: keyof typeof templates.globals | keyof typeof nativePages,view?:'meta'): Promise<T> => {
   if(slug==='interface-text')return hydrate(templates.globals[slug] as unknown as Value,await translationContent()) as T
-  const page=slug==='website-settings'||slug==='navigation'?undefined:await pageBySourceKey(slug==='catalog-settings'?'products-page':slug)
-  const doc=page?pagePresentationSource(page):await publishedGlobal(slug)
+  const page=slug==='website-settings'||slug==='navigation'?undefined:await pageBySourceKey(slug==='catalog-settings'?'products-page':slug,view!=='meta' && slug!=='catalog-settings')
+  if (page && Object.hasOwn(nativePages, slug)) {
+    if (view === 'meta') return {seo: pageSeo(page, backendOrigin()), sections: []} as T
+    return nativePages[slug as keyof typeof nativePages](page, backendOrigin()) as T
+  }
+  const doc=page??await publishedGlobal(slug)
   const [interfaceText,media]=await Promise.all([translationContent(),mediaDocuments()])
   doc.interface=interfaceText;doc.mediaRefs=media
   if(slug==='navigation'){
@@ -89,12 +99,14 @@ export const globalContent = cache(async <T>(slug: keyof typeof templates.global
     const resolve=(value:unknown):unknown=>Array.isArray(value)?value.map(resolve):value && typeof value==='object'?Object.fromEntries(Object.entries(value).map(([key,item])=>[key,key==='page' && typeof item==='number'?links.get(item)??null:resolve(item)])):value
     doc.page=resolve(doc.page)
   }
-  const template=templates.globals[slug] as unknown as Record<string,Value>
+  const template=templates.globals[slug as keyof typeof templates.globals] as unknown as Record<string,Value>
   const result=hydrate(view==='meta'?{seo:template.seo,sections:[]}:template,doc) as Record<string,unknown>
   if(slug==='catalog-settings'){
     const [applications,concentrations]=await Promise.all([publishedDocuments('product-applications'),publishedDocuments('product-concentrations')])
     const options=(docs:Document[])=>docs.map(doc=>({id:doc.key,label:doc.name}))
     result.applications=options(applications);result.concentrations=options(concentrations)
+    const collection=page?.layout.filter(block=>block.blockType==='products-collection').at(-1)
+    result.emptyMessage=localizedText(object(collection?.content?.text10).values)
   }
   if(slug==='navigation'){const page=doc.page as {headerLeft?:unknown[];headerRight?:unknown[];footerExplore?:unknown[];footerCompany?:unknown[];footerLegal?:unknown[]};result.menus={left:page.headerLeft??[],right:page.headerRight??[]};result.footerMenus={explore:page.footerExplore??[],company:page.footerCompany??[],legal:page.footerLegal??[]}}
   return result as T
@@ -143,100 +155,10 @@ export const recordDocuments=cache(async(slug:RecordCollection):Promise<Document
  }
  return docs.map(doc=>({...doc,interface:interfaceText,mediaRefs:media}))
 })
-function articleBody(value:unknown,locale:string,introStyle:unknown):ContentDocument {
- const document=richText(value,undefined,locale)
- const first=document.content[0]
- if(first?.type==='paragraph' && introStyle==='lead')first.attrs={...first.attrs,variant:'lead'}
- return document
-}
 export function presentRecord<T>(slug:RecordCollection,doc:Document,view?:'card'|'meta'):T{
- if(slug==='products'||slug==='categories')return presentCatalogRecord(slug,doc,undefined,view) as T
- const layouts=templates.collections[slug] as unknown as Record<string,Value>
-  let template = layouts[String(doc.sourceId)] ?? Object.values(layouts)[0]
-  if(view && (slug==='news'||slug==='sustainability')){
-   const content=(template as Record<string,Value>).content as Record<string,Value>
-   const locales=content.locales as Record<string,Value>
-   const fields=view==='meta'
-    ? ['seoTitle','seoDescription',slug==='news'?'hero':'gallery']
-    : slug==='news'
-     ? ['title','summary','cardTitle','cardSummary','hero','heroAlt']
-     : ['title','summary','cardTitle','cardSummary','badge','gallery']
-   template={
-    ...(template as Record<string,Value>),
-    content:{
-     ...(view==='card'?content:{}),
-     locales:{...locales,$localeTree:Object.fromEntries(Object.entries(locales.$localeTree as Record<string,Value>).filter(([key])=>fields.includes(key)))},
-    },
-   }
-  } else if(view && slug==='jobs'){
-   const content=(template as Record<string,Value>).content as Record<string,Value>
-   const fields=view==='meta'?['title','summary']:['title','summary','department','location','contract','experience']
-   template={...(template as Record<string,Value>),content:{$localeTree:Object.fromEntries(Object.entries(content.$localeTree as Record<string,Value>).filter(([key])=>fields.includes(key)))}}
-  } else if(view==='card' && slug==='events'){
-   const content=(template as Record<string,Value>).content as Record<string,Value>
-   template={...(template as Record<string,Value>),content:Object.fromEntries(Object.entries(content).filter(([key])=>key!=='body'))}
-  } else if(view==='meta' && slug==='events'){
-   const content=(template as Record<string,Value>).content as Record<string,Value>
-   template={...(template as Record<string,Value>),content:{seo:content.seo}}
-  } else if(view==='card' && template && typeof template==='object' && !Array.isArray(template)){
-   const fields=new Set(['name','description','artwork','applications','concentrations','gallery','seo','icon','tds'])
-   template={...template,content:Object.fromEntries(Object.entries(template.content as Record<string,Value>).filter(([key])=>fields.has(key)))}
-  }
-  const result = hydrate(template, doc) as Record<string, unknown>
-  // Component contracts use the historical reference IDs; submissions use Payload IDs.
-  result.id=doc.sourceId ?? doc.id
-  if (slug === 'certifications' && typeof doc.certificationType === 'object' && doc.certificationType) result.type_id=(doc.certificationType as {sourceId?:number;id:number}).sourceId ?? (doc.certificationType as {id:number}).id
-  if (slug === 'jobs') {
-    result.status=doc.availability
-    const localized=result.content as Record<string,Record<string,unknown>>
-    for(const language of ['en','ar','fr']){localized[language].title=(doc.name as Record<string,string>)?.[language]??'';if(!view)localized[language].heading=richText((doc.title as Record<string,unknown>)?.[language],undefined,language)}
-  }
-  if(slug==='sustainability'){
-    const images=doc.heroImage as Record<string,{url?:string}|undefined>|undefined
-    const localized=(result.content as {locales:Record<string,Record<string,unknown>>}).locales
-    for(const language of ['en','ar','fr']){const image=images?.[language];localized[language].gallery=image?.url?[{src:image.url,alt:(doc.heroAlt as Record<string,string>)?.[language]??'',caption:(doc.heroCaption as Record<string,string>)?.[language]??''}]:[]}
-  }
-  if(slug==='sustainability'){
-    const photos=doc.gallery as {image:{url?:string};caption:Record<string,string>;alt:Record<string,string>}[]|undefined
-    if(Array.isArray(photos)) {
-      const localized=(result.content as {locales:Record<string,Record<string,unknown>>}).locales
-      for(const language of ['en','ar','fr'])localized[language].gallery=photos.map(photo=>({src:publicMediaURL(photo.image,doc),alt:photo.alt?.[language]??'',caption:photo.caption?.[language]??''}))
-    }
-  }
-  if(slug==='events' && !view){
-   const localized=(result.content as {body:Record<string,unknown>}).body
-   for(const language of ['en','ar','fr'])localized[language]=articleBody((doc.body as Record<string,unknown>)?.[language],language,doc.introStyle)
-  }
-  if (slug === 'news' || slug === 'sustainability') {
-    const content=result.content as Record<string, unknown>
-    const localized=content.locales as Record<string,Record<string,unknown>>
-    for(const language of ['en','ar','fr']) {
-    if(slug==='news' && view!=='meta'){
-      const cardTitle=(doc.cardTitle as Record<string,unknown>|undefined)?.[language]
-      const cardSummary=(doc.cardSummary as Record<string,string>|undefined)?.[language]
-      if(cardTitle)localized[language].cardTitle=richText(cardTitle,undefined,language)
-      if(cardSummary)localized[language].cardSummary=cardSummary
-    }
-    const body=(doc.body as Record<string,{root?:{children?:unknown[]}}> | undefined)?.[language]
-    if(!view && body?.root?.children?.length){
-      const document=articleBody(body,language,doc.introStyle)
-      if(slug==='sustainability'){
-        const content:ContentNode[]=[]
-        let section:ContentNode|undefined
-        for(const node of document.content){
-          if(node.type==='heading' && node.attrs?.level===2){section={type:'contentSection',attrs:{id:node.attrs.id},content:[]};content.push(section)}
-          if(section)section.content!.push(node)
-          else {if(node.type==='paragraph')node.attrs={...node.attrs,variant:'lead'};content.push(node)}
-        }
-        document.content=content
-      }
-      localized[language].body=document
-    }
-    }
-    result.published=content.locales
-    result.availableLocales=['en','ar','fr']
-  }
-  return result as T
+ return slug==='products'||slug==='categories'
+  ? presentCatalogRecord(slug,doc,undefined,view) as T
+  : presentNativeRecord<T>(slug,doc,backendOrigin(),view)
 }
 export const records=cache(async<T>(slug:RecordCollection,view?:'card'|'meta'):Promise<T[]> => (await recordDocuments(slug)).map(doc=>presentRecord<T>(slug,slug==='products'||slug==='categories'?doc:recordSource(doc),view)))
 export const record=cache(async<T>(collection:RecordCollection,slug:string,view?:'card'|'meta'):Promise<T|null>=>{
@@ -272,28 +194,19 @@ export const preparePage=cache(async(doc:Document):Promise<CmsPage>=>{
  if(goals?.length){const references=new Map((await publishedDocuments('sustainability-goals')).map(doc=>[doc.id,resolveMediaReferences(doc,media)]));page.relationships={...(page.relationships as Record<string,unknown>),goals:goals.map(id=>references.get(id)).filter(Boolean)}}
  return {...page,interface:interfaceText,mediaRefs:media}
 })
-const pageByID=cache(async(id:number):Promise<CmsPage|undefined>=>{
- const doc=await publishedPage(id)
+const pageByID=cache(async(id:number,prepareSections=true):Promise<CmsPage|undefined>=>{
+ const doc=await publishedPage(id,prepareSections)
  return doc?preparePage(doc):undefined
 })
 export const pageBySlug=cache(async(slug:string):Promise<CmsPage|undefined>=> {
  const page=(await pageIdentities()).find(page=>page.slug===slug)
  return page?await pageByID(page.id):undefined
 })
-export const pageBySourceKey=cache(async(key:string):Promise<CmsPage|undefined>=>{
+export const pageBySourceKey=cache(async(key:string,prepareSections=true):Promise<CmsPage|undefined>=>{
  const page=(await pageIdentities()).find(page=>page.sourceKey===key)
- return page?pageByID(page.id):undefined
+ return page?pageByID(page.id,prepareSections):undefined
 })
 export const pageLinks=cache(async ():Promise<{slug:string}[]> => (await pageIdentities()).map(page=>({slug:page.slug!})))
-const sectionTemplates=new Map(sections.map(definition=>[
- definition.slug,
- pageSectionTemplate(templates.globals[definition.pageKey as keyof typeof templates.globals] as unknown as Record<string,Value>,definition.slug),
-]))
-export const sectionContent=cache(<T>(page:CmsPage,block:PageBlock):T=>{
- if(!pageSections.has(block.blockType))throw new Error(`Unknown page Section: ${block.blockType}`)
- return hydrate(sectionTemplates.get(block.blockType)!,pagePresentationSource(page,block)) as T
-})
-
 export const catalogInterfaceLabels=cache(async()=>hydrate(templates.globals['catalog-settings'].labels as unknown as Value,{id:0,interface:await translationContent()}) as CatalogLabels)
 
 export const mediaDocuments=cache(async()=>new Map((await publishedSummary('media')).map(doc=>[doc.id,doc])))

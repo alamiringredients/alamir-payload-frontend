@@ -23,14 +23,14 @@ export const revalidate = 300
 export async function generateMetadata({params}: {params: Promise<{locale: string}>}): Promise<Metadata> {
   const {locale} = await params
   if (!hasLocale(routing.locales, locale)) notFound()
-  const {home: {seo}} = await getHomepagePayload(locale)
+  const {home: {seo}} = await getHomepagePayload()
   return localizedPageMetadata(seo, locale, '/')
 }
 
 export default async function HomePage({params}: {params: Promise<{locale: string}>}) {
   const {locale} = await params
   if (!hasLocale(routing.locales, locale)) notFound()
-  const [layout, homepage,cmsPage,forms] = await Promise.all([getLayoutPayload(), getHomepagePayload(locale),pageBySlug('home'),getForms(locale,{purpose:'home',collection:'pages',slug:'home'})])
+  const [layout, homepage,cmsPage,forms] = await Promise.all([getLayoutPayload(), getHomepagePayload(),pageBySlug('home'),getForms(locale,{purpose:'home',collection:'pages',slug:'home'})])
   const {settings, catalog} = layout
   const {home: {seo}, meetingEvent} = homepage
   const sections = new Map(layout.home.sections.map(section => [section.key, section]))

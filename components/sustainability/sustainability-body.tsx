@@ -20,12 +20,11 @@ function SustainabilityCards({articles,page,locale,labels}:Props){
 function CardsLayout(props:Props){const featured=props.articles[0]?.content.featured;return <>{featured&&<SustainabilityCards {...props} articles={props.articles.slice(0,1)}/>}<CardGrid reveal={false}><SustainabilityCards {...props} articles={props.articles.slice(featured?1:0)}/></CardGrid></>}
 export function SustainabilityIndexBody(props:Props & {section?: string}){
  const {section:selectedSection}=props;
- const {page,locale}=props,section=(key:string)=>page.sections.find(item=>item.key===key),value=(key:string,index:number)=>section(key)?.texts[index]?.values[locale]??'',rich=(key:string,index:number)=>section(key)?.richTexts?.[index]?.values[locale]
- const hero=section('section-0'),heroTitle=rich('section-0',0),heroDescription=rich('section-0',1)
+ const {page,locale}=props
  const sections: Record<string, () => ReactNode> = {
-hero: () => (hero?.enabled&&heroTitle&&heroDescription&&<PageHero layout="vortex" media={<SustainabilityRing icons={page.heroIcons}/>}><h1><InlineContent document={heroTitle}/></h1><div className="hero-description"><InlineContent document={heroDescription}/></div></PageHero>),
-content: () => (section('section-1')?.enabled&&<ContentSection className="sus-articles"><SectionHeading kicker={value('section-1',0)} title={<InlineContent document={rich('section-1',0)!}/>}/><CardsLayout {...props}/></ContentSection>),
-related: () => (section('section-2')?.enabled&&<CallToActionSection kicker={value('section-2',0)} title={<InlineContent document={rich('section-2',0)!}/>} description={<InlineContent document={rich('section-2',1)!}/>} actions={[{href:'/contact',label:value('section-2',1)},{href:'/quality',label:value('section-2',2),variant:'secondary'}]}/>)
+hero: () => (page.hero.enabled&&<PageHero layout="vortex" media={<SustainabilityRing icons={page.heroIcons}/>}><h1><InlineContent document={page.hero.title[locale]}/></h1><div className="hero-description"><InlineContent document={page.hero.description[locale]}/></div></PageHero>),
+content: () => (page.content.enabled&&<ContentSection className="sus-articles"><SectionHeading kicker={page.content.kicker[locale]} title={<InlineContent document={page.content.title[locale]}/>}/><CardsLayout {...props}/></ContentSection>),
+related: () => (page.contact.enabled&&<CallToActionSection kicker={page.contact.kicker[locale]} title={<InlineContent document={page.contact.title[locale]}/>} description={<InlineContent document={page.contact.description[locale]}/>} actions={[{href:'/contact',label:page.contact.quoteLabel[locale]},{href:'/quality',label:page.contact.qualityLabel[locale],variant:'secondary'}]}/>)
 };
   return selectedSection ? sections[selectedSection]?.() ?? null : <main id="main">{Object.entries(sections).map(([key,render]) => <Fragment key={key}>{render()}</Fragment>)}</main>;
 }

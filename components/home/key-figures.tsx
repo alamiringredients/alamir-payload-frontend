@@ -1,18 +1,18 @@
 import {AnimatedFigures, FigureValue} from './animated-figures'
 import {ContentImage} from '@/components/site/content-image'
 import {SmartLink} from '@/components/site/smart-link'
-import type {HomeSectionContent,CmsLocale} from '@/lib/cms/types'
+import type {CmsLocale} from '@/lib/cms/types'
+import type {HomeSection} from '@/lib/cms/home-section'
 
-export function KeyFigures({section,locale,groupLogo}:{section:HomeSectionContent;locale:CmsLocale;groupLogo:string}){
-  const copy=(source:string)=>section.texts.find(field=>field.source===source)?.values[locale]??''
+export function KeyFigures({section,locale,groupLogo}:{section:HomeSection;locale:CmsLocale;groupLogo:string}){
   if(!section.figures?.length)return null
-  return (<section className="numbers" aria-label={copy('Key figures')}>
+  return (<section className="numbers" aria-label={section.text.ariaLabel[locale]}>
   <div className="wrap numbers-inner">
     <div className="numbers-bar reveal">
-      <span className="k">{copy('Al Amir Group — in figures')}</span>
+      <span className="k">{section.text.label[locale]}</span>
       <SmartLink className="group-link" href="https://www.alamireg.com/" target="_blank" rel="noopener">
         {groupLogo&&<ContentImage src={groupLogo} alt="" loading="lazy" decoding="async" />}
-        <span>{copy('View Alamir Group')}</span>
+        <span>{section.text.viewGroup[locale]}</span>
         <span className="arrow" aria-hidden="true" />
       </SmartLink>
     </div>

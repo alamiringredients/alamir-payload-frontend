@@ -1,5 +1,5 @@
-import {sectionContent} from '@/lib/payload/client'
-import type {ManagedPageContent} from '@/lib/cms/types'
+import {backendOrigin} from '@/lib/payload/client'
+import {presentManagedPage} from '@/lib/cms/managed-page'
 import {getSearchPayload} from '@/lib/api/public'
 import {ContactPageContent,LegalPageContent,ThankYouPageContent,SearchPageContent,NotFoundPageContent} from '@/components/content/managed-page-content'
 import {ContactForm} from '@/components/enquiries/contact-form'
@@ -8,7 +8,7 @@ import {type SectionArgs} from '../section-utils'
 
 export async function renderSection({block,locale,source,definition,settings,context}:SectionArgs){
  const {name,pageSlug}=definition
- const content=sectionContent<ManagedPageContent>(source,block)
+ const content=presentManagedPage(source,backendOrigin(),block)
  const section=name==='hero'?'hero':'body'
  if(['privacy','terms','cookies'].includes(pageSlug))return LegalPageContent({content,locale,section,page:pageSlug as 'privacy'|'terms'|'cookies'})
  else if(pageSlug==='thank-you')return ThankYouPageContent({content,locale,section})

@@ -1,14 +1,13 @@
 "use client";
 import styles from "./managed-form.module.css";
-import { useEffect, useId, useState, type ReactNode } from "react";
-import type { SiteLocale } from "@/i18n/navigation";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
+import {localePath, locales, type SiteLocale} from "@/i18n/navigation";
 import type { CmsForm, FormPurpose, FormField } from "@/lib/forms/types";
 import type { CountryOption } from "@/lib/countries";
 import type { FormResult } from "@/lib/api/forms";
 import { submitBuilderForm } from "@/lib/forms/submit";
 import { RichText } from "@payloadcms/richtext-lexical/react";
 import { useFormDefinition } from "./forms-provider";
-import { useForm } from "./use-form";
 import { FormActions } from "./form-actions";
 import { FormConsent } from "./form-consent";
 import { FormFieldError } from "./form-field-error";
@@ -28,61 +27,65 @@ export function ManagedForm(props: ManagedFormProps) {
   return <BuilderForm {...props} definition={definition} countries={countries}/>;
 }
 
-export function BuilderForm({
+export function BuilderForm(props: Omit<ManagedFormProps, 'purpose'> & {
+  purpose: CmsForm['purpose']; definition?: CmsForm; countries: readonly CountryOption[]; pageId?: number;
+}) {
+  if (!props.definition) return null;
+  return <FormFields {...props} definition={props.definition}
+    key={JSON.stringify([props.definition.id, props.locale, props.slotId, props.pageId])}/>;
+}
+
+function FormFields({
   purpose, locale, jobTitle, slotId, actions, onSuccess, definition, countries, pageId,
 }: Omit<ManagedFormProps, 'purpose'> & {
   purpose: CmsForm['purpose'];
-  definition?: CmsForm;
+  definition: CmsForm;
   countries: readonly CountryOption[];
   pageId?: number;
 }) {
   const instanceId = useId();
-  const [sent, setSent] = useState(false);
-  const initial = Object.fromEntries(
-    (definition?.fields ?? [])
-      .filter((field) => field.name)
-      .map((field) => [
-        field.name!,
-        field.defaultValue ??
-          (field.blockType === "checkbox"
-            ? false
-            : (field.blockType === "select"||field.blockType === "product-select") && !field.placeholder
-              ? (field.options?.[0]?.value ?? "")
-              : ""),
-      ]),
-  );
-  const form = useForm<Record<string, unknown>>({
-    initialValues: { ...initial, key: "", locale, trap: "", slotId },
-    submitter: async ({ formData }) => {
-      if (!definition)
-        return {
-          ok: false,
-          valid: false,
-          status: 400,
-          values: {},
-          errors: { _root: ["failed"] },
-        };
-      const result = await submitBuilderForm(definition, formData, pageId);
-      if (result.ok) {
-        setSent(true);
-        onSuccess?.(result);
-        if (result.data?.redirectTo)
-          window.location.assign(result.data.redirectTo);
-      }
-      return result;
-    },
-  });
+  const [values, setValues] = useState<Record<string, unknown>>(() => ({
+    ...Object.fromEntries(definition.fields.filter(field => field.name).map(field => [
+      field.name!, field.defaultValue ?? (field.blockType === 'checkbox' ? false
+        : (field.blockType === 'select' || field.blockType === 'product-select') && !field.placeholder
+          ? field.options?.[0]?.value ?? '' : ''),
+    ])),
+    key: '', locale, trap: '', slotId,
+  }));
+  const [submitting, setSubmitting] = useState(false);
+  const [result, setResult] = useState<FormResult | null>(null);
+  const pending = useRef<AbortController | null>(null);
   useEffect(() => {
-    form.reset({
-      ...initial,
-      key: crypto.randomUUID(),
-      locale,
-      trap: "",
-      slotId,
-    });
-    setSent(false);
-  }, [definition?.id, locale, slotId]);
-  if (!definition) return null;
+    setValues(current => ({...current, key: crypto.randomUUID()}));
+    return () => { pending.current?.abort(); };
+  }, []);
+  const submit = async () => {
+    if (pending.current || !values.key || result?.ok) return;
+    const request = new AbortController();
+    pending.current = request;
+    setSubmitting(true);
+    try {
+      const response = await submitBuilderForm(definition, values, pageId, request.signal);
+      // A remounted form owns a new identity. Its predecessor may already have
+      // committed on the backend, but must never confirm or redirect this form.
+      if (request.signal.aborted) return;
+      setResult(response);
+      if (response.ok) {
+        onSuccess?.(response);
+        const destination = response.data?.redirectTo;
+        if (destination) {
+          const localized = locales.some(language => new RegExp(`^/${language}(?:/|[?#]|$)`).test(destination));
+          window.location.assign(destination.startsWith('/') && !destination.startsWith('//') && !localized
+            ? localePath(destination, locale) : destination);
+        }
+      }
+    } finally {
+      if (!request.signal.aborted) {
+        pending.current = null;
+        setSubmitting(false);
+      }
+    }
+  };
   const labels=definition.ui??{};
   const prefix = {
     home: "e",
@@ -93,12 +96,12 @@ export function BuilderForm({
     search: "q",
     custom: `form-${instanceId}`,
   }[purpose];
-  const values = form.values;
   const error = (name: string) =>
-    form.errors.has(name) ? labels.invalid : undefined;
+    result?.errors[name]?.length ? labels.invalid : undefined;
   const onChange = (name: string, value: unknown) => {
-    setSent(false);
-    form.setValue(name, value);
+    const key = result?.ok ? crypto.randomUUID() : undefined;
+    if (result?.ok) setResult(null);
+    setValues(current => ({...current, ...(key ? {key} : {}), [name]: value}));
   };
   const renderField = (field: FormField) => {
     if (field.visible === false) return null;
@@ -151,7 +154,6 @@ export function BuilderForm({
           {...shared}
           type="file"
           accept={field.mimeTypes?.map((type) => type.mimeType).join(",")}
-          multiple={field.multiple}
           onChange={(event) => onChange(name, event.target.files?.[0])}
         />
       );
@@ -283,17 +285,17 @@ export function BuilderForm({
       className={`form${purpose === "home" ? " enquiry-form" : purpose === "application" ? ` ${styles.application} reveal` : ""}`}
       data-payload-form={purpose}
       data-form-ready={Boolean(values.key)}
-      aria-busy={form.submitting}
+      aria-busy={submitting}
       style={purpose === "contact" ? { marginTop: 22 } : undefined}
       onSubmit={(event) => {
         event.preventDefault();
-        void form.submit();
+        void submit();
       }}
     >
       <input type="hidden" name="key" value={String(values.key)} />
       <input type="hidden" name="locale" value={locale} />
       <fieldset
-        disabled={form.submitting || !values.key}
+        disabled={submitting || !values.key}
         style={purpose === "application" ? undefined : { display: "contents" }}
       >
         {jobTitle && (
@@ -311,12 +313,12 @@ export function BuilderForm({
           value={String(values.trap ?? "")}
           onChange={(event) => onChange("trap", event.target.value)}
         />
-        {form.errors.has("_root") && (
+        {Boolean(result?.errors._root?.length) && (
           <p className="form-error" role="alert">
             {labels.failure}
           </p>
         )}
-        {sent && definition.confirmationType === "message" && (
+        {result?.ok && definition.confirmationType === "message" && (
           <div className="field full form-success" role="status">
             <RichText
               data={
@@ -331,9 +333,9 @@ export function BuilderForm({
           <button
             className="btn"
             type="submit"
-            disabled={form.submitting || !values.key}
+            disabled={submitting || !values.key || Boolean(result?.ok)}
           >
-            {form.submitting ? labels.sending : definition.submitButtonLabel}
+            {submitting ? labels.sending : definition.submitButtonLabel}
           </button>
           {actions}
         </FormActions>

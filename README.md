@@ -41,3 +41,19 @@ For development, run `npm test`, `npm run typecheck`, and `npm run lint`.
 After changing Section definitions or Owner form policy in the backend, run
 `npm run content:sync` there and commit the generated frontend metadata with the backend change.
 `npm run content:check` in the backend checks that the two repositories agree.
+
+Page Section presenters live in `lib/cms/`: Home, managed pages, editorial pages,
+and Sustainability have their own presenters; Careers, News, and Downloads share
+`page-content.ts`. Records use `lib/payload/record-presentation.ts` and Catalog
+uses `lib/catalog/presentation.ts`. They read owned fields directly; historical
+Section and record templates have been removed.
+
+Renderers in `components/pages/sections/` load supporting content only when the
+selected Section uses it. `lib/payload/read-plan.ts` batches those resources using
+the enabled `sectionTypes` in the public page summary. Run `npm run refresh:public`
+in the backend after deploying this change to refresh existing summaries; older
+summaries remain compatible with on-demand reads.
+
+Public resource metadata is generated from the backend's
+`src/services/publicContentPolicy.ts`. Deploy the backend before the frontend when
+changing the public content contract, including search projections.

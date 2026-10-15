@@ -3,10 +3,10 @@ import type { CmsForm } from "./types";
 import type { FormResult } from "@/lib/api/forms";
 export async function submitBuilderForm(
   form: CmsForm,
-  formData: FormData,
+  values: Record<string, unknown>,
   pageId?: number,
+  signal?: AbortSignal,
 ): Promise<FormResult> {
-  const values = Object.fromEntries(formData.entries());
   try {
     const backend = process.env.NEXT_PUBLIC_BACKEND_URL?.replace(/\/$/, "");
     if (!backend) throw new Error("Missing backend URL");
@@ -52,7 +52,7 @@ export async function submitBuilderForm(
     }
     const response = await fetch(
       `${backend}/api/form-submissions?locale=${values.locale}&depth=0`,
-      { method: "POST", headers, body },
+      { method: "POST", headers, body, signal },
     );
     const result = await response.json();
     if (!response.ok) {
@@ -70,19 +70,6 @@ export async function submitBuilderForm(
         errors,
       };
     }
-    const locale =
-      values.locale === "ar" || values.locale === "fr"
-        ? `/${values.locale}`
-        : "";
-    const url = form.redirect?.url ?? "";
-    const redirectTo =
-      form.confirmationType === "redirect"
-        ? url.startsWith("/") &&
-          !url.startsWith("/ar/") &&
-          !url.startsWith("/fr/")
-          ? locale + url
-          : url
-        : "";
     return {
       ok: true,
       valid: true,
@@ -90,7 +77,7 @@ export async function submitBuilderForm(
       values,
       errors: {},
       data: {
-        redirectTo,
+        redirectTo: form.confirmationType === "redirect" ? form.redirect?.url ?? "" : "",
         startsAt: "",
         endsAt: "",
         event: "",

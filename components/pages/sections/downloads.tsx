@@ -1,12 +1,16 @@
-import {sectionContent} from '@/lib/payload/client'
-import {getDownloadsPayload} from '@/lib/api/public'
+import {backendOrigin} from '@/lib/payload/client'
+import {presentDownloadsPage} from '@/lib/cms/page-content'
+import {getCatalog,getCertificationsPayload} from '@/lib/api/public'
+import {getInterface} from '@/lib/payload/interface'
 import {DownloadsContent} from '@/components/certifications/downloads-content'
 import {type SectionArgs} from '../section-utils'
 
 export async function renderSection({block,locale,source,definition,settings}:SectionArgs){
- const {name,pageSlug}=definition
- if(pageSlug==='downloads'){
-  const data=await getDownloadsPayload(locale),content=sectionContent<typeof data.content>(source,block)
-  return <DownloadsContent content={content} data={data.certifications} catalog={data.catalog} settings={settings} locale={locale} labels={data.labels} fileSizes={data.fileSizes} section={name}/>
- }
+ if(definition.pageSlug!=='downloads')return null
+ const name=definition.name
+ const [ui,catalog,certs]=await Promise.all([
+  getInterface(),name==='product'?getCatalog():undefined,
+  name==='company'?getCertificationsPayload(locale):undefined,
+ ])
+ return <DownloadsContent content={presentDownloadsPage(source,backendOrigin(),block)} data={certs?.certifications} catalog={catalog} settings={settings} locale={locale} labels={ui.certification[locale]} section={name}/>
 }

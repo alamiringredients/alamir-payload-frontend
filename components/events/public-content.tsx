@@ -96,19 +96,19 @@ export function EventsPageBody({
     hero: () => {
       const section = content.sections.find(item => item.key === 'hero');
       if (!section?.enabled) return null;
-      return (<PageHero image={section.assets[0]?.value} imageAlt="">
-        <div className="kicker">{section.texts[0]?.values[locale] ?? ''}</div>
-        <h1><SectionCopy section={section} locale={locale} richIndex={0} /></h1>
-        <p><SectionCopy section={section} locale={locale} richIndex={1} /></p>
+      return (<PageHero image={section.images.image} imageAlt="">
+        <div className="kicker">{section.text.text?.[locale] ?? ''}</div>
+        <h1><SectionCopy section={section} locale={locale} field="heading" /></h1>
+        <p><SectionCopy section={section} locale={locale} field="body" /></p>
       </PageHero>);
     },
     related: () => {
-      const section = content.sections.find(item => item.key === 'section-2');
+      const section = content.sections.find(item => item.key === 'related');
       if (!section?.enabled) return null;
       return (<ContentSection>
         <SectionHeading
-          kicker={section.texts[0]?.values[locale] ?? ''}
-          title={<SectionCopy section={section} locale={locale} richIndex={0} />}
+          kicker={section.text.text?.[locale] ?? ''}
+          title={<SectionCopy section={section} locale={locale} field="heading" />}
         />
         <CardGrid>
           {upcoming.map((event) => (
@@ -116,23 +116,23 @@ export function EventsPageBody({
           ))}
         </CardGrid>
         {upcoming.length === 0 && (
-          <p className="lead">{section.texts[3]?.values[locale] ?? ''}</p>
+          <p className="lead">{section.text.noUpcoming?.[locale] ?? ''}</p>
         )}
         <FormActions className="reveal" style={{ marginTop: 36 }}>
           <SmartLink className="btn" href="/book-a-meeting">
-            {section.texts[4]?.values[locale] ?? ''}</SmartLink>
+            {section.text.bookMeeting?.[locale] ?? ''}</SmartLink>
           <button className="btn ghost" data-quote="" type="button">
-            {section.texts[5]?.values[locale] ?? ''}</button>
+            {section.text.requestQuote?.[locale] ?? ''}</button>
         </FormActions>
       </ContentSection>);
     },
     enquiry: () => {
-      const section = content.sections.find(item => item.key === 'section-3');
+      const section = content.sections.find(item => item.key === 'enquiry');
       if (!section?.enabled) return null;
       return (<ContentSection theme="tint">
         <SectionHeading
-          kicker={section.texts[0]?.values[locale] ?? ''}
-          title={<SectionCopy section={section} locale={locale} richIndex={0} />}
+          kicker={section.text.text?.[locale] ?? ''}
+          title={<SectionCopy section={section} locale={locale} field="heading" />}
         />
         <div className="cards c4 reveal">
           {past.map((event) => (
@@ -142,18 +142,18 @@ export function EventsPageBody({
       </ContentSection>);
     },
     more: () => {
-      const section = content.sections.find(item => item.key === 'section-4');
+      const section = content.sections.find(item => item.key === 'more');
       if (!section?.enabled) return null;
       return (<ContentSection>
         <SectionHeading
-          kicker={section.texts[0]?.values[locale] ?? ''}
-          title={<SectionCopy section={section} locale={locale} richIndex={0} />}
+          kicker={section.text.text?.[locale] ?? ''}
+          title={<SectionCopy section={section} locale={locale} field="heading" />}
         />
         <div className="ev-gallery reveal">
-          {section.assets.filter(asset => asset.value).map((image) => (
-            <figure key={image.id}>
+          {Object.entries(section.images).filter(([,url]) => url).map(([key, url]) => (
+            <figure key={key}>
               <ContentImage
-                src={image.value}
+                src={url}
                 alt=""
                 loading="lazy"
                 decoding="async"

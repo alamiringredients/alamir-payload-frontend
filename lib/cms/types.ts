@@ -1,3 +1,4 @@
+import type {ManagedPage} from './managed-page'
 import type {ContentDocument} from '@/lib/editor/document'
 export type CmsLocale = 'en' | 'ar' | 'fr'
 export type LocalizedValue = Record<CmsLocale, string>
@@ -121,4 +122,4 @@ export type SectionPageContent = {
 }
 
 export type QualityPageContent = EditorialPageContent
-export type ManagedPageContent = SectionPageContent & {interface?:{backHome:LocalizedValue;browseDownloads:LocalizedValue;searchSite:LocalizedValue}}
+export type ManagedPageContent = ManagedPage

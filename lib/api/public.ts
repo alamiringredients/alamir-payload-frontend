@@ -1,6 +1,6 @@
 import type { Document } from "@/lib/payload/types";
 import "server-only";
-import {publishedSummary, publishedDocuments, publishedEventSummaries} from "@/lib/payload/public-site";
+import {publishedSummary, publishedDocuments, publishedEventSummaries, publishedSearch} from "@/lib/payload/public-site";
 import { cache } from "react";
 import {
   globalContent as global,
@@ -48,10 +48,9 @@ import type {
   SustainabilityPageContent,
 } from "@/lib/sustainability/types";
 import type { CareersContent, JobRecord } from "@/lib/careers/types";
-import type { SearchResult } from "@/lib/search/match";
+import {searchResults} from "@/lib/search/results";
 
 import { getInterface } from "@/lib/payload/interface";
-import type { DownloadsPageContent } from "@/lib/downloads/types";
 import type { NewsVersion } from "@/lib/news/types";
 import type { SustainabilityVersion } from "@/lib/sustainability/types";
 
@@ -111,7 +110,7 @@ type ManagedPageKey =
   | "book-a-meeting"
   | "search";
 
-const catalog = cache(async (path = ""): Promise<Catalog> => {
+export const getCatalog = cache(async (path = ""): Promise<Catalog> => {
   const [categoryDocs, productDocs, settings] = await Promise.all([
     recordDocuments("categories"),
     recordDocuments("products"),
@@ -295,19 +294,19 @@ export const getLayoutPayload = cache(async () => {
   };
 });
 
-export const getHomepagePayload = cache(async (locale: SiteLocale) => {
-  const ui = await getInterface();
-  const [home, certs, events, media] = await Promise.all([
+export const getCertificationsPayload = cache(async (locale: SiteLocale) => {
+  const [data, ui] = await Promise.all([certifications(), getInterface()]);
+  return {certifications: data, certificationLabels: ui.certification[locale]};
+});
+
+export const getHomepagePayload = cache(async () => {
+  const [home, events, media] = await Promise.all([
     global<HomeCmsData>("home-page", "meta"),
-    certifications(),
     publishedEventSummaries(),
     mediaDocuments(),
   ]);
   return {
     home,
-    certifications: certs,
-    certificationLabels: ui.certification[locale],
-    countries: ui.countries[locale],
     meetingEvent:
       events
         .map((doc) =>
@@ -333,7 +332,7 @@ export const getCatalogPayload = cache(
   async (locale: SiteLocale, page: string) => {
     const ui = await getInterface();
     const [c, certs] = await Promise.all([
-      catalog(page),
+      getCatalog(page),
       certifications(),
     ]);
     return {
@@ -436,73 +435,11 @@ export const getSearchPayload = cache(
         labels: ui.search[locale],
         results: [],
       };
-    const [c, news, jobs, events, sustainability, content] = await Promise.all([
-      catalog(),
-      getNewsCards(),
-      getPublicJobs(),
-      getPublicEvents(),
-      getSustainabilityCards(),
+    const [searchContent, content] = await Promise.all([
+      publishedSearch(locale),
       global<ManagedPageContent>("search-page"),
     ]);
-    const results: SearchResult[] = [];
-    const categoriesByID = new Map(
-      c.categories.map((category) => [category.id, category]),
-    );
-    for (const product of c.products) {
-      const category = categoriesByID.get(product.category_id);
-      if (category)
-        results.push({
-          href: `/products/${category.slug}/${product.slug}`,
-          title: product.content.name[locale],
-          description: product.content.description[locale],
-          section: ui.search[locale].products ?? "",
-          text: "",
-        });
-    }
-    for (const [items, base] of [
-      [news, "news"],
-      [sustainability, "sustainability"],
-    ] as const)
-      for (const item of items) {
-        const v = item.published[locale];
-        if (v)
-          results.push({
-            href: `/${base}/${item.slug}`,
-            title: plain(v.title),
-            description: v.summary,
-            section: ui.search[locale][base] ?? "",
-            text: "",
-          });
-      }
-    for (const job of jobs)
-      if (job.status === "open")
-        results.push({
-          href: `/careers/${job.slug}`,
-          title: job.content[locale].title,
-          description: job.content[locale].summary,
-          section: ui.search[locale].careers ?? "",
-          text: "",
-        });
-    for (const event of events)
-      results.push({
-        href: `/events/${event.slug}`,
-        title: plain(event.content.title[locale]),
-        description: event.content.summary[locale],
-        section: ui.search[locale].events ?? "",
-        text: "",
-      });
-    const normalizedQuery = query.trim().toLocaleLowerCase(locale);
-    return {
-      content,
-      labels: ui.search[locale],
-      results: normalizedQuery
-        ? results.filter((result) =>
-            `${result.title} ${result.description}`
-              .toLocaleLowerCase(locale)
-              .includes(normalizedQuery),
-          )
-        : [],
-    };
+    return {content, labels: ui.search[locale], results: searchResults(searchContent, query, locale, ui.search[locale])};
   },
 );
 
@@ -513,21 +450,6 @@ export const getQualityPayload = cache(async (locale: SiteLocale) => {
     certifications(),
   ]);
   return { content, certifications: certs, labels: ui.certification[locale] };
-});
-export const getDownloadsPayload = cache(async (locale: SiteLocale) => {
-  const ui = await getInterface();
-  const [content, c, certs] = await Promise.all([
-    global<DownloadsPageContent>("downloads-page"),
-    catalog(),
-    certifications(),
-  ]);
-  return {
-    content,
-    catalog: c,
-    certifications: certs,
-    labels: ui.certification[locale],
-    fileSizes: {},
-  };
 });
 
 export const getSiteShell = async () => (await getLayoutPayload()).home;
@@ -548,8 +470,7 @@ export const getManagedPageContent = (
     `${key === "404" ? "not-found" : key}-page` as Parameters<typeof global>[0],
   );
 };
-export const getCatalog = (locale: SiteLocale, page: string) =>
-  getCatalogPayload(locale, page).then((data) => data.catalog);
+
 export const getPublicEvents = () =>
   records<EventCard>("events", "card");
 export const getPublicEvent = (locale: SiteLocale, slug: string) =>
@@ -581,12 +502,3 @@ export const getEventMetadata = (locale: SiteLocale, slug: string) =>
 
 export const getJobMetadata = (locale: SiteLocale, slug: string) =>
   record<{content: Record<SiteLocale, Pick<JobRecord["content"][SiteLocale], "title" | "summary">>}>("jobs", slug, "meta");
-
-function plain(node: { text?: string; content?: unknown[] }): string {
-  return (
-    node.text ??
-    (node.content ?? [])
-      .map((child) => plain(child as Parameters<typeof plain>[0]))
-      .join("")
-  );
-}

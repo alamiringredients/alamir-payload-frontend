@@ -19,7 +19,7 @@ const renderers={
 }
 const formId=(block:PageBlock)=>typeof block.form==='object' && block.form ? (block.form as {id:number}).id : Number(block.form)
 async function RegisteredSection({block,locale,page,context,definition}:{block:PageBlock;locale:SiteLocale;page:CmsPage;context:PageContext;definition:(typeof sections)[number]}){
- const source=page.sourceKey===definition.pageKey?page:await pageBySourceKey(definition.pageKey)
+ const source=page.sourceKey===definition.pageKey?page:await pageBySourceKey(definition.pageKey,false)
  if(!source)throw new Error(`Missing section source: ${definition.pageKey}`)
  const {settings}=await getLayoutPayload()
  const name=definition.pageSlug

@@ -30,7 +30,7 @@ export async function CatalogRoute({params}: CatalogRouteProps) {
 }
 
 async function getCatalogMetadata(path: string, locale: SiteLocale): Promise<Metadata> {
-  const catalog = await getCatalog(locale,path)
+  const catalog = await getCatalog(path)
   const resolved = resolveCatalogPage(catalog, path)
   if (!resolved) notFound()
 

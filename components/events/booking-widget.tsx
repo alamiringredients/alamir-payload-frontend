@@ -1,7 +1,6 @@
 "use client";
 import {InlineContent} from '@/components/editor/inline-content'
-import {sectionText} from '@/lib/cms/section-text'
-import type {HomeSectionContent} from '@/lib/cms/types'
+import type {ManagedSection} from '@/lib/cms/managed-page'
 import {useFormDefinition} from '@/components/forms/forms-provider'
 import {ManagedForm} from '@/components/forms/managed-form'
 import {useReducer} from "react";
@@ -30,14 +29,11 @@ export function BookingWidget({
   locale: SiteLocale;
   preferredEvent?: string;
   icon: string;
-  section: HomeSectionContent;
+  section: ManagedSection;
   labels: Record<string, string>;
 }) {
-  const copy = (source: string) => sectionText(section, source, locale)
-  const rich = (source: string) => {
-    const field = section.richTexts?.find(field => field.source === source)
-    return field ? <InlineContent document={field.values[locale]}/> : null
-  }
+  const copy = (field: string) => section.rich[field] ? textContent(section.rich[field][locale]) : section.text[field]?.[locale] ?? ''
+  const rich = (field: string) => section.rich[field] ? <InlineContent document={section.rich[field][locale]}/> : null
   const first =
     events.find((event) => event.slug === preferredEvent) ?? events[0];
   const [booking, dispatch] = useReducer(updateBooking, undefined, () => startBooking(first, slots));
@@ -57,16 +53,16 @@ export function BookingWidget({
     );
   const calendar = bookingCalendar(booking, event, slots, locale);
   const {monthName, chosen, formatTime, formatDate} = calendar;
-  const {google: calendarHref, ics} = bookingCalendarLinks(done, copy('Meet the export team — 30 minutes'));
+  const {google: calendarHref, ics} = bookingCalendarLinks(done, copy('text29'));
   return (
     <div className="bk" id="bk">
       <div className="bk-card" data-step="pick" hidden={step !== "pick"}>
         <aside className="bk-side">
           <Link className="bk-org" href="/">
             {icon && <Image src={icon} alt="" width={26} height={26} />}
-            <span>{copy('Alamir Ingredients')}</span>
+            <span>{copy('text')}</span>
           </Link>
-          <h2 className="bk-title">{copy('Meet the export team')}</h2>
+          <h2 className="bk-title">{copy('heading')}</h2>
           {events.length > 1 && (
             <label className="bk-event-select">
               <span>{labels.event}</span>
@@ -88,7 +84,7 @@ export function BookingWidget({
           <ul className="bk-meta">
             <li>
               <span aria-hidden="true">◷</span>
-              <span>{copy('30 minutes')}</span>
+              <span>{copy('text3')}</span>
             </li>
             <li>
               <span aria-hidden="true">⌖</span>
@@ -96,17 +92,17 @@ export function BookingWidget({
             </li>
           </ul>
           <p className="bk-note">
-            {copy('Bring your specification — target Brix, break profile, packaging format and destination port. We will come with the matching data sheets and an indicative price.')}
+            {copy('body')}
           </p>
           <div className="bk-side-foot">
-            <p>{copy('Prefer to write instead?')}</p>
+            <p>{copy('body2')}</p>
             <Link href="/contact">
-              {copy('Send an enquiry')} <span aria-hidden="true">→</span>
+              {copy('sendEnquiry')} <span aria-hidden="true">→</span>
             </Link>
           </div>
         </aside>
         <div className="bk-cal">
-          <p className="bk-h">{copy('Select a date')}</p>
+          <p className="bk-h">{copy('body3')}</p>
           <div className="bk-month">
             <button
               className="bk-nav"
@@ -133,7 +129,7 @@ export function BookingWidget({
             </button>
           </div>
           <div className="bk-dow" aria-hidden="true">
-            {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day) => (
+            {["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"].map((day) => (
               <span key={day}>{copy(day)}</span>
             ))}
           </div>
@@ -155,12 +151,12 @@ export function BookingWidget({
             ))}
           </div>
           <p className="bk-legend">
-            <span className="dot" aria-hidden="true" /> {copy('Days with slots left. Weekends and public holidays are closed.')}
+            <span className="dot" aria-hidden="true" /> {copy('text17')}
           </p>
         </div>
         <div className="bk-slots">
           <p className="bk-h">
-            {calendar.selectedDate || copy('Pick a date first')}
+            {calendar.selectedDate || copy('body4')}
           </p>
           <div className="bk-times" role="group">
             {selectedDay ? (
@@ -178,7 +174,7 @@ export function BookingWidget({
               ))
             ) : (
               <p className="bk-empty">
-                {copy('Choose a day on the calendar and the open slots appear here.')}
+                {copy('body5')}
               </p>
             )}
           </div>
@@ -199,7 +195,7 @@ export function BookingWidget({
           </button>
           <Link className="bk-org" href="/">
             {icon && <Image src={icon} alt="" width={26} height={26} />}
-            <span>{copy('Alamir Ingredients')}</span>
+            <span>{copy('text')}</span>
           </Link>
           <h2 className="bk-title">
             {textContent(event.content.title[locale])}
@@ -207,7 +203,7 @@ export function BookingWidget({
           <ul className="bk-meta">
             <li>
               <span>◷</span>
-              <span>{copy('30 minutes')}</span>
+              <span>{copy('text3')}</span>
             </li>
             <li className="on">
               <span>□</span>
@@ -215,11 +211,11 @@ export function BookingWidget({
             </li>
           </ul>
           <p className="bk-note">
-            {copy('Nothing is held until you confirm. The invite lands in your inbox straight after.')}
+            {copy('body6')}
           </p>
         </aside>
         <div className="bk-fields">
-          <p className="bk-h">{copy('Confirm your details')}</p>
+          <p className="bk-h">{copy('body7')}</p>
           <ManagedForm key={eventId} purpose="reservation" locale={locale} ownerId={eventId} slotId={slotId} actions={<button className="btn ghost" type="button" onClick={()=>dispatch({type: "back"})}>{formDefinition?.ui?.pickAnotherSlot}</button>} onSuccess={result=>{if(result.data)dispatch({type: 'confirmed', confirmation: result.data, email: String(result.values.email??'')})}}/>
 
         </div>
@@ -234,23 +230,23 @@ export function BookingWidget({
             ✓
           </div>
           <h2>
-            {rich('You’re booked.')}
+            {rich('heading2')}
           </h2>
           <p className="bk-done-lead">
-            {rich('A calendar invite and a joining link are on their way to your inbox. If anything changes, reply to that email and we will move it.')} <b>{done?.email}</b>
+            {rich('body8')} <b>{done?.email}</b>
           </p>
           <div className="bk-recap">
             <div>
-              <span>{copy('Meeting')}</span>
+              <span>{copy('meeting')}</span>
               <b>{done?.event}</b>
             </div>
             <div>
-              <span>{copy('When')}</span>
+              <span>{copy('when')}</span>
               <b>{calendar.confirmationDate}</b>
             </div>
             <div>
-              <span>{copy('Where')}</span>
-              <b>{copy('Video call — link in the invite')}</b>
+              <span>{copy('where')}</span>
+              <b>{copy('text32')}</b>
             </div>
           </div>
           <FormActions>
@@ -267,9 +263,9 @@ export function BookingWidget({
             </a>
           </FormActions>
           <p className="bk-done-foot">
-            <Link href="/">{copy('Back to home')}</Link> ·{" "}
-            <Link href="/events">{copy('Company news & events')}</Link> ·{" "}
-            <Link href="/downloads">{copy('Browse downloads')}</Link>
+            <Link href="/">{copy('backHome')}</Link> ·{" "}
+            <Link href="/events">{copy('events')}</Link> ·{" "}
+            <Link href="/downloads">{copy('browseDownloads')}</Link>
           </p>
         </div>
       </div>
