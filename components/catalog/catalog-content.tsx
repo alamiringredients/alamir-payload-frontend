@@ -17,6 +17,7 @@ import type {SiteLocale} from '@/i18n/navigation'
 import {getImageProps} from 'next/image'
 import {Fragment,type ReactNode,type CSSProperties} from 'react'
 import {CatalogInteractions} from './catalog-interactions'
+import {CatalogPageBrowser,CatalogDialogBrowser,ProductCards} from './catalog-browsing'
 import galleryStyles from './catalog-gallery.module.css'
 import categoryStyles from './category-cards.module.css'
 
@@ -50,21 +51,6 @@ function CategoryArtwork({category}:{category:Pick<Category,'content'>|CategoryC
  })}</figure>
 }
 
-function ProductCards(context:Context){
- const categoriesByID=new Map(context.catalog.categories.map(category=>[category.id,category]))
- const products=context.catalog.products.filter(product=>context.product?product.id!==context.product.id:!context.category||product.category_id===context.category.id)
- return products.map(product=>{
-  const category=categoriesByID.get(product.category_id)
-  if(!category)return null
-  const name=product.content.name[context.locale],images=product.content.artwork.assets.filter(item=>item.value)
-  return <article key={product.id} className="pcard pcard--art" data-cat={category.slug} data-app={product.content.applications.join(' ')} data-brix={product.content.concentrations.join(' ')} data-search={`${name} ${product.content.description[context.locale]} ${category.content.name[context.locale]}`.toLocaleLowerCase(context.locale)}>
-   <SmartLink className="cover" href={productPath(product,category)} aria-label={name}/>
-   <figure className={`pcard-art${product.sort_order%2===0?' flip':''}`} aria-hidden="true">{images.map((image,index)=><ContentImage className={index?'pa-fruit':'pa-plate'} src={image.value} alt="" loading="lazy" key={image.id}/>)}</figure>
-   <div className="pcard-body"><span className="pcard-cat">{category.content.name[context.locale]}</span><h3>{name}</h3>{product.content.description[context.locale]&&<p>{product.content.description[context.locale]}</p>}<span className="pcard-go">{context.catalog.settings.labels.viewProduct[context.locale]} <span className="arrow"><SiteIcon name="arrow-right"/></span></span></div>
-  </article>
- })
-}
-
 function ProductRail(context:Context){
  const total=context.catalog.products.length-1
  return <div className="prail" data-prail><div className="prail-track">{ProductCards(context)}</div><div className="prail-ui"><div className="prail-count"><b>01</b> / <i>{String(total).padStart(2,'0')}</i></div><div className="prail-bar"><span/></div><div className="prail-nav" dir="ltr"><button type="button" data-prail-go="prev" aria-label={context.catalog.settings.labels.previousProducts[context.locale]}><SiteIcon name="arrow-left"/></button><button type="button" data-prail-go="next" aria-label={context.catalog.settings.labels.nextProducts[context.locale]}><SiteIcon name="arrow-right"/></button></div></div></div>
@@ -72,18 +58,6 @@ function ProductRail(context:Context){
 
 function CategoryCards({catalog,locale}:{catalog:CategoryCatalog;locale:SiteLocale}){return catalog.categories.map((category,index)=><article className={`product-card ${categoryStyles.card}`} id={category.slug} key={category.id}><span className={`product-card-no ${categoryStyles.number}`}>{String(index+1).padStart(2,'0')}</span><CategoryArtwork category={category}/><h3>{category.content.name[locale]}</h3><p>{category.content.description[locale]}</p><SmartLink className={`product-card-link ${categoryStyles.link}`} href={categoryPath(category,catalog.products)}>{catalog.settings.labels.exploreRange[locale]}</SmartLink></article>)}
 export const CatalogCategories=CategoryCards
-
-function Filters(context:Context){
- const {catalog,locale,category}=context,labels=catalog.settings.labels
- const products=catalog.products.filter(product=>!category||product.category_id===category.id)
- const applications=new Set(products.flatMap(product=>product.content.applications)),concentrations=new Set(products.flatMap(product=>product.content.concentrations))
- return <TwoColumns collapseAt={1050} as="div" columns="minmax(0,244px) minmax(0,1fr)" gap="clamp(40px,5vw,80px)" align="start" className="cat-shell"><aside className="cat-side" aria-label={labels.allProducts[locale]}>
-  <div className="tab-rail" role="group" aria-label={labels.productCategory[locale]}>{!category&&<button className="tab" type="button" data-cat="all" aria-pressed="true">{labels.allProducts[locale]}</button>}{catalog.categories.map(item=>category?<SmartLink key={item.id} className="tab" href={categoryPath(item,catalog.products)} aria-current={item.id===category.id?'page':undefined}>{item.content.name[locale]}</SmartLink>:<button key={item.id} className="tab" type="button" data-cat={item.slug} aria-pressed="false">{item.content.name[locale]}</button>)}</div>
-  <div className="cat-tools"><div className="cat-field cat-catsel"><select aria-label={labels.productCategory[locale]} data-cat-select defaultValue={category?categoryPath(category,catalog.products):''}><option value="">{labels.allProducts[locale]}</option>{catalog.categories.map(item=><option value={categoryPath(item,catalog.products)} key={item.id}>{item.content.name[locale]}</option>)}</select></div><div className="cat-field wide"><label className="sr-only" htmlFor="cat-q">{labels.allProducts[locale]}</label><input id="cat-q" type="search" data-cat-search autoComplete="off"/></div><div className="cat-field"><select aria-label={labels.allApplications[locale]} data-cat-app><option value="">{labels.allApplications[locale]}</option>{catalog.settings.applications.filter(item=>applications.has(item.id)).map(item=><option value={item.id} key={item.id}>{item.label[locale]}</option>)}</select></div><div className="cat-field"><select aria-label={labels.anyConcentration[locale]} data-cat-brix><option value="">{labels.anyConcentration[locale]}</option>{catalog.settings.concentrations.filter(item=>concentrations.has(item.id)).map(item=><option value={item.id} key={item.id}>{item.label[locale]}</option>)}</select></div><button className="cat-reset" type="button" hidden>{labels.clear[locale]}</button></div>
-  <div className="cat-count" data-cat-count data-singular={labels.productSingular[locale]} data-plural={labels.products[locale].toLocaleLowerCase(locale)} aria-live="polite">{products.length} {labels.products[locale].toLocaleLowerCase(locale)}</div></aside>
-  <div className="cat-main"><div className="pcards c2 cat-grid">{ProductCards(context)}</div><div className="cat-empty" hidden><strong>{category?text(category.content.page.blocks.find(block=>block.key==='section-1')!,11,locale):catalog.settings.emptyMessage[locale]}</strong></div></div>
- </TwoColumns>
-}
 
 function Gallery({block,locale,className='band'}:{block:CatalogBlock;locale:SiteLocale;className?:string}){
  const images=block.assets.filter(item=>item.value)
@@ -135,18 +109,13 @@ function Fold({block,locale}:{block:CatalogBlock;locale:SiteLocale}) {
 }
 
 function ProductCatalogDialog({context}:{context:Context}){
- const {catalog,locale,category}=context,labels=catalog.settings.labels
+ const {catalog,locale}=context,labels=catalog.settings.labels
  const block=(context.product??context.category)?.content.page.blocks.find(block=>block.key===(context.product?'section-5':'section-4'))
  if(!block || block.enabled===false)return null
- const copy={kicker:text(block,0,locale),close:labels.closeProductList[locale],search:labels.searchProducts[locale],clear:labels.clear[locale],empty:text(block,10,locale)}
- return <div className="pmodal" id="all-products" data-product-catalog data-open={category?.slug??''} role="dialog" aria-modal="true" aria-labelledby="product-catalog-title" aria-hidden="true">
+ const copy={kicker:text(block,0,locale),close:labels.closeProductList[locale],empty:text(block,10,locale)}
+ return <div className="pmodal" id="all-products" data-product-catalog role="dialog" aria-modal="true" aria-labelledby="product-catalog-title" aria-hidden="true">
   <div className="pmodal-head"><div className="wrap pmodal-head-in"><div><div className="kicker">{copy.kicker}</div><h2 id="product-catalog-title"><SectionCopy kind="heading" section={block} locale={locale}/></h2></div><button className="pmodal-x" type="button" data-product-catalog-close aria-label={copy.close}><SiteIcon name="close"/></button></div></div>
-  <div className="pmodal-tools"><div className="wrap">
-   <div className="tab-rail" role="group" aria-label={labels.productCategory[locale]}><button className="tab" type="button" data-cat="all" aria-pressed="true">{labels.allProducts[locale]}</button>{catalog.categories.map(item=><button className="tab" type="button" data-cat={item.slug} aria-pressed="false" key={item.id}>{item.content.name[locale]}</button>)}</div>
-   <div className="cat-tools"><div className="cat-field cat-catsel"><select aria-label={labels.productCategory[locale]} data-cat-dropdown defaultValue={category?.slug??'all'}><option value="all">{labels.allProducts[locale]}</option>{catalog.categories.map(item=><option value={item.slug} key={item.id}>{item.content.name[locale]}</option>)}</select></div><div className="cat-field wide"><label className="sr-only" htmlFor="product-catalog-search">{copy.search}</label><input id="product-catalog-search" type="search" data-cat-search autoComplete="off"/></div><div className="cat-field"><select aria-label={labels.allApplications[locale]} data-cat-app defaultValue=""><option value="">{labels.allApplications[locale]}</option>{catalog.settings.applications.map(item=><option value={item.id} key={item.id}>{item.label[locale]}</option>)}</select></div><div className="cat-field"><select aria-label={labels.anyConcentration[locale]} data-cat-brix defaultValue=""><option value="">{labels.anyConcentration[locale]}</option>{catalog.settings.concentrations.map(item=><option value={item.id} key={item.id}>{item.label[locale]}</option>)}</select></div><button className="cat-reset" type="button" hidden>{copy.clear}</button></div>
-   <div className="cat-count" data-cat-count data-singular={labels.productSingular[locale]} data-plural={labels.products[locale].toLocaleLowerCase(locale)} aria-live="polite"/>
-  </div></div>
-  <div className="pmodal-body"><div className="wrap"><div className="pcards c3 cat-grid">{ProductCards({...context,category:undefined})}</div><div className="cat-empty" hidden><strong>{copy.empty}</strong></div></div></div>
+  <CatalogDialogBrowser {...context} emptyMessage={copy.empty}/>
  </div>
 }
 
@@ -167,7 +136,7 @@ function ProductDetailSections({content,context}:{content:CatalogPageContent;con
 export function CatalogIndexSections({content,context,section}:{content:CatalogPageContent;context:Context;section?:string}){
  const {locale,category,certifications,certificationLabels}=context,sections=content.blocks.filter(block=>block.key.startsWith('section-'))
  const renderers:Record<string,()=>ReactNode>={hero:()=>(sections[0]&&<Hero block={sections[0]} context={context}/>),
-range:()=>(<ContentSection id="collection" theme={category?'tint':'plain'}>{sections[1]&&(category?<Heading block={sections[1]} locale={locale}/>:<CatalogViewHeading block={sections[1]} context={context}/>)}{category?<div id="catalogue" data-open={category.slug}>{Filters(context)}</div>:<><div className="view on" id="catalogue" data-view-panel="products">{Filters(context)}</div><div className="view" id="view-categories" data-view-panel="categories"><div className="product-grid reveal">{CategoryCards(context)}</div></div></>}</ContentSection>),
+range:()=>(<ContentSection id="collection" theme={category?'tint':'plain'}>{sections[1]&&(category?<Heading block={sections[1]} locale={locale}/>:<CatalogViewHeading block={sections[1]} context={context}/>)}{category?<CatalogPageBrowser {...context} emptyMessage={text(category.content.page.blocks.find(block=>block.key==='section-1')!,11,locale)}/>:<><CatalogPageBrowser {...context} emptyMessage={context.catalog.settings.emptyMessage[locale]}/><div className="view" id="view-categories" data-view-panel="categories"><div className="product-grid reveal">{CategoryCards(context)}</div></div></>}</ContentSection>),
 gallery:()=>(sections[2]&&(category?<Gallery block={sections[2]} locale={locale}/>:<ContentSection theme="deep"><Heading block={sections[2]} locale={locale}/>{certifications&&certificationLabels&&<CertificationCarousel data={certifications} locale={locale} labels={certificationLabels}/>}<ActionGroup actions={[{href:'/downloads',label:certificationLabels?.downloads??''},{href:'/contact',label:context.catalog.settings.labels.requestQuote[locale],variant:'secondary'}]}/></ContentSection>)),
 traceability:()=>(category&&sections[3]&&<CatalogCallToAction block={sections[3]} locale={locale} actions={[{href:'/contact',label:text(sections[3],4,locale)},{href:'/downloads',label:text(sections[3],5,locale),variant:'secondary'},{href:'#all-products',label:text(sections[3],6,locale),variant:'secondary',dialog:'all-products'}]}/>)}
  return section?renderers[section]?.()??null:Object.entries(renderers).map(([key,render])=><Fragment key={key}>{render()}</Fragment>)

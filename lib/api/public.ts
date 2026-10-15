@@ -1,5 +1,6 @@
 import type { Document } from "@/lib/payload/types";
 import "server-only";
+import {publishedSummary, publishedDocuments, publishedEventSummaries} from "@/lib/payload/public-site";
 import { cache } from "react";
 import {
   globalContent as global,
@@ -7,8 +8,6 @@ import {
   record,
   recordDocuments,
   recordIdentities,
-  payloadDocuments,
-  request,
   translationContent,
   presentRecord,
   recordSource,
@@ -179,17 +178,9 @@ export const getNavigationCatalog = cache(
     }
   > => {
     const [categoryRows, productRows, mediaRows] = await Promise.all([
-      request(
-        "categories?locale=all&depth=0&pagination=false&sort=_order&select[name]=true&select[slug]=true&select[sourceId]=true&select[icon]=true&select[description]=true&select[page][artwork]=true",
-      ),
-      request(
-        "products?locale=all&depth=0&pagination=false&sort=_order&select[name]=true&select[slug]=true&select[sourceId]=true&select[category]=true&select[gallery]=true",
-      ),
-      payloadDocuments(
-        "media",
-        "&select[url]=true&select[width]=true&select[height]=true&select[mimeType]=true&select[filename]=true&select[prefix]=true&select[alt]=true",
-        0,
-      ),
+      publishedSummary("categories"),
+      publishedSummary("products"),
+      publishedSummary("media"),
     ]);
     const media = new Map(mediaRows.map((doc) => [doc.id, doc]));
     const values = (value: unknown): LocalizedValue =>
@@ -201,7 +192,7 @@ export const getNavigationCatalog = cache(
           ] ?? "",
         ]),
       ) as LocalizedValue;
-    const categories = categoryRows.docs.map((doc: Document) => {
+    const categories = categoryRows.map((doc: Document) => {
       const page = doc.page as {
         artwork?: { enabled?: boolean; images?: { image: number }[] };
       };
@@ -230,12 +221,12 @@ export const getNavigationCatalog = cache(
       } as CategoryCard;
     });
     const categoryIds = new Map(
-      categoryRows.docs.map((doc: Document) => [
+      categoryRows.map((doc: Document) => [
         doc.id,
         doc.sourceId ?? doc.id,
       ]),
     );
-    const products = productRows.docs.map((doc: Document) => ({
+    const products = productRows.map((doc: Document) => ({
       id: doc.sourceId ?? doc.id,
       slug: doc.slug!,
       category_id: Number(categoryIds.get(Number(doc.category))),
@@ -266,8 +257,8 @@ export const getNavigationCatalog = cache(
 );
 const certifications = cache(async (): Promise<CertificationData> => {
   const [typeDocs, certDocs, media, interfaceText] = await Promise.all([
-    payloadDocuments("certification-types", "", 0),
-    payloadDocuments("certifications", "", 0),
+    publishedDocuments("certification-types"),
+    publishedDocuments("certifications"),
     mediaDocuments(),
     translationContent(),
   ]);
@@ -309,11 +300,7 @@ export const getHomepagePayload = cache(async (locale: SiteLocale) => {
   const [home, certs, events, media] = await Promise.all([
     global<HomeCmsData>("home-page", "meta"),
     certifications(),
-    payloadDocuments(
-      "events",
-      "&sort=_order&select[sourceId]=true&select[slug]=true&select[kind]=true&select[startsAt]=true&select[endsAt]=true&select[timezone]=true&select[title]=true&select[venue]=true&select[stand]=true&select[layout]=true",
-      0,
-    ),
+    publishedEventSummaries(),
     mediaDocuments(),
   ]);
   return {
@@ -414,7 +401,7 @@ export const getEventsPayload = cache(
     const ui = await getInterface();
     const [events, slotDocs, managedContent, eventDocs] = await Promise.all([
       getPublicEvents(),
-      page === "book-a-meeting" ? payloadDocuments("meeting-slots", "", 0) : [],
+      page === "book-a-meeting" ? publishedDocuments("meeting-slots") : [],
       global<ManagedPageContent>(
         page === "book-a-meeting" ? "booking-page" : "events-page",
       ),

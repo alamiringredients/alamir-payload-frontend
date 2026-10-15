@@ -1,6 +1,6 @@
 import {FormScopeProvider} from '@/components/forms/forms-provider'
 import {getForms,getFormCountries} from '@/lib/forms/server'
-import type {FormPurpose} from '@/lib/forms/types'
+import {pageFormScope} from '@/lib/forms/ownership'
 import {hasLocale} from 'next-intl'
 import {notFound} from 'next/navigation'
 import {locales,localePath} from '@/i18n/navigation'
@@ -32,8 +32,8 @@ export async function WebsitePage({params,searchParams}:WebsitePageProps){
  const page=await pageBySlug(path)
  if(!page)notFound()
  const [home,settings]=await Promise.all([getSiteShell(),getWebsiteSettings()])
- const purpose=({"contact-page":'contact',"careers-page":'application',"search-page":'search'} as Record<string,FormPurpose>)[page.sourceKey??'']
- const forms=purpose?await getForms(locale,{purpose,collection:'pages',ownerId:page.id}):[]
+ const scope=pageFormScope(page)
+ const forms=scope?await getForms(locale,scope):[]
  const input=page.layout.some(block=>block.blockType.startsWith('search-') || block.blockType.startsWith('news-'))?await searchParams:{}
  return <SitePage page={path} pageStyle={page.sourceKey?.replace(/-page$/, '').replace(/^booking$/, 'book-a-meeting') ?? ''} locale={locale} home={home} settings={settings}><FormScopeProvider forms={forms} countries={await getFormCountries(forms,locale)}><PageBody page={page} locale={locale} context={{query:input.q,tag:input.tag}}/></FormScopeProvider></SitePage>
 }

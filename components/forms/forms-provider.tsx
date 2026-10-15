@@ -1,11 +1,11 @@
 "use client";
-import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
-import type { CmsForm, FormPurpose } from "@/lib/forms/types";
+import type { CmsForm, FormPurpose, FormScope } from "@/lib/forms/types";
 import type { CountryOption } from "@/lib/countries";
 import type { SiteLocale } from "@/i18n/navigation";
-import type { FormScope } from '@/lib/forms/server';
+import {selectFormDefinition} from '@/lib/forms/ownership';
 const Context = createContext<{
   forms: CmsForm[];
   countries: readonly CountryOption[];
@@ -30,7 +30,7 @@ export function FormsProvider({
   const [countryOptions,setCountryOptions]=useState(countries);
   const pending = useRef(new Set<string>());
   useEffect(() => setDefinitions(forms), [forms]);
-  const refresh = (scope?: FormScope) => {
+  const refresh = useCallback((scope?: FormScope) => {
     const params = new URLSearchParams({ locale });
     if (scope) for (const [key,value] of Object.entries(scope)) if (value !== undefined) params.set(key,String(value));
     const key = params.toString();
@@ -48,7 +48,7 @@ export function FormsProvider({
       .finally(() => {
         pending.current.delete(key);
       });
-  };
+  }, [locale]);
   return (
     <Context.Provider value={{ forms: definitions, countries:countryOptions, refresh }}>
       {children}
@@ -57,50 +57,10 @@ export function FormsProvider({
 }
 export function useFormDefinition(purpose: FormPurpose, ownerId?: number, enabled=true) {
   const { forms, countries, refresh } = useContext(Context);
-  const pathname = usePathname().replace(/^\/(en|ar|fr)(?=\/|$)/, "");
-  const collection =
-    purpose === "application"
-      ? "jobs"
-      : purpose === "reservation"
-        ? "events"
-        : "products";
-  const idMatches = (form: CmsForm) =>
-    (form.owner?.value?.sourceId ?? form.owner?.value?.id) === ownerId;
-  const relevant = forms.filter((form) => form.purpose === purpose);
-  const specific = ownerId
-    ? relevant.find(
-        (form) => form.owner?.relationTo === collection && idMatches(form),
-      )
-    : purpose === "quote" && pathname.startsWith("/products/")
-      ? relevant.find(
-          (form) =>
-            form.owner?.relationTo === "products" &&
-            form.owner?.value?.slug === pathname.split("/").at(-1),
-        )
-      : undefined;
-  const productSlug = purpose === 'quote' && pathname.split('/').filter(Boolean).length === 3 && pathname.startsWith('/products/') ? pathname.split('/').at(-1) : undefined;
-  const page = relevant.find(
-    (form) =>
-      form.owner?.relationTo === "pages" &&
-      ("/" + (form.owner?.value?.slug ?? "") === pathname ||
-        (pathname === "/" && form.owner?.value?.sourceKey === "home-page")),
-  );
-  const fallback = relevant.find(
-    (form) =>
-      form.owner?.relationTo === "pages" &&
-      form.owner?.value?.sourceKey ===
-        {
-          home: "home-page",
-          contact: "contact-page",
-          quote: "contact-page",
-          application: "careers-page",
-          reservation: "book-a-meeting-page",
-          search: "search-page",
-        }[purpose],
-  );
-  const definition = ownerId || productSlug ? specific : (page ?? fallback);
+  const pathname = usePathname();
+  const {definition, scope} = selectFormDefinition(forms, purpose, pathname, ownerId);
   useEffect(() => {
-    if (enabled && !definition) refresh(ownerId || productSlug ? { purpose, collection, ownerId, slug: productSlug } : purpose==='quote'?undefined:{purpose,collection:'pages',slug:pathname.replace(/^\//,'')||'home'});
-  }, [purpose, ownerId, pathname, Boolean(definition), enabled]);
-  return { definition, countries };
+    if (enabled && !definition) refresh(scope);
+  }, [purpose, ownerId, pathname, Boolean(definition), enabled, refresh]);
+  return {definition, countries};
 }

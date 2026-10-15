@@ -33,6 +33,9 @@ export type CmsForm = {
   redirect?: { url: string };
   owner?: {
     relationTo: string;
-    value: { id: number; sourceId?: number; slug?: string; sourceKey?: string };
+    value: FormOwner;
   };
 };
+
+export type FormOwner = {id: number; sourceId?: number; slug?: string; sourceKey?: string};
+export type FormScope = {purpose: FormPurpose; collection: 'pages' | 'jobs' | 'events' | 'products'; ownerId?: number; slug?: string};
