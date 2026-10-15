@@ -34,7 +34,7 @@ export function DeferredVideo({
       {...props}
       ref={ref}
       src={active ? src : undefined}
-      poster={poster}
+      poster={active ? poster : undefined}
       autoPlay={active && autoPlay}
       preload="none"
       onClick={(event) => {
