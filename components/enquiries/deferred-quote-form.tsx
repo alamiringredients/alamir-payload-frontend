@@ -33,14 +33,13 @@ export function DeferredQuoteForm(props: ComponentProps<typeof QuoteForm>) {
       if (event.target instanceof Element && event.target.closest('[data-quote]')) prepare()
     }
     const onOpen = () => { if (dialog.classList.contains('open')) prepare() }
-    const observer = new MutationObserver(onOpen)
-    observer.observe(dialog, {attributes: true, attributeFilter: ['class']})
+    dialog.addEventListener('overlayopen', prepare)
     document.addEventListener('pointerover', onIntent)
     document.addEventListener('focusin', onIntent)
     onOpen()
     return () => {
       disposed = true
-      observer.disconnect()
+      dialog.removeEventListener('overlayopen', prepare)
       document.removeEventListener('pointerover', onIntent)
       document.removeEventListener('focusin', onIntent)
     }

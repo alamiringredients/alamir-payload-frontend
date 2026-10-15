@@ -2,6 +2,7 @@
 
 import {useEffect} from 'react'
 import {usePathname} from 'next/navigation'
+import {registerOverlay} from '@/lib/browser/overlay'
 
 export function CatalogInteractions() {
   const pathname = usePathname()
@@ -38,31 +39,13 @@ export function CatalogInteractions() {
       show('products')
     })
 
-    document.querySelectorAll<HTMLButtonElement>('[data-product-catalog-open]').forEach(trigger=>{
-      const id=trigger.getAttribute('aria-controls')
-      const dialog=id?document.getElementById(id):null
-      if(!dialog)return
-      const closeButton=dialog.querySelector<HTMLButtonElement>('[data-product-catalog-close]')
-      let lastFocus:HTMLElement|null=null
-      const open=()=>{
-        lastFocus=document.activeElement instanceof HTMLElement?document.activeElement:null
-        dialog.classList.add('open')
-        dialog.setAttribute('aria-hidden','false')
-        trigger.setAttribute('aria-expanded','true')
-        document.body.style.overflow='hidden'
-        closeButton?.focus()
-      }
-      const close=()=>{
-        dialog.classList.remove('open')
-        dialog.setAttribute('aria-hidden','true')
-        trigger.setAttribute('aria-expanded','false')
-        document.body.style.overflow=''
-        lastFocus?.focus()
-      }
-      listen(trigger,'click',open)
-      dialog.querySelectorAll<HTMLElement>('[data-product-catalog-close]').forEach(button=>listen(button,'click',close))
-      listen(document,'keydown',((event:KeyboardEvent)=>{if(event.key==='Escape'&&dialog.classList.contains('open'))close()}) as EventListener)
-      cleanups.push(()=>{if(dialog.classList.contains('open'))document.body.style.overflow=''})
+    const catalogTriggers = [...document.querySelectorAll<HTMLButtonElement>('[data-product-catalog-open]')]
+    document.querySelectorAll<HTMLElement>('[data-product-catalog]').forEach(dialog => {
+      const triggers = catalogTriggers.filter(trigger => trigger.getAttribute('aria-controls') === dialog.id)
+      const overlay = registerOverlay(dialog, {triggers, initialFocus: '[data-product-catalog-close]'})
+      triggers.forEach(trigger => listen(trigger, 'click', () => overlay.open(trigger)))
+      dialog.querySelectorAll<HTMLElement>('[data-product-catalog-close]').forEach(button => listen(button, 'click', overlay.close))
+      cleanups.push(overlay.dispose)
     })
 
     document.querySelectorAll<HTMLElement>('[data-pgal]').forEach(gallery => {

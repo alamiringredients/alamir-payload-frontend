@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "node --import dotenv/config node_modules/next/dist/bin/next start",
     "lint": "eslint app components config i18n lib proxy.ts next.config.ts",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "node --test --test-concurrency=4 lib/**/*.test.mjs"
   },
   "dependencies": {
     "@payloadcms/richtext-lexical": "^3.90.2",

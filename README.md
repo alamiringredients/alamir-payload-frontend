@@ -36,3 +36,8 @@ Install Node.js 24 and [set up and start the backend](../alamir-payload-backend/
 Open your website URL, or [localhost:3000](http://localhost:3000) for a local installation. Keep the backend and website running.
 
 After an update or a change to `.env`, rebuild with `npm run build` and restart the website.
+
+For development, run `npm test`, `npm run typecheck`, and `npm run lint`.
+After changing Section definitions or Owner form policy in the backend, run
+`npm run content:sync` there and commit the generated frontend metadata with the backend change.
+`npm run content:check` in the backend checks that the two repositories agree.

@@ -6,10 +6,10 @@ import { cache } from 'react'
 import {publishedSummary,publishedIdentities,publishedDocuments,publishedGlobal,publishedPage,type IdentityResource} from './public-site'
 import templates from './templates.json'
 import sections from './sections.json'
-import recordSections from './record-sections.json'
+import {applyRecordSection, pagePresentationSource, pageSectionTemplate, pageSections, recordPresentationSource, type TemplateValue} from './section-projection'
 import { textContent, type ContentNode, type ContentDocument } from '@/lib/editor/document'
 
-type Value = string | number | boolean | null | Value[] | { [key: string]: Value }
+type Value = TemplateValue
 import type {Document} from './types'
 import type {SiteLocale} from '@/i18n/navigation'
 export type {Document} from './types'
@@ -79,7 +79,7 @@ function hydrate(template: Value, doc: Document, locale?: string): unknown {
 export const globalContent = cache(async <T>(slug: keyof typeof templates.globals,view?:'meta'): Promise<T> => {
   if(slug==='interface-text')return hydrate(templates.globals[slug] as unknown as Value,await translationContent()) as T
   const page=slug==='website-settings'||slug==='navigation'?undefined:await pageBySourceKey(slug==='catalog-settings'?'products-page':slug)
-  const doc=page?sourceDocument(page):await publishedGlobal(slug)
+  const doc=page?pagePresentationSource(page):await publishedGlobal(slug)
   const [interfaceText,media]=await Promise.all([translationContent(),mediaDocuments()])
   doc.interface=interfaceText;doc.mediaRefs=media
   if(slug==='navigation'){
@@ -259,19 +259,19 @@ export const record=cache(async<T>(collection:keyof typeof templates.collections
  const doc=(await recordDocuments(collection)).find(doc=>doc.slug===slug)
  return doc?presentRecord<T>(collection,recordSource(doc),view):null
 })
-export function recordSource(doc:Document,selected?:PageBlock):Document{
- const blocks=doc.layout as PageBlock[]|undefined
- let result={...doc,page:{...(doc.page as Record<string,unknown>)}}
- for(const block of [...(blocks??[]),...(selected?[selected]:[])]){
-  const section=recordSections.find(section=>section.slug===block.blockType)
-  if(!section || !block.data)continue
-  const data=block.data as Record<string,unknown>
-  const page=Object.fromEntries(section.page.map(key=>[key,{...(data[key] as Record<string,unknown>),enabled:block.enabled!==false}]))
-  const root=Object.fromEntries(Object.keys(section.root??{}).map(key=>[key,data[key==='body' && section.collection==='events'?'bodyCopy':key]]))
-  result={...result,...root,page:{...result.page,...page}}
- }
- return result
+const recordPresentation = cache(recordPresentationSource)
+export function recordSource(doc:Document,selected?:PageBlock):Document {
+ const source=recordPresentation(doc)
+ return selected?applyRecordSection(source,selected):source
 }
+const recordContent=cache((collection:keyof typeof templates.collections,doc:Document)=>presentRecord(collection,recordSource(doc)))
+const recordSectionCounts=cache((doc:Document)=>{
+ const counts=new Map<string,number>()
+ for(const block of (doc.layout??[]) as PageBlock[])counts.set(block.blockType,(counts.get(block.blockType)??0)+1)
+ return counts
+})
+export const recordSectionContent=cache(<T>(collection:keyof typeof templates.collections,doc:Document,block:PageBlock):T=>
+ recordSectionCounts(doc).get(block.blockType)===1?recordContent(collection,doc) as T:presentRecord<T>(collection,recordSource(doc,block)))
 
 function fieldValue(doc: Document, path: string): unknown {
   return path.split('.').reduce<unknown>((value,key) => value && typeof value === 'object' ? (value as Record<string,unknown>)[key] : undefined,doc)
@@ -300,27 +300,14 @@ export const pageBySourceKey=cache(async(key:string):Promise<CmsPage|undefined>=
  return page?pageByID(page.id):undefined
 })
 export const pageLinks=cache(async ():Promise<{slug:string}[]> => (await pageIdentities()).map(page=>({slug:page.slug!})))
-function sourceDocument(page:CmsPage,selected?:PageBlock):Document {
- const fields:Record<string,unknown>={...page.page,sectionVisibility:{hero:true,body:true,news:true,jobs:true,apply:true,company:true,products:true,product:true,related:true,events:true,contact:true}}
- for(const block of page.layout){
-  const section=sections.find(section=>section.slug===block.blockType)
-  if(section){fields[section.sourceName]={...(fields[section.sourceName] as Record<string,unknown>),...block.content,enabled:block.enabled!==false};if(section.pageSlug==='news' && section.name==='hero')fields.heroImage=block.content?.heroImage}
- }
- if(selected){
-  const section=sections.find(section=>section.slug===selected.blockType)
-  if(section){fields[section.sourceName]={...(fields[section.sourceName] as Record<string,unknown>),...selected.content,enabled:true};if(section.pageSlug==='news' && section.name==='hero')fields.heroImage=selected.content?.heroImage}
- }
- return {...page,page:fields}
-}
-const sharedSectionContent=cache((page:CmsPage,key:keyof typeof templates.globals)=>hydrate(templates.globals[key] as unknown as Value,sourceDocument(page)))
-export function sectionContent<T>(page:CmsPage,block:PageBlock):T {
- const definition=sections.find(section=>section.slug===block.blockType)
- const own=page.layout.some(item=>item.id===block.id)
- if(own&&page.layout.filter(item=>item.blockType===block.blockType).length===1)return sharedSectionContent(page,definition!.pageKey as keyof typeof templates.globals) as T
- const template=templates.globals[definition!.pageKey as keyof typeof templates.globals] as unknown as Record<string,Value>
- const selected=definition?.pageSlug==='home'?{...template,sections:(template.sections as {key:string}[]).filter(section=>section.key===definition.name)}:template
- return hydrate(selected,sourceDocument(page,block)) as T
-}
+const sectionTemplates=new Map(sections.map(definition=>[
+ definition.slug,
+ pageSectionTemplate(templates.globals[definition.pageKey as keyof typeof templates.globals] as unknown as Record<string,Value>,definition.slug),
+]))
+export const sectionContent=cache(<T>(page:CmsPage,block:PageBlock):T=>{
+ if(!pageSections.has(block.blockType))throw new Error(`Unknown page Section: ${block.blockType}`)
+ return hydrate(sectionTemplates.get(block.blockType)!,pagePresentationSource(page,block)) as T
+})
 
 export const catalogInterfaceLabels=cache(async()=>hydrate(templates.globals['catalog-settings'].labels as unknown as Value,{id:0,interface:await translationContent()}) as CatalogLabels)
 

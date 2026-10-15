@@ -1,6 +1,7 @@
 import {Fragment} from 'react'
 import {getCustomForms,getFormCountries} from '@/lib/forms/server'
-import sections from '@/lib/payload/sections.json'
+import {pageSections} from '@/lib/payload/section-projection'
+import type sections from '@/lib/payload/sections.json'
 import {pageBySourceKey,type CmsPage,type PageBlock} from '@/lib/payload/client'
 import type {SiteLocale} from '@/i18n/navigation'
 import {getLayoutPayload} from '@/lib/api/public'
@@ -34,7 +35,7 @@ export async function PageBody({page,locale,context={}}:{page:CmsPage;locale:Sit
  const countries=await getFormCountries(forms,locale)
  const formsById=new Map(forms.map(form=>[form.id,form]))
  const rendered=new Map(await Promise.all(blocks.map(async block=>{
-  const definition=sections.find(section=>section.slug===block.blockType)
+  const definition=pageSections.get(block.blockType)
   return [block.id,await Section({block,locale,countries,pageId:page.id,form:formsById.get(formId(block)),renderSection:definition?()=>RegisteredSection({block,locale,page,context,definition}):undefined})] as const
  })))
  const groups:PageBlock[][]=[]

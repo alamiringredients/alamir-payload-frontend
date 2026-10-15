@@ -1,5 +1,6 @@
-export type FormPurpose =
-  "home" | "contact" | "quote" | "application" | "reservation" | "search";
+import type { ownerFormPolicy } from "./owner-policy";
+
+export type FormPurpose = keyof typeof ownerFormPolicy;
 export type FormField = {
   id?: string;
   blockType: string;
@@ -38,4 +39,4 @@ export type CmsForm = {
 };
 
 export type FormOwner = {id: number; sourceId?: number; slug?: string; sourceKey?: string};
-export type FormScope = {purpose: FormPurpose; collection: 'pages' | 'jobs' | 'events' | 'products'; ownerId?: number; slug?: string};
+export type FormScope = {purpose: FormPurpose; collection: (typeof ownerFormPolicy)[FormPurpose]['collection']; ownerId?: number; slug?: string};
