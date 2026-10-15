@@ -30,7 +30,7 @@ export function ProfileBlock({
       gap="clamp(16px,1.8vw,24px)"
       data-rich-content=""
       className={styles.profile}
-      data-media-side={a.mediaSide ? String(a.mediaSide) : undefined}
+      firstSide={a.mediaSide === "end" ? "end" : "start"}
     >
       <figure className={styles["profile-photo"]}>
         {a.image ? (

@@ -307,7 +307,7 @@ function MediaStory({ node, renderNode }: BlockProps) {
     <TwoColumns as="figure" collapseAt={700} columns={String(node.attrs?.columnWidth??(side==='end'?'minmax(0,1.05fr) minmax(0,.95fr)':'minmax(0,.95fr) minmax(0,1.05fr)'))} align="center"
       className={`${styles["media-story"]} reveal`}
       data-media-story=""
-      data-media-side={side}
+      firstSide={side==='end'?'end':'start'}
     >
       <div className={styles["media-story-image"]}>
         <ContentImage

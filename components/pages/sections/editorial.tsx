@@ -13,7 +13,7 @@ export async function renderSection({block,locale,source,definition,settings}:Se
   const content=sectionContent<EditorialPageContent>(source,block)
   if(name==='hero')return <EditorialPageHero {...{kicker:content.hero.kicker[locale],title:content.hero.title[locale],description:content.hero.description[locale],image:content.hero.image,imageAlt:content.hero.alt[locale],mediaPosition:block.mediaPosition==='left'?'left':'right'}}/>
   const nodes=content.body[locale].content.filter(node=>node.attrs?.id===name)
-  const document=placeMedia({type:'doc',content:nodes},block.mediaPosition,locale)
+  const document=placeMedia({type:'doc',content:nodes},block.mediaPosition)
   if(pageSlug==='quality'){
    const data=await getQualityPayload(locale)
    return <ContentRenderer fullWidth document={document} renderBlock={qualityBlockRenderer(data.certifications,locale,data.labels,settings.groupLogo)}/>

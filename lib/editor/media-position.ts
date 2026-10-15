@@ -1,9 +1,8 @@
 import type {ContentDocument,ContentNode} from './document'
-import type {SiteLocale} from '@/i18n/navigation'
 type Position='original'|'left'|'right'|undefined
-export function placeMedia(document:ContentDocument,position:Position,locale:SiteLocale):ContentDocument{
+export function placeMedia(document:ContentDocument,position:Position):ContentDocument{
  if(!position || position==='original')return document
- const side=position==='left'?(locale==='ar'?'end':'start'):(locale==='ar'?'start':'end')
+ const side=position==='left'?'start':'end'
  const visit=(node:ContentNode):ContentNode=>{
   if(node.type==='aboutProfile')return {...node,attrs:{...node.attrs,mediaSide:side}}
   let content=node.content?.map(visit)
@@ -19,12 +18,12 @@ export function placeMedia(document:ContentDocument,position:Position,locale:Sit
  }
  return {...document,content:document.content.map(visit)}
 }
-export function placeRecordMedia<T>(value:T,position:Position,locale:SiteLocale):T{
+export function placeRecordMedia<T>(value:T,position:Position):T{
  if(!position || position==='original')return value
- if(Array.isArray(value))return value.map(child=>placeRecordMedia(child,position,locale)) as T
+ if(Array.isArray(value))return value.map(child=>placeRecordMedia(child,position)) as T
  if(value && typeof value==='object'){
-  if('type' in value && value.type==='doc')return placeMedia(value as unknown as ContentDocument,position,locale) as T
-  return Object.fromEntries(Object.entries(value).map(([key,child])=>[key,placeRecordMedia(child,position,locale)])) as T
+  if('type' in value && value.type==='doc')return placeMedia(value as unknown as ContentDocument,position) as T
+  return Object.fromEntries(Object.entries(value).map(([key,child])=>[key,placeRecordMedia(child,position)])) as T
  }
  return value
 }

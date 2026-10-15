@@ -15,7 +15,8 @@ export function TwoColumns({
   align = "stretch",
   gap = "clamp(36px,5vw,72px)",
   collapseAt = 900,
-  reverse = false,
+  firstSide = "start",
+  mediaChild,
   className = "",
   style,
   children,
@@ -24,7 +25,8 @@ export function TwoColumns({
 }: Omit<HTMLAttributes<HTMLElement>, "children"> & {
   as?: "div" | "section" | "figure" | "header";
   collapseAt?: 700 | 900 | 1050;
-  reverse?: boolean;
+  firstSide?: "start" | "end";
+  mediaChild?: "first" | "second";
   columns?: string;
   align?: "start" | "center" | "end" | "stretch";
   gap?: string;
@@ -37,12 +39,17 @@ export function TwoColumns({
       ref={ref as never}
       data-two-columns=""
       data-collapse-at={collapseAt}
-      data-reverse={reverse}
+      data-first-side={firstSide}
+      data-media-child={mediaChild}
       className={`${styles.columns} ${className}`}
       style={
         {
           "--two-column-widths": columnWidths[columns] ?? columns,
           "--two-column-gap": gap,
+          "--two-column-first-order": mediaChild
+            ? mediaChild === "first" ? "var(--cms-media-order,1)" : "calc(3 - var(--cms-media-order,2))"
+            : firstSide === "end" ? 2 : 0,
+          "--two-column-second-order": mediaChild ? "calc(3 - var(--two-column-first-order))" : firstSide === "end" ? 1 : 0,
           alignItems: align,
           ...style,
         } as CSSProperties

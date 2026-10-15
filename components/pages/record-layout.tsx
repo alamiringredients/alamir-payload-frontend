@@ -18,7 +18,7 @@ export async function RecordLayout<T>({collection,slug,recordId,locale,renderSec
  const content=<SectionLayout layout={layout} locale={locale} renderSection={block=>{
   const section=recordSections.find(section=>section.slug===block.blockType)
   if(!section)return null
-  return renderSection(placeRecordMedia(counts.get(block.blockType)===1?record:presentRecord<T>(collection,recordSource(doc as Document,block)),block.mediaPosition,locale),section.name)
+  return renderSection(placeRecordMedia(counts.get(block.blockType)===1?record:presentRecord<T>(collection,recordSource(doc as Document,block)),block.mediaPosition),section.name)
  }}/>
  return <main id="main" data-no-translate>{['news','sustainability','events'].includes(collection)?<article className={collection==='sustainability'?'sus':undefined}>{content}{children}</article>:<>{content}{children}</>}</main>
 }

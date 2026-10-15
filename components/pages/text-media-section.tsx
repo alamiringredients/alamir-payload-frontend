@@ -63,12 +63,12 @@ export async function TextMediaSection({
     >
       <TwoColumns
         columns={
-          (block.mediaPosition === "left") !== (locale === "ar")
+          block.mediaPosition === "left"
             ? "minmax(0,.82fr) minmax(0,1fr)"
             : "55-45"
         }
         align="center"
-        reverse={(block.mediaPosition === "left") !== (locale === "ar")}
+        mediaChild="second"
       >
         <div className={styles.copy}>
           <SectionHeading

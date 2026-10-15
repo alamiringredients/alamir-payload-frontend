@@ -12,14 +12,3 @@
 
 
 .cms-section .ph-media video{width:100%;height:100%;object-fit:cover}
-
-@media(min-width:901px){
- .cms-section[data-media-position=left] .pdp>.reveal{grid-column:1;grid-row:1}
- .cms-section[data-media-position=left] .pdp>.pdp-rail{grid-column:2;grid-row:1}
- .cms-section[data-media-position=right] .pdp>.reveal{grid-column:2;grid-row:1}
- .cms-section[data-media-position=right] .pdp>.pdp-rail{grid-column:1;grid-row:1}
- [dir=rtl] .cms-section[data-media-position=left] .pdp>.reveal{grid-column:2}
- [dir=rtl] .cms-section[data-media-position=left] .pdp>.pdp-rail{grid-column:1}
- [dir=rtl] .cms-section[data-media-position=right] .pdp>.reveal{grid-column:1}
- [dir=rtl] .cms-section[data-media-position=right] .pdp>.pdp-rail{grid-column:2}
-}
