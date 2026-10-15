@@ -13,7 +13,6 @@ const nextConfig: NextConfig = {
     globalNotFound: true,
     staticGenerationMaxConcurrency: 1,
     staticGenerationMinPagesPerWorker: 50,
-    inlineCss: true,
     staleTimes: {dynamic: 60, static: 300},
   },
   images: {

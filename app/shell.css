@@ -516,6 +516,7 @@
 .consent-row label a { text-decoration: underline; text-underline-offset: .15em; }
 .footer-legal a { display: inline-block; min-height: 24px; padding-block: 3px; }
 
-.embedded-video-preview { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; width:100%; border:0; border-radius:18px; background:var(--navy) center/cover; color:#fff; font:inherit; cursor:pointer; }
-.embedded-video-preview span { padding:8px 14px; border-radius:8px; background:#132840; }
+.embedded-video-preview { position:relative; overflow:hidden; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; width:100%; border:0; border-radius:18px; background:var(--navy); color:#fff; font:inherit; cursor:pointer; }
+.embedded-video-preview img { object-fit:cover; }
+.embedded-video-preview span { position:relative; padding:8px 14px; border-radius:8px; background:#132840; }
 .embedded-video-preview:focus-visible { outline:3px solid var(--red); outline-offset:4px; }
