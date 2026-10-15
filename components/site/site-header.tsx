@@ -25,7 +25,7 @@ export function SiteHeader({catalog,locale,page='',menus,section}: {section:Home
     if(!href)return null
     const label=navigationLabel(item,locale)
     const node=<SmartLink href={href} {...navigationProps(href,desktop)}>{label}</SmartLink>
-    if(item.page?.slug!=='products')return <Fragment key={item.id}>{node}</Fragment>
+    if(item.page?.sourceKey!=='products-page')return <Fragment key={item.id}>{node}</Fragment>
     return desktop?<div className="nav-drop" key={item.id}><SmartLink href={href} {...navigationProps(href,true)}>{label} <svg className="nav-drop-caret" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg></SmartLink><div className="nav-drop-panel"><div className="nav-drop-card"><CatalogNavigation catalog={catalog} locale={locale}/></div></div></div>:<Fragment key={item.id}>{node}<div className="mobile-sub"><CatalogNavigation catalog={catalog} locale={locale} mobile/></div></Fragment>
   }
   return (<><header className="site-header" id="header">

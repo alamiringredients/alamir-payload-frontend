@@ -2,7 +2,7 @@ import type {ContentDocument} from '@/lib/editor/document'
 export type CmsLocale = 'en' | 'ar' | 'fr'
 export type LocalizedValue = Record<CmsLocale, string>
 export type LocalizedDocument = Record<CmsLocale, ContentDocument>
-export type CmsRichText = {id:string;label:string;source:string;sources:string[];values:LocalizedDocument}
+export type CmsRichText = {role?:'heading'|'body';id:string;label:string;source:string;sources:string[];values:LocalizedDocument}
 
 export type CmsTextField = {
   id: string
@@ -108,7 +108,7 @@ export type WebsiteSettings = {
   socialImage: string
 }
 
-export type NavigationItem={id:string;label:LocalizedValue;linkType:'page'|'url';page?:{slug:string;title:LocalizedValue};url?:string}
+export type NavigationItem={id:string;label:LocalizedValue;linkType:'page'|'url';page?:{slug:string;sourceKey?:string;title:LocalizedValue};url?:string}
 export type HomeCmsData = {
   menus?:{left:NavigationItem[];right:NavigationItem[]};footerMenus?:{explore:NavigationItem[];company:NavigationItem[];legal:NavigationItem[]}
   sections: HomeSectionContent[]

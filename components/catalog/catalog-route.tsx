@@ -4,7 +4,7 @@ import type {Metadata} from 'next'
 import {hasLocale} from 'next-intl'
 import {notFound} from 'next/navigation'
 import {CatalogPageBody} from './catalog-content'
-import {getCatalog, getCatalogPayload, getHomeCmsData, getWebsiteSettings} from '@/lib/api/public'
+import {getCatalog, getCatalogPayload, getSiteShell, getWebsiteSettings} from '@/lib/api/public'
 import {resolveCatalogPage} from '@/lib/catalog/resolve'
 import {categoryHeroImage, productHeroImage, productPath} from '@/lib/catalog/types'
 import {localizedAlternates} from '@/lib/cms/metadata'
@@ -30,7 +30,7 @@ export async function CatalogRoute({params}: CatalogRouteProps) {
 }
 
 async function getCatalogMetadata(path: string, locale: SiteLocale): Promise<Metadata> {
-  const catalog = await getCatalog(false,locale,path)
+  const catalog = await getCatalog(locale,path)
   const resolved = resolveCatalogPage(catalog, path)
   if (!resolved) notFound()
 
@@ -61,8 +61,8 @@ async function getCatalogMetadata(path: string, locale: SiteLocale): Promise<Met
 async function renderCatalogRoute(page: string, locale: SiteLocale) {
   const [{catalog, certifications, certificationLabels}, home, settings] = await Promise.all([
     getCatalogPayload(locale,page),
-    getHomeCmsData(locale,'shell'),
-    getWebsiteSettings(locale),
+    getSiteShell(),
+    getWebsiteSettings(),
   ])
   const resolved = resolveCatalogPage(catalog, page)
   if (!resolved) notFound()
@@ -77,16 +77,13 @@ async function renderCatalogRoute(page: string, locale: SiteLocale) {
       category={resolved.category}
       product={resolved.product}
     /></>
-  let catalogStyle: 'product-detail' | 'product-category' | 'tomato-category' | undefined
-  if (resolved.product) catalogStyle = 'product-detail'
-  else if (resolved.category) {
-    catalogStyle = resolved.category.slug === 'tomato-concentrates' ? 'tomato-category' : 'product-category'
-  }
+  const catalogStyle = resolved.product ? 'product-detail' : resolved.category ? 'product-category' : undefined
 
   return <SitePage
     structuredData={pageSchema(localePath(resolved.product&&resolved.category?productPath(resolved.product,resolved.category):`/${page}`,locale),locale,(resolved.product??resolved.category)?.content.name[locale]??catalog.settings.seo.title[locale],(resolved.product??resolved.category)?.content.description[locale]??catalog.settings.seo.description[locale],resolved.product?{'@type':'Product',name:resolved.product.content.name[locale],description:resolved.product.content.description[locale],...(productHeroImage(resolved.product)?{image:siteUrl(productHeroImage(resolved.product))}:{}),manufacturer:{'@id':siteUrl('/#organization')}}:undefined)}
     page={page}
     catalogStyle={catalogStyle}
+    catalogAppearance={resolved.category?.content.appearance}
     locale={locale}
     home={home}
     settings={settings}

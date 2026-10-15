@@ -29,7 +29,7 @@ export async function CertificationPanel({
 }) {
   const records = certificationEntries(data, holder);
   if (!records.length) return null;
-  const siteName=(await getWebsiteSettings(locale)).siteName[locale];
+  const siteName=(await getWebsiteSettings()).siteName[locale];
   const title = holder === "group"
     ? `${holderLabel(holder, labels)} — ${labels.heldToday}`
     : `${siteName} — ${labels.programme}`;

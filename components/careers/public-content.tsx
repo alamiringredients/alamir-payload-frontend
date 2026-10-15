@@ -1,11 +1,10 @@
+import {TwoColumns} from '@/components/layout/two-columns'
 import { Fragment } from "react";
-import { ContentImage } from "@/components/site/content-image";
 import { PageHero } from "@/components/site/page-hero";
 import { SmartLink } from "@/components/site/smart-link";
 import { HeroActions } from "@/components/site/hero-actions";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
 import {
-  CardGrid,
   ContentSection,
   SectionHeading,
 } from "@/components/site/content-section";
@@ -20,7 +19,6 @@ import type {
   JobRecord,
 } from "@/lib/careers/types";
 import type { SiteLocale } from "@/i18n/navigation";
-import type { NewsCardRecord as NewsRecord } from "@/lib/api/public";
 import type { JobCard } from "@/lib/api/public";
 function JobRows({
   jobs,
@@ -67,19 +65,14 @@ function JobRows({
 export function CareersPageBody({
   content,
   jobs,
-  news,
   locale,
   labels,
 }: {
   content: CareersContent;
   jobs: JobCard[];
-  news: NewsRecord[];
   locale: SiteLocale;
   labels: Record<string, string>;
 }) {
-  const articles = content.newsIds
-    .map((id) => news.find((a) => a.id === id && a.published[locale]))
-    .filter((a): a is NewsRecord => Boolean(a));
   return (
     <main id="main">
       {content.sectionVisibility.hero && (
@@ -101,46 +94,6 @@ export function CareersPageBody({
             },
           ]}
         />
-      )}{" "}
-      {content.sectionVisibility.news && (
-        <ContentSection theme="tint">
-          <div className="head-split">
-            <SectionHeading
-              kicker={content.newsKicker[locale]}
-              title={<InlineContent document={content.newsTitle[locale]} />}
-              description={
-                <InlineContent document={content.newsIntro[locale]} />
-              }
-            />
-            {content.newsImage && (
-              <figure className="head-art reveal">
-                <ContentImage
-                  src={content.newsImage}
-                  alt={content.newsImageAlt[locale]}
-                />
-              </figure>
-            )}
-          </div>
-          <CardGrid className="career-news-cards">
-            {articles.map((a) => {
-              const v = a.published[locale]!;
-              return (
-                <article key={a.id}>
-                  <SmartLink href={`/news/${a.slug}`}>
-                    {v.hero && <ContentImage src={v.hero} alt={v.heroAlt} />}
-                    <h3>
-                      <InlineContent document={v.cardTitle ?? v.title} />
-                    </h3>
-                    <p>{v.cardSummary || v.summary}</p>
-                    <span>
-                      {labels.readMore} {locale === "ar" ? "←" : "→"}
-                    </span>
-                  </SmartLink>
-                </article>
-              );
-            })}
-          </CardGrid>
-        </ContentSection>
       )}{" "}
       {content.sectionVisibility.jobs && (
         <ContentSection id="positions">
@@ -200,7 +153,7 @@ export function CareerJobBody({
         <p>{v.summary}</p>
         <HeroActions actions={[{ href: "#apply", label: labels.apply }]} />
       </PageHero>),body:(<section className="band">
-        <div className="wrap job-layout">
+        <TwoColumns collapseAt={1050} as="div" columns="minmax(0,1fr) 330px" gap="clamp(40px,6vw,90px)" align="start" className="wrap job-layout">
           <div className="job-prose managed-job-body">
             <ContentRenderer document={v.body} />
           </div>
@@ -230,7 +183,7 @@ export function CareerJobBody({
               {labels.allJobs}
             </SmartLink>
           </aside>
-        </div>
+        </TwoColumns>
       </section>),apply:(<ContentSection theme="tint" id="apply">
         <SectionHeading
           kicker={

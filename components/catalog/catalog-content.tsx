@@ -1,3 +1,4 @@
+import {TwoColumns} from '@/components/layout/two-columns'
 import type {CategoryCard} from '@/lib/catalog/types'
 import {SectionCopy} from '@/components/editor/section-copy'
 import {RecordLayout} from '@/components/pages/record-layout'
@@ -31,11 +32,11 @@ function Heading({block,locale,start=0}:{block:CatalogBlock;locale:SiteLocale;st
 function CatalogViewHeading({block,context}:{block:CatalogBlock;context:Context}){
  const {catalog,locale}=context
  const labels=catalog.settings.labels
- return <div className="view-head reveal"><div className="band-head"><div className="kicker">{text(block,0,locale)}</div><h2><SectionCopy kind="heading" section={block} locale={locale}/></h2><p className="lead view-copy on" data-view-panel="products"><SectionCopy kind="body" section={block} locale={locale}/></p><p className="lead view-copy" data-view-panel="categories">{block.richTexts?.[2]?.values[locale]&&<InlineContent document={block.richTexts[2].values[locale]}/>}</p></div><div className="view-switch" role="group" aria-label={labels.productView[locale]}><button className="vtab" type="button" data-view="products" aria-pressed="true">{labels.singleProducts[locale]} <span className="n">{String(catalog.products.length).padStart(2,'0')}</span></button><button className="vtab" type="button" data-view="categories" aria-pressed="false">{labels.categories[locale]} <span className="n">{String(catalog.categories.length).padStart(2,'0')}</span></button></div></div>
+ return <TwoColumns collapseAt={1050} as="div" columns="minmax(0,1.06fr) minmax(0,.94fr)" gap="clamp(28px,4.6vw,72px)" align="end" className="view-head reveal"><div className="band-head"><div className="kicker">{text(block,0,locale)}</div><h2><SectionCopy kind="heading" section={block} locale={locale}/></h2><p className="lead view-copy on" data-view-panel="products"><SectionCopy kind="body" section={block} locale={locale}/></p><p className="lead view-copy" data-view-panel="categories">{block.richTexts?.[2]?.values[locale]&&<InlineContent document={block.richTexts[2].values[locale]}/>}</p></div><div className="view-switch" role="group" aria-label={labels.productView[locale]}><button className="vtab" type="button" data-view="products" aria-pressed="true">{labels.singleProducts[locale]} <span className="n">{String(catalog.products.length).padStart(2,'0')}</span></button><button className="vtab" type="button" data-view="categories" aria-pressed="false">{labels.categories[locale]} <span className="n">{String(catalog.categories.length).padStart(2,'0')}</span></button></div></TwoColumns>
 }
 
 function CatalogCallToAction({block,locale,actions}:{block:CatalogBlock;locale:SiteLocale;actions:Action[]}){
- return <CallToActionSection kicker={text(block,0,locale)} title={<SectionCopy kind="heading" section={block} locale={locale}/>} description={<SectionCopy kind="body" section={block} locale={locale}/>} actions={actions}/>
+ return <CallToActionSection kicker={text(block,0,locale)} title={<SectionCopy kind="heading" section={block} locale={locale}/>} description={<SectionCopy kind="body" section={block} locale={locale} index={3}/>} actions={actions}/>
 }
 
 function CategoryArtwork({category}:{category:Pick<Category,'content'>|CategoryCard}){
@@ -50,9 +51,11 @@ function CategoryArtwork({category}:{category:Pick<Category,'content'>|CategoryC
 }
 
 function ProductCards(context:Context){
+ const categoriesByID=new Map(context.catalog.categories.map(category=>[category.id,category]))
  const products=context.catalog.products.filter(product=>context.product?product.id!==context.product.id:!context.category||product.category_id===context.category.id)
  return products.map(product=>{
-  const category=context.catalog.categories.find(item=>item.id===product.category_id)!
+  const category=categoriesByID.get(product.category_id)
+  if(!category)return null
   const name=product.content.name[context.locale],images=product.content.artwork.assets.filter(item=>item.value)
   return <article key={product.id} className="pcard pcard--art" data-cat={category.slug} data-app={product.content.applications.join(' ')} data-brix={product.content.concentrations.join(' ')} data-search={`${name} ${product.content.description[context.locale]} ${category.content.name[context.locale]}`.toLocaleLowerCase(context.locale)}>
    <SmartLink className="cover" href={productPath(product,category)} aria-label={name}/>
@@ -74,12 +77,12 @@ function Filters(context:Context){
  const {catalog,locale,category}=context,labels=catalog.settings.labels
  const products=catalog.products.filter(product=>!category||product.category_id===category.id)
  const applications=new Set(products.flatMap(product=>product.content.applications)),concentrations=new Set(products.flatMap(product=>product.content.concentrations))
- return <div className="cat-shell"><aside className="cat-side" aria-label={labels.allProducts[locale]}>
+ return <TwoColumns collapseAt={1050} as="div" columns="minmax(0,244px) minmax(0,1fr)" gap="clamp(40px,5vw,80px)" align="start" className="cat-shell"><aside className="cat-side" aria-label={labels.allProducts[locale]}>
   <div className="tab-rail" role="group" aria-label={labels.productCategory[locale]}>{!category&&<button className="tab" type="button" data-cat="all" aria-pressed="true">{labels.allProducts[locale]}</button>}{catalog.categories.map(item=>category?<SmartLink key={item.id} className="tab" href={categoryPath(item,catalog.products)} aria-current={item.id===category.id?'page':undefined}>{item.content.name[locale]}</SmartLink>:<button key={item.id} className="tab" type="button" data-cat={item.slug} aria-pressed="false">{item.content.name[locale]}</button>)}</div>
   <div className="cat-tools"><div className="cat-field cat-catsel"><select aria-label={labels.productCategory[locale]} data-cat-select defaultValue={category?categoryPath(category,catalog.products):''}><option value="">{labels.allProducts[locale]}</option>{catalog.categories.map(item=><option value={categoryPath(item,catalog.products)} key={item.id}>{item.content.name[locale]}</option>)}</select></div><div className="cat-field wide"><label className="sr-only" htmlFor="cat-q">{labels.allProducts[locale]}</label><input id="cat-q" type="search" data-cat-search autoComplete="off"/></div><div className="cat-field"><select aria-label={labels.allApplications[locale]} data-cat-app><option value="">{labels.allApplications[locale]}</option>{catalog.settings.applications.filter(item=>applications.has(item.id)).map(item=><option value={item.id} key={item.id}>{item.label[locale]}</option>)}</select></div><div className="cat-field"><select aria-label={labels.anyConcentration[locale]} data-cat-brix><option value="">{labels.anyConcentration[locale]}</option>{catalog.settings.concentrations.filter(item=>concentrations.has(item.id)).map(item=><option value={item.id} key={item.id}>{item.label[locale]}</option>)}</select></div><button className="cat-reset" type="button" hidden>{labels.clear[locale]}</button></div>
   <div className="cat-count" data-cat-count data-singular={labels.productSingular[locale]} data-plural={labels.products[locale].toLocaleLowerCase(locale)} aria-live="polite">{products.length} {labels.products[locale].toLocaleLowerCase(locale)}</div></aside>
   <div className="cat-main"><div className="pcards c2 cat-grid">{ProductCards(context)}</div><div className="cat-empty" hidden><strong>{category?text(category.content.page.blocks.find(block=>block.key==='section-1')!,11,locale):catalog.settings.emptyMessage[locale]}</strong></div></div>
- </div>
+ </TwoColumns>
 }
 
 function Gallery({block,locale,className='band'}:{block:CatalogBlock;locale:SiteLocale;className?:string}){
@@ -105,10 +108,30 @@ function ProductGallery({product,locale,catalog}:{product:Product;locale:SiteLoc
  })}</div><div className="pgal-ui"><p className="pgal-cap">{gallery[0].caption[locale]}</p><span className="pgal-count"><b>01</b> / {String(gallery.length).padStart(2,'0')}</span><div className="pgal-dots">{gallery.map((_,index)=><button type="button" className={index===0?'on':''} aria-current={index===0} aria-label={`${catalog.settings.labels.showPhoto[locale]} ${index+1}`} key={index}/>)}</div>{gallery.length>1&&<div className="pgal-nav" dir="ltr"><button type="button" data-pgal-go="prev" aria-label={catalog.settings.labels.previousPhoto[locale]}><SiteIcon name="arrow-left"/></button><button type="button" data-pgal-go="next" aria-label={catalog.settings.labels.nextPhoto[locale]}><SiteIcon name="arrow-right"/></button></div>}</div></div>
 }
 
-function Fold({block,locale}:{block:CatalogBlock;locale:SiteLocale}){
+function Fold({block,locale}:{block:CatalogBlock;locale:SiteLocale}) {
  const values=block.items?.filter(item=>item.value[locale].trim())
- const pairs=!values&&block.label==='Technical specification'?Array.from({length:Math.floor((block.texts.length-1)/2)},(_,index)=>({label:block.texts[index*2+1]?.values,value:block.texts[index*2+2]?.values})):[]
- return <details className="fold"><summary><SectionCopy kind="heading" section={block} locale={locale}/></summary><div className="fold-body">{pairs.length?<table className="spec"><tbody>{pairs.map((item,index)=><tr key={index}><th>{item.label?.[locale]}</th><td>{item.value?.[locale]}</td></tr>)}</tbody></table>:block.label==='Applications'?<ul className="ticks">{block.texts.slice(1).map((item,index)=><li key={index}>{item.values[locale]}</li>)}</ul>:values?.map((item,index)=><p key={index}>{item.document?<InlineContent document={item.document[locale]}/>:item.value[locale]}</p>)??block.texts.slice(1).map((item,index)=><p key={index}>{item.values[locale]}</p>)}</div></details>
+ const specificationRows=block.kind==='specifications' && !values
+  ? Array.from({length:Math.floor((block.texts.length-1)/2)},(_,index)=>({
+      label:block.texts[index*2+1]?.values[locale],
+      value:block.texts[index*2+2]?.values[locale],
+    }))
+  : []
+ let content
+ if(specificationRows.length) {
+  content=<table className="spec"><tbody>{specificationRows.map((item,index)=><tr key={index}>
+   <th>{item.label}</th><td>{item.value}</td>
+  </tr>)}</tbody></table>
+ } else if(block.kind==='applications') {
+  content=<ul className="ticks">{block.texts.slice(1).map(item=><li key={item.id}>{item.values[locale]}</li>)}</ul>
+ } else {
+  content=values
+   ? values.map((item,index)=><p key={index}>{item.document?<InlineContent document={item.document[locale]}/>:item.value[locale]}</p>)
+   : block.texts.slice(1).map(item=><p key={item.id}>{item.values[locale]}</p>)
+ }
+ return <details className="fold">
+  <summary><SectionCopy kind="heading" section={block} locale={locale}/></summary>
+  <div className="fold-body">{content}</div>
+ </details>
 }
 
 function ProductCatalogDialog({context}:{context:Context}){
@@ -135,10 +158,10 @@ function ProductDetailSections({content,context}:{content:CatalogPageContent;con
  const applicationOptions=new Map(catalog.settings.applications.map(item=>[item.id,item]))
  const concentrationValues=product.content.concentrations.map(id=>concentrationOptions.get(id)).filter(Boolean).join(' · ')
  const applicationValues=product.content.applications.flatMap(id=>applicationOptions.has(id)?[applicationOptions.get(id)!]:[])
- const facts=folds.find(block=>block.label==='Technical specification')
+ const facts=folds.find(block=>block.kind==='specifications')
  const siblings=catalog.products.filter(item=>item.category_id===category.id),next=siblings.length>1?siblings[(siblings.findIndex(item=>item.id===product.id)+1)%siblings.length]:undefined
  const nextHref=next?productPath(next,category):'/products'
- return {hero:sections[0]&&<Hero block={sections[0]} context={context}/>,overview:<ContentSection id="detail">{details&&<SectionHeading kicker={text(details,0,locale)} title={<SectionCopy kind="heading" section={details} locale={locale}/>}/>}<div className="pdp panelled"><div className="reveal"><ProductGallery product={product} locale={locale} catalog={catalog}/><div className="folds">{folds.filter(block=>block.enabled).map((block,index)=><Fragment key={block.key}>{index===2&&applicationValues.length>0&&<details className="fold"><summary>{catalog.settings.labels.applications[locale]}</summary><div className="fold-body"><ul className="ticks">{applicationValues.map(item=><li key={item.id}>{item.label[locale]}</li>)}</ul></div></details>}<Fold block={block} locale={locale}/></Fragment>)}</div></div><aside className="pdp-rail reveal"><div className="k">{catalog.settings.labels.atAGlance[locale]}</div><h3>{product.content.name[locale]}</h3>{facts&&<table className="pdp-facts"><tbody>{concentrationValues&&<tr><th>{catalog.settings.labels.concentration[locale]}</th><td>{concentrationValues}</td></tr>}{Array.from({length:Math.floor((facts.texts.length-1)/2)},(_,index)=><tr key={index}><th>{text(facts,index*2+1,locale)}</th><td>{text(facts,index*2+2,locale)}</td></tr>)}</tbody></table>}<div className="pdp-actions"><SmartLink className="btn" href="/contact" data-quote>{catalog.settings.labels.requestQuote[locale]}</SmartLink>{product.content.tds[locale]&&<a className="btn ghost" href={product.content.tds[locale]}>{catalog.settings.labels.downloadTds[locale]}</a>}{settings?.companyProfile[locale]&&<a className="btn ghost" href={settings.companyProfile[locale]}>{catalog.settings.labels.companyProfile[locale]}</a>}</div></aside></div></ContentSection>,gallery:sections[2]&&<Gallery block={sections[2]} locale={locale} className="band tint"/>,related:sections[3]&&<ContentSection><Heading block={sections[3]} locale={locale}/><ProductRail {...context}/></ContentSection>,enquiry:sections[4]&&<CatalogCallToAction block={sections[4]} locale={locale} actions={[{href:'/contact',label:text(sections[4],4,locale)},{href:nextHref,label:next?.content.name[locale]??catalog.settings.labels.browseProducts[locale],variant:'secondary'},{href:'#all-products',label:text(sections[4],6,locale),variant:'secondary',dialog:'all-products'}]}/>}
+ return {hero:sections[0]&&<Hero block={sections[0]} context={context}/>,overview:<ContentSection id="detail">{details&&<SectionHeading kicker={text(details,0,locale)} title={<SectionCopy kind="heading" section={details} locale={locale}/>}/>}<TwoColumns collapseAt={1050} as="div" columns="minmax(0,1.22fr) minmax(0,.78fr)" gap="clamp(40px,5vw,80px)" align="start" className="pdp panelled"><div className="reveal"><ProductGallery product={product} locale={locale} catalog={catalog}/><div className="folds">{folds.filter(block=>block.enabled).map((block,index)=><Fragment key={block.key}>{index===2&&applicationValues.length>0&&<details className="fold"><summary>{catalog.settings.labels.applications[locale]}</summary><div className="fold-body"><ul className="ticks">{applicationValues.map(item=><li key={item.id}>{item.label[locale]}</li>)}</ul></div></details>}<Fold block={block} locale={locale}/></Fragment>)}</div></div><aside className="pdp-rail reveal"><div className="k">{catalog.settings.labels.atAGlance[locale]}</div><h3>{product.content.name[locale]}</h3>{facts&&<table className="pdp-facts"><tbody>{concentrationValues&&<tr><th>{catalog.settings.labels.concentration[locale]}</th><td>{concentrationValues}</td></tr>}{Array.from({length:Math.floor((facts.texts.length-1)/2)},(_,index)=><tr key={index}><th>{text(facts,index*2+1,locale)}</th><td>{text(facts,index*2+2,locale)}</td></tr>)}</tbody></table>}<div className="pdp-actions"><SmartLink className="btn" href="/contact" data-quote>{catalog.settings.labels.requestQuote[locale]}</SmartLink>{product.content.tds[locale]&&<a className="btn ghost" href={product.content.tds[locale]}>{catalog.settings.labels.downloadTds[locale]}</a>}{settings?.companyProfile[locale]&&<a className="btn ghost" href={settings.companyProfile[locale]}>{catalog.settings.labels.companyProfile[locale]}</a>}</div></aside></TwoColumns></ContentSection>,gallery:sections[2]&&<Gallery block={sections[2]} locale={locale} className="band tint"/>,related:sections[3]&&<ContentSection><Heading block={sections[3]} locale={locale}/><ProductRail {...context}/></ContentSection>,enquiry:sections[4]&&<CatalogCallToAction block={sections[4]} locale={locale} actions={[{href:'/contact',label:text(sections[4],4,locale)},{href:nextHref,label:next?.content.name[locale]??catalog.settings.labels.browseProducts[locale],variant:'secondary'},{href:'#all-products',label:text(sections[4],6,locale),variant:'secondary',dialog:'all-products'}]}/>}
 }
 
 export function CatalogIndexSections({content,context}:{content:CatalogPageContent;context:Context}){

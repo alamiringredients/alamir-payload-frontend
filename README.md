@@ -86,3 +86,13 @@ Frontend forms are rendered from the owning Payload Form Builder definition with
 Email delivery is owned by the backend. Complete its [SMTP and email worker setup](../alamir-payload-backend/README.md#smtp-and-queued-emails) when deploying. Keep SMTP credentials and the email worker out of the frontend. A successful submission saves and queues the email; it does not wait for SMTP delivery.
 
 Translations load from Payload for English, Arabic and French. Shared interface text belongs to Shared translations; editorial copy belongs to its page or record, and form text belongs to Form Builder. There are no frontend translation JSON files or language overrides.
+
+## Where to make changes
+
+- **Content and translations:** edit Payload. Backend migrations and `seed/content.json` own database defaults.
+- **Page layouts:** `components/pages/` renders Payload sections; `components/editor/` renders rich content. Reuse `components/layout/two-columns.tsx` for two-column layouts.
+- **Website data:** `lib/api/public.ts` contains named, typed server loaders. Call those directly from pages; shared interface text is loaded in `lib/payload/interface.ts`.
+- **Payload mapping:** `lib/payload/client.ts` translates the stored content into rendering types. `lib/payload/templates.json` preserves mappings for the original design. Keep these details out of page components.
+- **Network requests and caching:** `lib/payload/public-site.ts` batches published resources from the backend. Keep server credentials and draft access out of client components.
+
+After changing layouts or data loading, run `npm run typecheck`, `npm run lint`, and `npm run build`. Check the affected English, Arabic, and French pages at desktop and mobile widths.

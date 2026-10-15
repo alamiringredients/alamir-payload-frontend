@@ -7,7 +7,7 @@ export async function renderSection({block,locale,source,definition}:SectionArgs
  const {name,pageSlug}=definition
  if(pageSlug==='careers'){
   const data=await getCareersPayload(locale),content=sectionContent<typeof data.content>(source,block)
-  return mainSections(CareersPageBody({...data,content,locale}))[['hero','news','jobs','apply'].indexOf(name)]
+  return mainSections(CareersPageBody({...data,content,locale}))[['hero','jobs','apply'].indexOf(name)]
  }
 
 }

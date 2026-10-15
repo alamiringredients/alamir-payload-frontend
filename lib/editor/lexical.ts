@@ -107,8 +107,13 @@ export function richText(
           },
         };
       const content = [...heading, ...body];
-      if (fields.blockType === "text-media")
-        content.push(photo(fields.media, fields.caption));
+      if (fields.blockType === "text-media") {
+        const media=fields.rightContent?richText(fields.rightContent,undefined,locale).content:[photo(fields.media,fields.caption)];
+        const text={type:'column',content:[...heading,...body]} as ContentNode;
+        const other={type:'column',content:media} as ContentNode;
+        const mediaFirst=(fields.mediaPosition==='left')!==(locale==='ar');
+        return {type:'columns',attrs:{layout:'prose-media',columnWidth:fields.columnWidth==='original'?undefined:fields.columnWidth,verticalAlign:'center'},content:mediaFirst?[other,text]:[text,other]};
+      }
       if (fields.blockType === "call-to-action")
         content.push({ type: "actions", attrs: { items: fields.actions } });
       return { type: "contentSection", content };

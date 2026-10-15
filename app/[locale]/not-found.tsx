@@ -10,7 +10,7 @@ export default async function NotFoundPage() {
   const requested = await getLocale()
   const locale = locales.includes(requested as SiteLocale) ? requested as SiteLocale : 'en'
   const [layoutData, sharedStyles, pageStyles] = await Promise.all([
-    getLayoutPayload(locale),
+    getLayoutPayload(),
     readFile(join(process.cwd(), 'styles/content-pages.css'), 'utf8'),
     readFile(join(process.cwd(), 'styles/pages/document.css'), 'utf8'),
   ])

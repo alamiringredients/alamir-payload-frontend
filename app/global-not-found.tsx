@@ -12,7 +12,7 @@ import '@/styles/pages/document.css'
 
 export default async function GlobalNotFound(){
   const locale='en'
-  const layoutData=await getLayoutPayload(locale)
+  const layoutData=await getLayoutPayload()
   return <html lang={locale} className={`js ${sans.variable}`} data-scroll-behavior="smooth">
     <head>
       {fontPreloads.latin.map(href=><link key={href} rel="preload" href={href} as="font" type="font/woff2" crossOrigin="anonymous"/>)}

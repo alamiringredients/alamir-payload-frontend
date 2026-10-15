@@ -1,11 +1,12 @@
 'use client'
 
+import {TwoColumns} from '@/components/layout/two-columns'
 import {useEffect,useRef,type ReactNode} from 'react'
 import styles from './content-blocks.module.css'
 
 /** Each rail owns its observer, including when several rails appear on one page. */
 export function ValuesRail({children}:{children:ReactNode}) {
-  const root=useRef<HTMLDivElement>(null)
+  const root=useRef<HTMLElement>(null)
   useEffect(()=>{
     const rail=root.current
     if(!rail||!('IntersectionObserver' in window))return
@@ -30,5 +31,5 @@ export function ValuesRail({children}:{children:ReactNode}) {
     items.forEach(item=>observer.observe(item))
     return()=>observer.disconnect()
   },[children])
-  return <div ref={root} data-rich-content="" className={styles.values}>{children}</div>
+  return <TwoColumns align="start" columns="minmax(0,.95fr) minmax(0,1.05fr)" ref={root} data-rich-content="" className={styles.values}>{children}</TwoColumns>
 }

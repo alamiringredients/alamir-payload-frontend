@@ -3,7 +3,7 @@ import {RecordLayout} from '@/components/pages/record-layout'
 import type {EventRecord} from '@/lib/events/types'
 import {pageSchema,siteUrl} from '@/lib/seo/structured-data'
 import {textContent} from '@/lib/editor/document'
-import {getEventsPayload, getHomeCmsData, getWebsiteSettings} from '@/lib/api/public'
+import {getEventsPayload, getSiteShell, getWebsiteSettings} from '@/lib/api/public'
 import {notFound} from 'next/navigation'
 import {SitePage} from '@/components/site/site-page'
 import {renderManagedPage} from '@/lib/cms/render'
@@ -13,8 +13,8 @@ import {EventDetailBody,EventsPageBody} from './public-content'
 export async function EventsRoute({locale,slug}:{locale:SiteLocale;slug?:string}){
  const [payload,home,settings] = await Promise.all([
     getEventsPayload(locale,'events',slug),
-    getHomeCmsData(locale,'shell'),
-    getWebsiteSettings(locale),
+    getSiteShell(),
+    getWebsiteSettings(),
   ])
  const {events,event,labels}=payload
  if(!slug){const body=EventsPageBody({events,locale,labels:{...labels,...await interfaceLabels('page.events',locale)}});return <SitePage page="events" locale={locale} home={home} settings={settings}>{payload.managedContent?renderManagedPage(body,payload.managedContent,locale):body}</SitePage>}

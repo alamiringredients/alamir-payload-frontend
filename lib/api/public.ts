@@ -1,171 +1,578 @@
-import {cache} from 'react'
-import {loadPayload} from '@/lib/payload/public'
-import 'server-only'
-import type {SiteLocale} from '@/i18n/navigation'
-import type {HomeCmsData,ManagedPageContent,QualityPageContent,WebsiteSettings} from '@/lib/cms/types'
-import type {DownloadsPageContent} from '@/lib/downloads/types'
-import type {CertificationData,CertificationInterfaceLabels} from '@/lib/certifications/types'
-import type {Catalog,NavigationCatalog,CategoryCatalog} from '@/lib/catalog/types'
-import type {EventRecord,PublicEventSlot} from '@/lib/events/types'
-import type {NewsPageContent,NewsRecord,NewsTaxonomy,NewsVersion} from '@/lib/news/types'
-import type {AboutContent,CareersContent,JobRecord} from '@/lib/careers/types'
-import type {SustainabilityPageContent,SustainabilityRecord,SustainabilityVersion} from '@/lib/sustainability/types'
-import type {SearchResult} from '@/lib/search/match'
+import type { Document } from "@/lib/payload/types";
+import "server-only";
+import { cache } from "react";
+import { preparePublicContent } from "@/lib/payload/public-site";
+import {
+  globalContent as global,
+  records,
+  recordDocuments,
+  payloadDocuments,
+  request,
+  translationContent,
+  presentRecord,
+  recordSource,
+  catalogInterfaceLabels,
+  mediaDocuments,
+  localizedMedia,
+  resolveMediaReferences,
+} from "@/lib/payload/client";
+import type { SiteLocale } from "@/i18n/navigation";
+import type {
+  HomeCmsData,
+  ManagedPageContent,
+  WebsiteSettings,
+  QualityPageContent,
+} from "@/lib/cms/types";
+import type {
+  Catalog,
+  Category,
+  Product,
+  NavigationCatalog,
+  CategoryCard,
+  CatalogLabels,
+} from "@/lib/catalog/types";
+import type { LocalizedValue } from "@/lib/cms/types";
+import type {
+  CertificationData,
+  CertificationType,
+  Certification,
+} from "@/lib/certifications/types";
+import type { EventRecord, PublicEventSlot } from "@/lib/events/types";
+import type {
+  NewsPageContent,
+  NewsRecord,
+  NewsTaxonomy,
+} from "@/lib/news/types";
+import type {
+  SustainabilityRecord,
+  SustainabilityPageContent,
+} from "@/lib/sustainability/types";
+import type { CareersContent, JobRecord } from "@/lib/careers/types";
+import type { SearchResult } from "@/lib/search/match";
 
-export type NewsCardVersion=Pick<NewsVersion,'title'|'summary'|'cardTitle'|'cardSummary'|'hero'|'heroAlt'>
-export type NewsCardRecord=Pick<NewsRecord,'id'|'slug'> & {content:Omit<NewsRecord['content'],'locales'>;published:Partial<Record<SiteLocale,NewsCardVersion>>}
-type PublicNewsRecord=Omit<NewsCardRecord,'published'> & {published:NewsRecord['published'];availableLocales:SiteLocale[];draft?:NewsVersion}
-export type JobCard=Omit<JobRecord,'content'> & {content:Record<SiteLocale,Pick<JobRecord['content'][SiteLocale],'title'|'summary'|'department'|'location'|'contract'|'experience'>>}
-export type SustainabilityCardVersion=Pick<SustainabilityVersion,'title'|'cardTitle'|'summary'|'cardSummary'|'badge'|'gallery'>
-export type SustainabilityCard=Pick<SustainabilityRecord,'id'|'slug'> & {content:Omit<SustainabilityRecord['content'],'locales'>;published:Partial<Record<SiteLocale,SustainabilityCardVersion>>}
-type PublicSustainabilityArticle=Omit<SustainabilityCard,'published'> & {published:SustainabilityRecord['published'];availableLocales:SiteLocale[];draft?:SustainabilityVersion}
-type TranslationEntry={key:string;page:string;source:string;translations:{en:string;ar:string;fr:string};previousTranslations?:{en:string;ar:string;fr:string};baseline?:{en:string;ar:string;fr:string}}
+import { getInterface } from "@/lib/payload/interface";
+import type { DownloadsPageContent } from "@/lib/downloads/types";
+import type { NewsVersion } from "@/lib/news/types";
+import type { SustainabilityVersion } from "@/lib/sustainability/types";
 
-type QueryValue=string|number|boolean|undefined
-type ManagedPageKey='contact'|'privacy'|'terms'|'cookies'|'thank-you'|'404'|'products'|'events'|'book-a-meeting'|'search'
+export type NewsCardVersion = Pick<
+  NewsVersion,
+  "title" | "summary" | "cardTitle" | "cardSummary" | "hero" | "heroAlt"
+>;
+export type NewsCardRecord = Pick<NewsRecord, "id" | "slug"> & {
+  content: Omit<NewsRecord["content"], "locales">;
+  published: Partial<Record<SiteLocale, NewsCardVersion>>;
+};
+export type JobCard = Omit<JobRecord, "content"> & {
+  content: Record<
+    SiteLocale,
+    Pick<
+      JobRecord["content"][SiteLocale],
+      | "title"
+      | "summary"
+      | "department"
+      | "location"
+      | "contract"
+      | "experience"
+    >
+  >;
+};
+export type SustainabilityCardVersion = Pick<
+  SustainabilityVersion,
+  "title" | "cardTitle" | "summary" | "cardSummary" | "badge" | "gallery"
+>;
+export type SustainabilityCard = Pick<SustainabilityRecord, "id" | "slug"> & {
+  content: Omit<SustainabilityRecord["content"], "locales">;
+  published: Partial<Record<SiteLocale, SustainabilityCardVersion>>;
+};
+type PublicNewsRecord = NewsRecord & {
+  availableLocales: SiteLocale[];
+  draft?: NewsVersion;
+};
+type PublicSustainabilityArticle = SustainabilityRecord & {
+  availableLocales: SiteLocale[];
+  draft?: SustainabilityVersion;
+};
+type ManagedPageKey =
+  | "contact"
+  | "privacy"
+  | "terms"
+  | "cookies"
+  | "thank-you"
+  | "404"
+  | "products"
+  | "events"
+  | "book-a-meeting"
+  | "search";
 
-const readPayload=cache((endpoint:string,locale:SiteLocale,params:string)=>loadPayload(endpoint,locale,JSON.parse(params)))
-async function read<T>(endpoint:string,locale:SiteLocale,params:Record<string,QueryValue>={}):Promise<T> {
-  return await readPayload(endpoint,locale,JSON.stringify(params)) as T
+const catalog = cache(async (path = ""): Promise<Catalog> => {
+  const [categoryDocs, productDocs, settings] = await Promise.all([
+    recordDocuments("categories"),
+    recordDocuments("products"),
+    global<Catalog["settings"]>("catalog-settings"),
+  ]);
+  const [, categorySlug, productSlug] = path.split("/");
+  const selectedCategory = categoryDocs.find(
+    (doc) => doc.slug === categorySlug,
+  );
+  const children = productDocs.filter(
+    (doc) =>
+      Number((doc.category as { id: number } | undefined)?.id) ===
+      selectedCategory?.id,
+  );
+  const selectedProduct =
+    children.find((doc) => doc.slug === productSlug) ??
+    (!productSlug && children.length === 1 ? children[0] : undefined);
+  const categories = categoryDocs.map((doc) =>
+    presentRecord<Category>(
+      "categories",
+      recordSource(doc),
+      doc.id === selectedCategory?.id ? undefined : "card",
+    ),
+  );
+  const products = productDocs.map((doc) =>
+    presentRecord<Product>(
+      "products",
+      recordSource(doc),
+      doc.id === selectedProduct?.id ? undefined : "card",
+    ),
+  );
+  const categoryIds = new Set(categories.map((category) => category.id));
+  return {
+    categories,
+    products: products.filter((product) =>
+      categoryIds.has(product.category_id),
+    ),
+    settings,
+  };
+});
+export const getNavigationCatalog = cache(
+  async (): Promise<
+    NavigationCatalog & {
+      categories: CategoryCard[];
+      settings: { labels: CatalogLabels };
+    }
+  > => {
+    const [categoryRows, productRows, mediaRows] = await Promise.all([
+      request(
+        "categories?locale=all&depth=0&pagination=false&sort=_order&select[name]=true&select[slug]=true&select[sourceId]=true&select[icon]=true&select[description]=true&select[page][artwork]=true",
+      ),
+      request(
+        "products?locale=all&depth=0&pagination=false&sort=_order&select[name]=true&select[slug]=true&select[sourceId]=true&select[category]=true&select[gallery]=true",
+      ),
+      payloadDocuments(
+        "media",
+        "&select[url]=true&select[width]=true&select[height]=true&select[mimeType]=true&select[filename]=true&select[prefix]=true&select[alt]=true",
+        0,
+      ),
+    ]);
+    const media = new Map(mediaRows.map((doc) => [doc.id, doc]));
+    const values = (value: unknown): LocalizedValue =>
+      Object.fromEntries(
+        ["en", "ar", "fr"].map((locale) => [
+          locale,
+          (value as Partial<LocalizedValue> | undefined)?.[
+            locale as SiteLocale
+          ] ?? "",
+        ]),
+      ) as LocalizedValue;
+    const categories = categoryRows.docs.map((doc: Document) => {
+      const page = doc.page as {
+        artwork?: { enabled?: boolean; images?: { image: number }[] };
+      };
+      return {
+        id: doc.sourceId ?? doc.id,
+        slug: doc.slug!,
+        content: {
+          name: values(doc.name),
+          description: values(doc.description),
+          icon: String(media.get(Number(doc.icon))?.url ?? ""),
+          artwork: {
+            key: "artwork",
+            label: "",
+            enabled: Boolean(page?.artwork?.enabled),
+            texts: [],
+            links: [],
+            assets: (page?.artwork?.images ?? []).map((photo, index) => ({
+              id: String(index),
+              kind: "image" as const,
+              label: "",
+              source: "",
+              value: String(media.get(photo.image)?.url ?? ""),
+            })),
+          },
+        },
+      } as CategoryCard;
+    });
+    const categoryIds = new Map(
+      categoryRows.docs.map((doc: Document) => [
+        doc.id,
+        doc.sourceId ?? doc.id,
+      ]),
+    );
+    const products = productRows.docs.map((doc: Document) => ({
+      id: doc.sourceId ?? doc.id,
+      slug: doc.slug!,
+      category_id: Number(categoryIds.get(Number(doc.category))),
+      content: {
+        name: values(doc.name),
+        gallery: (
+          (doc.gallery as {
+            image: number;
+            caption: LocalizedValue;
+            alt?: LocalizedValue;
+          }[]) ?? []
+        )
+          .slice(0, 1)
+          .map((photo) => ({
+            ...photo,
+            image: String(media.get(photo.image)?.url ?? ""),
+          })),
+      },
+    }));
+    return {
+      categories,
+      products,
+      settings: {
+        labels: await catalogInterfaceLabels(),
+      },
+    };
+  },
+);
+const certifications = cache(async (): Promise<CertificationData> => {
+  const [typeDocs, certDocs, media, interfaceText] = await Promise.all([
+    payloadDocuments("certification-types", "", 0),
+    payloadDocuments("certifications", "", 0),
+    mediaDocuments(),
+    translationContent(),
+  ]);
+  const typeIds = new Map(typeDocs.map((doc) => [doc.id, doc]));
+  return {
+    types: typeDocs.map((doc) =>
+      presentRecord<CertificationType>("certification-types", {
+        ...doc,
+        logo: localizedMedia(doc.logo, media),
+        interface: interfaceText,
+      }),
+    ),
+    certifications: certDocs.map((doc) =>
+      presentRecord<Certification>("certifications", {
+        ...doc,
+        certificationType: typeIds.get(Number(doc.certificationType)),
+        document: localizedMedia(doc.document, media),
+        interface: interfaceText,
+      }),
+    ),
+  };
+});
+
+async function prepare(group: string) {
+  const pending = preparePublicContent(group);
+  const ui = await getInterface();
+  await pending;
+  return ui;
 }
+export const getLayoutPayload = cache(async () => {
+  const [settings, home, c] = await Promise.all([
+    global<WebsiteSettings>("website-settings"),
+    global<HomeCmsData>("navigation"),
+    getNavigationCatalog(),
+  ]);
+  return {
+    settings,
+    home,
+    catalog: c,
+  };
+});
 
-export const getHomeCmsData=async(locale:SiteLocale,scope:'all'|'shell'='all')=>{
-  if(scope==='shell')return (await getLayoutPayload(locale)).home
-  const [layout,homepage]=await Promise.all([getLayoutPayload(locale),getHomepagePayload(locale)])
-  return {seo:homepage.home.seo,sections:[...layout.home.sections,...homepage.home.sections]}
-}
-export const getWebsiteSettings=async(locale:SiteLocale,scope:'all'|'shell'='shell')=>{
-  void scope
-  return (await getLayoutPayload(locale)).settings
-}
-export const getManagedPageContent = (key: ManagedPageKey, locale: SiteLocale) => {
-  if (key === 'products') return getCatalogPayload(locale, 'products').then(data => {
-    if (!data.managedContent) throw new Error('Managed products page missing')
-    return data.managedContent
-  })
-  if (key === 'events' || key === 'book-a-meeting') {
-    return getEventsPayload(locale, key).then(data => {
-      if (!data.managedContent) throw new Error('Managed event page missing')
-      return data.managedContent
-    })
+export const getHomepagePayload = cache(async (locale: SiteLocale) => {
+  const ui = await prepare("home");
+  const [home, certs, events, media] = await Promise.all([
+    global<HomeCmsData>("home-page", "meta"),
+    certifications(),
+    payloadDocuments(
+      "events",
+      "&sort=_order&select[sourceId]=true&select[slug]=true&select[kind]=true&select[startsAt]=true&select[endsAt]=true&select[timezone]=true&select[title]=true&select[venue]=true&select[stand]=true&select[layout]=true",
+      0,
+    ),
+    mediaDocuments(),
+  ]);
+  return {
+    home,
+    certifications: certs,
+    certificationLabels: ui.certification[locale],
+    countries: ui.countries[locale],
+    meetingEvent:
+      events
+        .map((doc) =>
+          presentRecord<EventRecord>(
+            "events",
+            recordSource(
+              resolveMediaReferences(
+                { ...doc, interface: undefined },
+                media,
+              ) as Document,
+            ),
+          ),
+        )
+        .find(
+          (event) =>
+            event.kind === "event" && new Date(event.ends_at) > new Date(),
+        ) ?? null,
+  };
+});
+
+export const getCatalogPayload = cache(
+  async (locale: SiteLocale, page: string) => {
+    const ui = await prepare("catalog");
+    const [c, certs, managedContent] = await Promise.all([
+      catalog(page),
+      certifications(),
+      global<ManagedPageContent>("products-page"),
+    ]);
+    return {
+      catalog: c,
+      certifications: certs,
+      certificationLabels: ui.certification[locale],
+      managedContent,
+    };
+  },
+);
+
+export const getNewsPayload = cache(
+  async (locale: SiteLocale, slug?: string) => {
+    const ui = await prepare("news");
+    const [articles, page, taxonomies] = await Promise.all([
+      records<PublicNewsRecord>("news"),
+      global<NewsPageContent>("news-page"),
+      records<NewsTaxonomy>("news-taxonomies"),
+    ]);
+    return {
+      cards: articles,
+      source: articles.find((article) => article.slug === slug) ?? null,
+      page,
+      taxonomies,
+      labels: ui.news[locale],
+    };
+  },
+);
+
+export const getSustainabilityPayload = cache(
+  async (locale: SiteLocale, slug?: string) => {
+    const ui = await prepare("sustainability");
+    const [articles, page] = await Promise.all([
+      records<PublicSustainabilityArticle>("sustainability"),
+      global<SustainabilityPageContent>("sustainability-page"),
+    ]);
+    return {
+      articles,
+      record: articles.find((article) => article.slug === slug) ?? null,
+      page,
+      labels: ui.sustainability[locale],
+    };
+  },
+);
+
+export const getCareersPayload = cache(
+  async (locale: SiteLocale, slug?: string) => {
+    const ui = await prepare("careers");
+    const [jobs, content] = await Promise.all([
+      records<JobRecord>("jobs"),
+      global<CareersContent>("careers-page"),
+    ]);
+    return {
+      jobs: jobs.filter((job) => job.status === "open"),
+      job: jobs.find((job) => job.slug === slug) ?? null,
+      content,
+      labels: ui.careers[locale],
+    };
+  },
+);
+
+export const getEventsPayload = cache(
+  async (locale: SiteLocale, page = "events", slug?: string) => {
+    const ui = await prepare("events");
+    const [events, slotDocs, managedContent, eventDocs] = await Promise.all([
+      records<EventRecord>("events"),
+      payloadDocuments("meeting-slots", "", 0),
+      global<ManagedPageContent>(
+        page === "book-a-meeting" ? "booking-page" : "events-page",
+      ),
+      recordDocuments("events"),
+    ]);
+    const eventIds = new Map(
+      eventDocs.map((event) => [event.id, event.sourceId ?? event.id]),
+    );
+    const slots: PublicEventSlot[] = slotDocs
+      .filter((slot) => eventIds.has(Number(slot.event)))
+      .map((slot) => ({
+        id: slot.id,
+        eventId: eventIds.get(Number(slot.event))!,
+        startsAt: String(slot.startsAt),
+        endsAt: String(slot.endsAt),
+        status: slot.reserved ? "reserved" : "available",
+      }));
+    return {
+      events,
+      event: events.find((event) => event.slug === slug) ?? null,
+      slots,
+      managedContent,
+      labels: ui.events[locale],
+    };
+  },
+);
+
+export const getSearchPayload = cache(
+  async (query: string, locale: SiteLocale) => {
+    const ui = await getInterface();
+    if (!query.trim())
+      return {
+        content: await global<ManagedPageContent>("search-page"),
+        labels: ui.search[locale],
+        results: [],
+      };
+    const [c, news, jobs, events, sustainability, content] = await Promise.all([
+      catalog(),
+      records<PublicNewsRecord>("news"),
+      records<JobRecord>("jobs"),
+      records<EventRecord>("events"),
+      records<PublicSustainabilityArticle>("sustainability"),
+      global<ManagedPageContent>("search-page"),
+    ]);
+    const results: SearchResult[] = [];
+    const categoriesByID = new Map(
+      c.categories.map((category) => [category.id, category]),
+    );
+    for (const product of c.products) {
+      const category = categoriesByID.get(product.category_id);
+      if (category)
+        results.push({
+          href: `/products/${category.slug}/${product.slug}`,
+          title: product.content.name[locale],
+          description: product.content.description[locale],
+          section: ui.search[locale].products ?? "",
+          text: "",
+        });
+    }
+    for (const [items, base] of [
+      [news, "news"],
+      [sustainability, "sustainability"],
+    ] as const)
+      for (const item of items) {
+        const v = item.published[locale];
+        if (v)
+          results.push({
+            href: `/${base}/${item.slug}`,
+            title: plain(v.title),
+            description: v.summary,
+            section: ui.search[locale][base] ?? "",
+            text: "",
+          });
+      }
+    for (const job of jobs)
+      if (job.status === "open")
+        results.push({
+          href: `/careers/${job.slug}`,
+          title: job.content[locale].title,
+          description: job.content[locale].summary,
+          section: ui.search[locale].careers ?? "",
+          text: "",
+        });
+    for (const event of events)
+      results.push({
+        href: `/events/${event.slug}`,
+        title: plain(event.content.title[locale]),
+        description: event.content.summary[locale],
+        section: ui.search[locale].events ?? "",
+        text: "",
+      });
+    const normalizedQuery = query.trim().toLocaleLowerCase(locale);
+    return {
+      content,
+      labels: ui.search[locale],
+      results: normalizedQuery
+        ? results.filter((result) =>
+            `${result.title} ${result.description}`
+              .toLocaleLowerCase(locale)
+              .includes(normalizedQuery),
+          )
+        : [],
+    };
+  },
+);
+
+export const getQualityPayload = cache(async (locale: SiteLocale) => {
+  const ui = await prepare("quality");
+  const [content, certs] = await Promise.all([
+    global<QualityPageContent>("quality-page"),
+    certifications(),
+  ]);
+  return { content, certifications: certs, labels: ui.certification[locale] };
+});
+export const getDownloadsPayload = cache(async (locale: SiteLocale) => {
+  const ui = await prepare("catalog");
+  const [content, c, certs] = await Promise.all([
+    global<DownloadsPageContent>("downloads-page"),
+    catalog(),
+    certifications(),
+  ]);
+  return {
+    content,
+    catalog: c,
+    certifications: certs,
+    labels: ui.certification[locale],
+    fileSizes: {},
+  };
+});
+
+export const getSiteShell = async () => (await getLayoutPayload()).home;
+export const getWebsiteSettings = async () => {
+  return (await getLayoutPayload()).settings;
+};
+export const getManagedPageContent = (
+  key: ManagedPageKey,
+  locale: SiteLocale,
+) => {
+  if (key === "products")
+    return getCatalogPayload(locale, "products").then((data) => {
+      if (!data.managedContent)
+        throw new Error("Managed products page missing");
+      return data.managedContent;
+    });
+  if (key === "events" || key === "book-a-meeting") {
+    return getEventsPayload(locale, key).then((data) => {
+      if (!data.managedContent) throw new Error("Managed event page missing");
+      return data.managedContent;
+    });
   }
-  return getManagedPayload(key, locale).then(data => data.content)
+  return global<ManagedPageContent>(
+    `${key === "404" ? "not-found" : key}-page` as Parameters<typeof global>[0],
+  );
+};
+export const getCatalog = (locale: SiteLocale, page: string) =>
+  getCatalogPayload(locale, page).then((data) => data.catalog);
+export const getPublicEvents = (locale: SiteLocale) =>
+  getEventsPayload(locale).then((data) => data.events);
+export const getPublicEvent = (locale: SiteLocale, slug: string) =>
+  getEventsPayload(locale, "events", slug).then((data) => data.event);
+export const getNewsCards = (locale: SiteLocale) =>
+  getNewsPayload(locale).then((data) => data.cards);
+export const getPublicNewsArticle = (locale: SiteLocale, slug: string) =>
+  getNewsPayload(locale, slug).then((data) => data.source);
+export const getPublicNewsPage = (locale: SiteLocale) =>
+  getNewsPayload(locale).then((data) => data.page);
+export const getPublicJobs = (locale: SiteLocale) =>
+  getCareersPayload(locale).then((data) => data.jobs);
+export const getPublicJob = (locale: SiteLocale, slug: string) =>
+  getCareersPayload(locale, slug).then((data) => data.job);
+export const getSustainabilityCards = (locale: SiteLocale) =>
+  getSustainabilityPayload(locale).then((data) => data.articles);
+
+function plain(node: { text?: string; content?: unknown[] }): string {
+  return (
+    node.text ??
+    (node.content ?? [])
+      .map((child) => plain(child as Parameters<typeof plain>[0]))
+      .join("")
+  );
 }
-export function getCatalog(includeDrafts:boolean,locale:SiteLocale,page?:'navigation'):Promise<NavigationCatalog>
-export function getCatalog(includeDrafts:boolean,locale:SiteLocale,page:string):Promise<Catalog>
-export async function getCatalog(includeDrafts:boolean,locale:SiteLocale,page='navigation'):Promise<Catalog|NavigationCatalog>{
-  if(includeDrafts)throw new Error('Draft catalog records are available only in the backend admin application.')
-  if(page==='navigation')return getLayoutPayload(locale).then(data=>data.catalog)
-  return getCatalogPayload(locale,page).then(data=>data.catalog)
-}
-export const getPublicEvents=(locale:SiteLocale)=>getEventsPayload(locale).then(data=>data.events)
-export const getPublicEvent=(locale:SiteLocale,slug:string)=>getEventsPayload(locale,'events',slug).then(data=>data.event)
-export const getNewsCards=async(locale:SiteLocale,ids?:string)=>{
-  const cards=(await getNewsPayload(locale)).cards
-  if(!ids)return cards
-  const selected=new Set(ids.split(',').map(Number))
-  return cards.filter(card=>selected.has(card.id))
-}
-export const getPublicNewsArticle=(locale:SiteLocale,slug:string,preview=false)=>{
-  if(preview)throw new Error('Draft previews are available only in the backend admin application.')
-  return getNewsPayload(locale,slug).then(data=>data.source)
-}
-export const getPublicNewsPage=(locale:SiteLocale)=>getNewsPayload(locale).then(data=>data.page)
-export const getPublicJobs=(locale:SiteLocale,scope:'cards'|'search'='cards')=>{void scope;return getCareersPayload(locale).then(data=>data.jobs)}
-export const getPublicJob=(locale:SiteLocale,slug:string)=>getCareersPayload(locale,slug).then(data=>data.job)
-export const getSustainabilityCards=(locale:SiteLocale)=>getSustainabilityPayload(locale).then(data=>data.articles)
-type LayoutPayload = {
-  settings: WebsiteSettings
-  home: HomeCmsData
-  catalog: NavigationCatalog
-  notFoundTranslations: TranslationEntry[]
-}
-type HomepagePayload = {
-  countries: {value: string; label: string}[]
-  home: HomeCmsData
-  certifications: CertificationData
-  certificationLabels: CertificationInterfaceLabels
-  meetingEvent: EventRecord | null
-}
-export const getLayoutPayload = (locale: SiteLocale) => read<LayoutPayload>('layout', locale)
-export const getHomepagePayload = (locale: SiteLocale) => read<HomepagePayload>('homepage', locale)
-
-export const getCatalogPayload = (locale: SiteLocale, page: string) =>
-  read<{
-    catalog: Catalog
-    managedContent: ManagedPageContent | null
-    certifications: CertificationData
-    certificationLabels: CertificationInterfaceLabels
-  }>('catalog/payload', locale, {page})
-
-export const getQualityPayload = (locale: SiteLocale) =>
-  read<{
-    content: QualityPageContent
-    certifications: CertificationData
-    labels: CertificationInterfaceLabels
-    translations: TranslationEntry[]
-  }>('pages/quality/payload', locale)
-
-export const getDownloadsPayload = (locale: SiteLocale) =>
-  read<{
-    content: DownloadsPageContent
-    catalog: Catalog
-    certifications: CertificationData
-    labels: CertificationInterfaceLabels
-    fileSizes: Record<string, number>
-  }>('downloads/payload', locale)
-
-export const getNewsPayload = (locale: SiteLocale, slug?: string) =>
-  read<{
-    cards: NewsCardRecord[]
-    source: PublicNewsRecord | null
-    page: NewsPageContent
-    taxonomies: NewsTaxonomy[]
-    labels: Record<string, string>
-  }>('news/payload', locale, {slug})
-
-export const getSustainabilityPayload = (locale: SiteLocale, slug?: string) =>
-  read<{
-    articles: SustainabilityCard[]
-    record: PublicSustainabilityArticle | null
-    page: SustainabilityPageContent
-    labels: Record<string, string>
-  }>('sustainability/payload', locale, {slug})
-
-export const getCareersPayload = (locale: SiteLocale, slug?: string) =>
-  read<{
-    content: AboutContent & CareersContent
-    jobs: JobCard[]
-    job: JobRecord | null
-    news: NewsCardRecord[]
-    labels: Record<string, string>
-  }>('careers/payload', locale, {slug})
-
-export const getEventsPayload = (locale: SiteLocale, page = 'events', slug?: string) =>
-  read<{
-    events: EventRecord[]
-    event: EventRecord | null
-    slots: PublicEventSlot[]
-    managedContent: ManagedPageContent | null
-    translations: TranslationEntry[]
-    labels: Record<string, string>
-  }>('events/payload', locale, {page, slug})
-
-const getManagedPayload = (key: ManagedPageKey, locale: SiteLocale) =>
-  key === 'products' ? getCatalogPayload(locale, 'products').then(data => ({content: data.managedContent!, translations: [] as TranslationEntry[]}))
-  : key === 'events' || key === 'book-a-meeting' ? getEventsPayload(locale, key).then(data => ({content: data.managedContent!, translations: data.translations}))
-  : key === 'search' ? getSearchPayload('', locale).then(data => ({content: data.content, translations: [] as TranslationEntry[]}))
-  : key === '404' ? read<{content:ManagedPageContent;translations:TranslationEntry[]}>('pages/404/payload',locale)
-  : read<{
-    content: ManagedPageContent
-    translations: TranslationEntry[]
-  }>(`pages/${key}/payload`, locale)
-
-export const getSearchPayload = (query: string, locale: SiteLocale) =>
-  read<{
-    content: ManagedPageContent
-    labels: Record<string, string>
-    results: SearchResult[]
-  }>('search/payload', locale, {query})
-
-export const getHomeCatalog=(locale:SiteLocale)=>read<CategoryCatalog>('catalog/home',locale)

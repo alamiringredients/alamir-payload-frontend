@@ -1,3 +1,4 @@
+import {TwoColumns} from '@/components/layout/two-columns'
 import { ContentImage } from "@/components/site/content-image";
 import { SmartLink } from "@/components/site/smart-link";
 import { PageHero } from "@/components/site/page-hero";
@@ -218,7 +219,7 @@ export function EventDetailBody({
             </div>
           </div>
         </PageHero>),body:(<div className="art-body">
-          <div className="wrap art-grid">
+          <TwoColumns collapseAt={1050} as="div" columns="190px minmax(0,1fr)" gap="clamp(40px,5vw,80px)" align="start" className="wrap art-grid">
             <aside className="art-rail">
               {headings.length > 0 && (
                 <div className="toc">
@@ -253,7 +254,7 @@ export function EventDetailBody({
                 </SmartLink>
               </FormActions>
             </div>
-          </div>
+          </TwoColumns>
         </div>
       )}
   return section?sections[section as keyof typeof sections]:<main id="main"><article>{Object.values(sections)}</article></main>;

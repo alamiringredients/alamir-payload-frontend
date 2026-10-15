@@ -3,7 +3,7 @@ import appConfig from '@/config/app'
 import type {MetadataRoute} from 'next'
 import {getPathname} from '@/i18n/navigation'
 import {routing} from '@/i18n/routing'
-import {getCatalog,getNewsCards,getPublicEvents,getPublicJobs,getSustainabilityCards} from '@/lib/api/public'
+import {getNavigationCatalog,getNewsCards,getPublicEvents,getPublicJobs,getSustainabilityCards} from '@/lib/api/public'
 
 export const revalidate=300
 const origin=appConfig.url.replace(/\/$/,'')
@@ -13,7 +13,7 @@ export default async function sitemap():Promise<MetadataRoute.Sitemap> {
   const cmsPages=await pageLinks()
   const localized=await Promise.all(routing.locales.map(async locale=>{
     const [catalog,news,sustainability,jobs,events]=await Promise.all([
-      getCatalog(false,locale,'navigation'),getNewsCards(locale),getSustainabilityCards(locale),getPublicJobs(locale),getPublicEvents(locale),
+      getNavigationCatalog(),getNewsCards(locale),getSustainabilityCards(locale),getPublicJobs(locale),getPublicEvents(locale),
     ])
     const categoryCounts=new Map<number,number>()
     for(const product of catalog.products)categoryCounts.set(product.category_id,(categoryCounts.get(product.category_id)??0)+1)

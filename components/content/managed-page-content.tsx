@@ -1,3 +1,4 @@
+import {TwoColumns} from '@/components/layout/two-columns'
 import {SectionCopy} from '@/components/editor/section-copy'
 import type {CompanyInformation} from '@/lib/cms/types'
 import { SearchForm } from "@/components/search/search-form";
@@ -91,7 +92,7 @@ function LegalSection({
     contact = page === "privacy" ? 22 : page === "terms" ? 18 : 13;
   return (
     <ContentSection>
-      <div className="legal-layout">
+      <TwoColumns collapseAt={1050} as="div" columns="minmax(0,1fr) 260px" gap="clamp(40px,6vw,90px)" align="start" className="legal-layout">
         <aside className="toc">
           <div>{t(0)}</div>
           <ol>
@@ -137,7 +138,7 @@ function LegalSection({
             .
           </p>
         </div>
-      </div>
+      </TwoColumns>
     </ContentSection>
   );
 }
@@ -353,7 +354,7 @@ export function ContactPageContent({
       <ManagedPageHero content={content} locale={locale} image />
       <section className="band">
         <div className="wrap">
-          <div className="contact-grid">
+          <TwoColumns collapseAt={1050} as="div" columns="minmax(0,.8fr) minmax(0,1.2fr)" gap="clamp(30px,5vw,72px)" align="start" className="contact-grid">
             <div className="reveal">
               <div className="kicker">{t("Contact details")}</div>
               <div className="contact-list">
@@ -368,7 +369,7 @@ export function ContactPageContent({
               <div className="kicker">{t("Enquiry form")}</div>
               {form}
             </div>
-          </div>
+          </TwoColumns>
         </div>
       </section>
     </main>

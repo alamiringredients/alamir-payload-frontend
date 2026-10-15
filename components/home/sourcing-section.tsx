@@ -1,6 +1,7 @@
+import {TwoColumns} from '@/components/layout/two-columns'
 import {ContentImage} from '@/components/site/content-image'
 
-export function SourcingSection(){return (<section className="origin">
+export function SourcingSection(){return (<TwoColumns collapseAt={1050} as="section" columns="58fr 42fr" gap="0" align="stretch" className="origin">
   <figure className="origin-media reveal">
     <ContentImage src="/assets/photos/origin-farmer-a.webp" alt="An Egyptian grower standing among the tomato plants at sunrise, holding a crate of freshly picked fruit" loading="lazy" decoding="async" />
   </figure>
@@ -12,5 +13,5 @@ export function SourcingSection(){return (<section className="origin">
       <div className="origin-note"><span>Egyptian agriculture</span><span>Controlled sourcing</span></div>
     </div>
   </div>
-</section>
+</TwoColumns>
 )}

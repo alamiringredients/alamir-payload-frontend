@@ -21,7 +21,7 @@ export const revalidate = 300
 async function getLayoutData(params: Promise<{locale: string}>) {
   const {locale} = await params
   if (!hasLocale(routing.locales, locale)) notFound()
-  const {settings} = await getLayoutPayload(locale)
+  const {settings} = await getLayoutPayload()
   return {locale, settings}
 }
 
@@ -45,7 +45,7 @@ export function generateStaticParams() {
 export default async function SiteLayout({children, params}: {children: ReactNode; params: Promise<{locale: string}>}) {
   const {locale} = await params
   if (!hasLocale(routing.locales, locale)) notFound()
-  const [{settings},translate]=await Promise.all([getLayoutPayload(locale),getTranslations()])
+  const [{settings},translate]=await Promise.all([getLayoutPayload(),getTranslations()])
   const isArabic = locale === 'ar'
   const arabicFonts = isArabic ? ` ${arabicDisplay.variable} ${arabicSans.variable}` : ''
   const preloads = fontPreloads[isArabic ? 'arabic' : 'latin']

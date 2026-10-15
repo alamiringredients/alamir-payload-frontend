@@ -1,0 +1,5 @@
+.application{display:block!important}
+.application fieldset{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;border:0;padding:0;margin:0;min-width:0}
+.application :global(.full),.application :global(.consent-row),.application :global(.form-actions){grid-column:1/-1}
+.application :global(.field) small{display:block;margin-top:7px;color:#a82d22;font-size:13px;line-height:1.4}
+@media(max-width:760px){.application fieldset{grid-template-columns:1fr}}

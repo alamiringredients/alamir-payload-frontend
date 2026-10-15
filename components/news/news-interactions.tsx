@@ -1,9 +1,58 @@
 'use client'
 import {useEffect,useState,type ReactNode} from 'react'
-export function NewsTabs({categories,label,panels}:{categories:{id:number;slug:string;name:string}[];label:string;panels:ReactNode[]}){
-  const [active,setActive]=useState(categories[0]?.id)
-  useEffect(()=>{const read=()=>{const slug=location.hash.slice(1);const match=categories.find(c=>c.slug===slug||(slug==='life-at-alamir'&&c.slug==='life-at-alamir-group'));if(match)setActive(match.id)};read();window.addEventListener('hashchange',read);return()=>window.removeEventListener('hashchange',read)},[categories])
-  return <><div className="tab-rail" role="tablist" aria-label={label}>{categories.map((c,i)=><button className="tab" type="button" role="tab" id={`tab-${c.id}`} aria-controls={`panel-${c.id}`} aria-selected={active===c.id} tabIndex={active===c.id?0:-1} key={c.id} onClick={()=>setActive(c.id)} onKeyDown={e=>{const rtl=e.currentTarget.closest('[dir=rtl]')||document.documentElement.dir==='rtl';const delta=e.key==='ArrowRight'?(rtl?-1:1):e.key==='ArrowLeft'?(rtl?1:-1):0;if(delta||e.key==='Home'||e.key==='End'){e.preventDefault();const index=e.key==='Home'?0:e.key==='End'?categories.length-1:(i+delta+categories.length)%categories.length;setActive(categories[index].id);document.getElementById(`tab-${categories[index].id}`)?.focus()}}}>{c.name}</button>)}</div>{categories.map((c,i)=><div className="tab-panel" role="tabpanel" id={`panel-${c.id}`} aria-labelledby={`tab-${c.id}`} hidden={active!==c.id} key={c.id}>{panels[i]}</div>)}</>
+type NewsCategory = {id:number;slug:string;name:string}
+
+export function NewsTabs({categories,label,panels}: {
+  categories: NewsCategory[]
+  label: string
+  panels: ReactNode[]
+}) {
+  const [selected,setSelected] = useState(categories[0]?.id)
+  const active = categories.some(category=>category.id===selected) ? selected : categories[0]?.id
+
+  useEffect(()=>{
+    const selectHashCategory = ()=>{
+      const category = categories.find(category=>category.slug===location.hash.slice(1))
+      if(category)setSelected(category.id)
+    }
+    selectHashCategory()
+    window.addEventListener('hashchange',selectHashCategory)
+    return ()=>window.removeEventListener('hashchange',selectHashCategory)
+  },[categories])
+
+  return <>
+    <div className="tab-rail" role="tablist" aria-label={label}>
+      {categories.map((category,index)=><button
+        className="tab"
+        type="button"
+        role="tab"
+        id={`tab-${category.id}`}
+        aria-controls={`panel-${category.id}`}
+        aria-selected={active===category.id}
+        tabIndex={active===category.id?0:-1}
+        key={category.id}
+        onClick={()=>setSelected(category.id)}
+        onKeyDown={event=>{
+          const rtl=event.currentTarget.closest('[dir=rtl]') || document.documentElement.dir==='rtl'
+          const delta=event.key==='ArrowRight' ? (rtl?-1:1) : event.key==='ArrowLeft' ? (rtl?1:-1) : 0
+          if(!delta && event.key!=='Home' && event.key!=='End')return
+          event.preventDefault()
+          const next=event.key==='Home' ? 0 : event.key==='End' ? categories.length-1 : (index+delta+categories.length)%categories.length
+          const nextID=categories[next].id
+          setSelected(nextID)
+          document.getElementById(`tab-${nextID}`)?.focus()
+        }}
+      >{category.name}</button>)}
+    </div>
+    {categories.map((category,index)=><div
+      className="tab-panel"
+      role="tabpanel"
+      id={`panel-${category.id}`}
+      aria-labelledby={`tab-${category.id}`}
+      hidden={active!==category.id}
+      key={category.id}
+    >{panels[index]}</div>)}
+  </>
 }
 export function ShareLinks({labels}:{labels:Record<string,string>}){
   const [copied,setCopied]=useState(false),[url,setUrl]=useState('')

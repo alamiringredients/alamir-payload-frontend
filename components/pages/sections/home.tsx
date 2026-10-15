@@ -1,7 +1,7 @@
 import {type ReactNode} from 'react'
 import {interfaceLabels,sectionContent} from '@/lib/payload/client'
 import type {HomeCmsData} from '@/lib/cms/types'
-import {getHomeCatalog,getHomepagePayload} from '@/lib/api/public'
+import {getNavigationCatalog,getHomepagePayload} from '@/lib/api/public'
 import {renderManagedSection} from '@/lib/cms/render'
 import {HomeHero} from '@/components/home/home-hero'
 import {KeyFigures} from '@/components/home/key-figures'
@@ -20,7 +20,7 @@ export async function renderSection({block,locale,source,definition,settings}:Se
  if(pageSlug==='home'){
   const content=sectionContent<HomeCmsData>(source,block),section=content.sections.find(section=>section.key===name)!
   const home=await getHomepagePayload(locale)
-  const productCatalog=name==='products'?await getHomeCatalog(locale):undefined
+  const productCatalog=name==='products'?await getNavigationCatalog():undefined
   const globeLabel=name==='reach'?(await interfaceLabels('page.shared',locale)).globeLabel:''
   const renderers:Record<string,()=>ReactNode>={
    hero:()=>HomeHero({poster:section.assets.find(asset=>asset.source==='/assets/hero-poster.webp')?.value,videos:section.videos?.filter(Boolean)}),

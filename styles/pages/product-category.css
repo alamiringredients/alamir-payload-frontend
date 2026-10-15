@@ -12,3 +12,31 @@
     @keyframes view-in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 
 }
+
+/* Next keeps route CSS after client navigation, so this scope must name its owner. */
+@scope (:root:has(.site-page[data-catalog-style="product-category"][data-catalog-appearance="muted"])) to ([data-rich-content]) {
+/* Shared content-page styles live in styles/content-pages.css. */
+    .card .no{font-size:10px;font-weight:700;letter-spacing:.17em;color:#505a63}
+    .glance strong small{margin-inline-start:9px;font:700 13px/1 var(--sans);letter-spacing:.06em;
+      text-transform:uppercase;color:#505a63}
+    .prod > summary .brix{font:700 11px/1 var(--sans);letter-spacing:.13em;text-transform:uppercase;
+      color:#505a63;padding:7px 12px;border-radius:999px;background:var(--cream-2)}
+    .contact-list div span{display:block;font-size:11px;font-weight:700;letter-spacing:.14em;
+      text-transform:uppercase;color:#505a63}
+    .dl .sz{margin-top:4px;font-size:12.5px;color:#505a63}
+    .vtab .n{font:700 11.5px/1 var(--sans);letter-spacing:.08em;color:#505a63;transition:color .25s}
+    @keyframes view-in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+    .pdp-facts th{width:46%;font:700 11.5px/1.4 var(--sans);letter-spacing:.06em;color:#505a63}
+    .pdp-note{margin:16px 0 0;font-size:12.5px;line-height:1.55;color:#505a63}
+    .pgal-cap{flex:1;min-width:0;margin:0;font-size:13.5px;color:#505a63;
+      transition:opacity .35s ease}
+    .pgal-count{font:700 11.5px/1 var(--sans);letter-spacing:.15em;color:#505a63}
+    .tab{position:relative;appearance:none;background:none;border:0;cursor:pointer;
+      padding:0 0 14px;font:700 12px/1 var(--sans);letter-spacing:.15em;
+      text-transform:uppercase;color:#505a63;transition:color .25s}
+    .cat-tools input::placeholder{color:#505a63;font-weight:600}
+    .cat-count{margin-left:auto;font:700 11.5px/1 var(--sans);letter-spacing:.13em;
+      text-transform:uppercase;color:#505a63}
+    .prail-count{font:700 11.5px/1 var(--sans);letter-spacing:.15em;color:#505a63}
+
+}

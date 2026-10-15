@@ -6,4 +6,4 @@ export type JobContent=Record<SiteLocale,JobLocale>
 export type JobRecord={id:number;slug:string;code:string;status:'draft'|'open'|'closed';content:JobContent}
 export type PageHero=PageHeroContent
 export type AboutContent=EditorialPageContent
-export type CareersContent={sectionVisibility:Record<'hero'|'news'|'jobs'|'apply',boolean>;hero:PageHero;newsTitle:LocalizedDocument;newsIntro:LocalizedDocument;newsKicker:LocalizedValue;newsIds:number[];newsImage:string;newsImageAlt:LocalizedValue;jobsTitle:LocalizedDocument;jobsIntro:LocalizedDocument;jobsKicker:LocalizedValue;empty:LocalizedValue;applyTitle:LocalizedDocument;applyIntro:LocalizedDocument;applyKicker:LocalizedValue;seo:HomeSeoContent}
+export type CareersContent={sectionVisibility:Record<'hero'|'jobs'|'apply',boolean>;hero:PageHero;jobsTitle:LocalizedDocument;jobsIntro:LocalizedDocument;jobsKicker:LocalizedValue;empty:LocalizedValue;applyTitle:LocalizedDocument;applyIntro:LocalizedDocument;applyKicker:LocalizedValue;seo:HomeSeoContent}

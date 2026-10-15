@@ -1,0 +1,6 @@
+.columns{display:grid;grid-template-columns:var(--cms-two-column-widths,var(--two-column-widths));gap:var(--two-column-gap);min-width:0}
+.columns>*{min-width:0}
+@media(min-width:901px){.columns[data-reverse="true"]>:first-child{order:2}}
+@media(max-width:1050px){.columns[data-collapse-at="1050"]{grid-template-columns:minmax(0,1fr);gap:28px}}
+@media(max-width:900px){.columns[data-collapse-at="900"]{grid-template-columns:minmax(0,1fr);gap:28px}}
+@media(max-width:700px){.columns[data-collapse-at="700"]{grid-template-columns:minmax(0,1fr);gap:28px}}

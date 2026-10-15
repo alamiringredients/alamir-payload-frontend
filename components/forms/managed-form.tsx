@@ -1,4 +1,5 @@
 "use client";
+import styles from "./managed-form.module.css";
 import { useEffect, useId, useState, type ReactNode } from "react";
 import type { SiteLocale } from "@/i18n/navigation";
 import type { CmsForm, FormPurpose, FormField } from "@/lib/forms/types";
@@ -279,7 +280,7 @@ export function BuilderForm({
   return (
     <form
       method="post"
-      className={`form${purpose === "home" ? " enquiry-form" : purpose === "application" ? " career-application-form reveal" : ""}`}
+      className={`form${purpose === "home" ? " enquiry-form" : purpose === "application" ? ` ${styles.application} reveal` : ""}`}
       data-payload-form={purpose}
       data-form-ready={Boolean(values.key)}
       aria-busy={form.submitting}

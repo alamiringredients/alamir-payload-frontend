@@ -1,8 +1,9 @@
+import {TwoColumns} from '@/components/layout/two-columns'
 import {ContentImage} from '@/components/site/content-image'
 import {SmartLink} from '@/components/site/smart-link'
 
 export function QualitySection(){return (<section className="confidence" id="quality">
-  <div className="wrap confidence-grid">
+  <TwoColumns collapseAt={1050} as="div" columns="minmax(0,.9fr) minmax(0,1.1fr)" gap="100px" align="start" className="wrap confidence-grid">
     <div className="reveal">
       <div className="kicker">Confidence at scale</div>
       <h2>Made for the demands of industry.</h2>
@@ -15,7 +16,7 @@ export function QualitySection(){return (<section className="confidence" id="qua
         <div className="proof"><strong>CFT</strong><span>Modern Italian processing architecture.</span></div>
       </div>
     </div>
-  </div>
+  </TwoColumns>
   <div className="wrap">
     <figure className="process-image reveal">
       <ContentImage src="/assets/photos/magnific_interior-of-a-modern-food_swLaKaNl8e.webp" alt="Modern stainless steel food processing line" />

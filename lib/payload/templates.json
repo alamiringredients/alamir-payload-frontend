@@ -353,7 +353,8 @@
               },
               "sources": [
                 "Tomato, fruit purees and concentrates, manufactured in Sadat City, Egypt."
-              ]
+              ],
+              "role": "body"
             }
           ]
         }
@@ -507,7 +508,8 @@
               "sources": [
                 "From our fields to",
                 "your formula."
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-e3a45ed0a0fc",
@@ -536,7 +538,8 @@
               },
               "sources": [
                 "Tomato and fruit ingredients produced in a new-generation aseptic facility for food and beverage manufacturers around the world."
-              ]
+              ],
+              "role": "body"
             }
           ]
         },
@@ -730,7 +733,8 @@
                 "Ingredients shaped by",
                 "origin.",
                 "Engineered by precision."
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-aa7387731d2b",
@@ -759,7 +763,8 @@
               },
               "sources": [
                 "Alamir Ingredients brings Al Amir Group's agricultural experience into a purpose-built manufacturing platform. From raw crop selection to aseptic filling, every stage is designed around consistency, traceability and dependable export supply."
-              ]
+              ],
+              "role": "body"
             }
           ]
         },
@@ -828,7 +833,8 @@
               },
               "sources": [
                 "Pure character. Precise results."
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-599fee2587b3",
@@ -857,7 +863,8 @@
               },
               "sources": [
                 "A focused ingredient portfolio for sauces, beverages, dairy, bakery and prepared food applications, available in industrial aseptic formats."
-              ]
+              ],
+              "role": "body"
             }
           ]
         },
@@ -926,7 +933,8 @@
               },
               "sources": [
                 "A new facility doesn't inherit certificates."
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-f50ddaed4933",
@@ -955,7 +963,8 @@
               },
               "sources": [
                 "The certification programme Alamir Ingredients is running for its own facility in Sadat City."
-              ]
+              ],
+              "role": "body"
             }
           ]
         },
@@ -1062,7 +1071,8 @@
               },
               "sources": [
                 "Freshness begins before the factory."
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-056c0bec6bc4",
@@ -1091,7 +1101,8 @@
               },
               "sources": [
                 "Proximity to Egypt's productive growing regions helps us protect the qualities that matter: colour, flavour, texture and crop character. That field-first discipline continues through every stage of processing."
-              ]
+              ],
+              "role": "body"
             }
           ]
         },
@@ -1232,7 +1243,8 @@
               },
               "sources": [
                 "CFT Technology"
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-a4bd1f5ed874",
@@ -1261,7 +1273,8 @@
               },
               "sources": [
                 "New infrastructure and CFT Italian processing technology create a controlled path from incoming produce to export-ready aseptic ingredients."
-              ]
+              ],
+              "role": "body"
             },
             {
               "id": "rich-8598222918d3",
@@ -1290,7 +1303,8 @@
               },
               "sources": [
                 "Select"
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-f7d529002ead",
@@ -1319,7 +1333,8 @@
               },
               "sources": [
                 "Raw materials are assessed against product and processing requirements."
-              ]
+              ],
+              "role": "body"
             },
             {
               "id": "rich-2f4240de4d36",
@@ -1348,7 +1363,8 @@
               },
               "sources": [
                 "Prepare"
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-d68fc35f633a",
@@ -1377,7 +1393,8 @@
               },
               "sources": [
                 "Careful washing and preparation protect the natural crop profile."
-              ]
+              ],
+              "role": "body"
             },
             {
               "id": "rich-dea51bb13a44",
@@ -1406,7 +1423,8 @@
               },
               "sources": [
                 "Transform"
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-f592086c4729",
@@ -1435,7 +1453,8 @@
               },
               "sources": [
                 "Controlled concentration delivers repeatable colour, body and flavour."
-              ]
+              ],
+              "role": "body"
             },
             {
               "id": "rich-016ac2dcfca2",
@@ -1464,7 +1483,8 @@
               },
               "sources": [
                 "Protect"
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-206c791e6069",
@@ -1493,7 +1513,8 @@
               },
               "sources": [
                 "Aseptic handling prepares finished ingredients for global shipment."
-              ]
+              ],
+              "role": "body"
             }
           ]
         },
@@ -1627,7 +1648,8 @@
               },
               "sources": [
                 "Made for the demands of industry."
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-af91b6fd96c0",
@@ -1656,7 +1678,8 @@
               },
               "sources": [
                 "Industrial buyers need more than a good harvest. They need specification-led output, repeatability, commercial responsiveness and a supply partner that understands international trade."
-              ]
+              ],
+              "role": "body"
             }
           ]
         },
@@ -1833,7 +1856,8 @@
               "sources": [
                 "Sixty markets,",
                 "four regions."
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-920b2bb07ecd",
@@ -1862,7 +1886,8 @@
               },
               "sources": [
                 "Serving food manufacturers, beverage producers, dairy companies, confectionery makers, sauce producers and industrial processors across domestic and export markets."
-              ]
+              ],
+              "role": "body"
             }
           ]
         },
@@ -1960,7 +1985,8 @@
               "sources": [
                 "Let's",
                 "get in touch."
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-d1d83b9cc89b",
@@ -1989,7 +2015,8 @@
               },
               "sources": [
                 "Send us the product, the volume, the target Brix and the destination port. Our export desk comes back with specification, lead time and pricing."
-              ]
+              ],
+              "role": "body"
             },
             {
               "id": "rich-05baa194f49f",
@@ -2018,7 +2045,8 @@
               },
               "sources": [
                 "Start with four details."
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-b12d41e1058a",
@@ -2047,7 +2075,8 @@
               },
               "sources": [
                 "Industrial and export enquiries"
-              ]
+              ],
+              "role": "body"
             }
           ]
         }
@@ -2202,7 +2231,8 @@
               "sources": [
                 "Product portfolio and",
                 "certification."
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-fb966b1a8685",
@@ -2231,7 +2261,8 @@
               },
               "sources": [
                 "Aseptic concentrates and purees supplied in bulk for industrial food and beverage manufacturing. Every line is produced on CFT Italian technology under full aseptic control."
-              ]
+              ],
+              "role": "body"
             }
           ]
         },
@@ -2399,7 +2430,8 @@
               "sources": [
                 "Four ingredient lines,",
                 "one aseptic platform."
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-158ee0b10968",
@@ -2428,7 +2460,8 @@
               },
               "sources": [
                 "Every product across the four lines in one grid. Filter by category, application or concentration, then open a product for its full specification, packaging options and documents."
-              ]
+              ],
+              "role": "body"
             },
             {
               "id": "rich-8c77e6a6c68e",
@@ -2457,7 +2490,8 @@
               },
               "sources": [
                 "A focused portfolio for sauces, beverages, dairy, bakery and prepared food applications, supplied in industrial aseptic formats. Open a line for full specifications, packaging options and product photography."
-              ]
+              ],
+              "role": "body"
             }
           ]
         },
@@ -2544,7 +2578,8 @@
               "sources": [
                 "Every batch,",
                 "traceable."
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-e4a4ca737a10",
@@ -2573,7 +2608,8 @@
               },
               "sources": [
                 "Technical data sheets, specifications and certificates of analysis are available for every line. See the full certification programme on the home page, or request documentation directly."
-              ]
+              ],
+              "role": "body"
             }
           ]
         }
@@ -4808,7 +4844,8 @@
               "sources": [
                 "Building for the",
                 "long term."
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-187e0564fea7",
@@ -4837,7 +4874,8 @@
               },
               "sources": [
                 "Sustainability is integral to the way we create value and build for the future. Guided by the United Nations Sustainable Development Goals, we are committed to advancing responsible practices across our operations, people, communities and value chain."
-              ]
+              ],
+              "role": "body"
             }
           ]
         },
@@ -4897,7 +4935,8 @@
               "sources": [
                 "The detail,",
                 "topic by topic."
-              ]
+              ],
+              "role": "heading"
             }
           ]
         },
@@ -4975,7 +5014,8 @@
               "sources": [
                 "Evidence beats",
                 "adjectives."
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-a44546da477f",
@@ -5004,7 +5044,8 @@
               },
               "sources": [
                 "Specifications, certificates, sourcing questions or the measurement programme behind these articles — the export team answers all of them."
-              ]
+              ],
+              "role": "body"
             }
           ]
         }
@@ -5169,11 +5210,6 @@
         "$field": "page.emptyStates.empty",
         "$localized": true
       },
-      "newsIds": {
-        "$field": "page.news.articles",
-        "$relationship": "sourceId",
-        "$many": true
-      },
       "jobsIntro": {
         "$field": "page.jobs.intro",
         "$localized": true,
@@ -5198,62 +5234,6 @@
       },
       "jobsTitle": {
         "$field": "page.jobs.title",
-        "$localized": true,
-        "$rich": true,
-        "$attributes": {
-          "type": "doc",
-          "content": [
-            {
-              "type": "paragraph",
-              "attrs": {
-                "variant": "body",
-                "visible": true
-              },
-              "content": [
-                {
-                  "type": "text"
-                },
-                {
-                  "type": "text",
-                  "marks": [
-                    {
-                      "type": "italic"
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      },
-      "newsImage": {
-        "$field": "page.news.image",
-        "$media": true
-      },
-      "newsIntro": {
-        "$field": "page.news.intro",
-        "$localized": true,
-        "$rich": true,
-        "$attributes": {
-          "type": "doc",
-          "content": [
-            {
-              "type": "paragraph",
-              "attrs": {
-                "variant": "body",
-                "visible": true
-              },
-              "content": [
-                {
-                  "type": "text"
-                }
-              ]
-            }
-          ]
-        }
-      },
-      "newsTitle": {
-        "$field": "page.news.title",
         "$localized": true,
         "$rich": true,
         "$attributes": {
@@ -5338,16 +5318,8 @@
         "$field": "page.jobs.kicker",
         "$localized": true
       },
-      "newsKicker": {
-        "$field": "page.news.kicker",
-        "$localized": true
-      },
       "applyKicker": {
         "$field": "page.apply.kicker",
-        "$localized": true
-      },
-      "newsImageAlt": {
-        "$field": "page.news.imageAlt",
         "$localized": true
       },
       "sectionVisibility": {
@@ -5484,7 +5456,8 @@
               "sources": [
                 "Where to",
                 "meet us."
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-b53e7ea3383e",
@@ -5513,7 +5486,8 @@
               },
               "sources": [
                 "Trade shows, facility visits and company announcements. If you are evaluating us as a supplier, meeting the export team at a show is the fastest way to taste the product and see the specifications side by side."
-              ]
+              ],
+              "role": "body"
             }
           ]
         },
@@ -5618,7 +5592,8 @@
               "sources": [
                 "Book a slot before the",
                 "show fills up."
-              ]
+              ],
+              "role": "heading"
             }
           ]
         },
@@ -5696,7 +5671,8 @@
               "sources": [
                 "Where we have",
                 "been."
-              ]
+              ],
+              "role": "heading"
             }
           ]
         },
@@ -5835,7 +5811,8 @@
               "sources": [
                 "The stand, the line,",
                 "the team."
-              ]
+              ],
+              "role": "heading"
             }
           ]
         }
@@ -5968,7 +5945,8 @@
               "sources": [
                 "Thirty minutes with the",
                 "export team."
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-0ba9cb46bf3f",
@@ -5997,7 +5975,8 @@
               },
               "sources": [
                 "Pick a slot that works in your time zone. We will confirm by email with a calendar invite, and if you are meeting us at a show the same slot holds a seat on the stand."
-              ]
+              ],
+              "role": "body"
             }
           ]
         },
@@ -6345,7 +6324,8 @@
               },
               "sources": [
                 "Meet the export team"
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-5538bd2c29a9",
@@ -6374,7 +6354,8 @@
               },
               "sources": [
                 "Bring your specification — target Brix, break profile, packaging format and destination port. We will come with the matching data sheets and an indicative price."
-              ]
+              ],
+              "role": "body"
             },
             {
               "id": "rich-b244bb7ce90d",
@@ -6403,7 +6384,8 @@
               },
               "sources": [
                 "Prefer to write instead?"
-              ]
+              ],
+              "role": "body"
             },
             {
               "id": "rich-642b09c1f60b",
@@ -6432,7 +6414,8 @@
               },
               "sources": [
                 "Select a date"
-              ]
+              ],
+              "role": "body"
             },
             {
               "id": "rich-316a789acf72",
@@ -6461,7 +6444,8 @@
               },
               "sources": [
                 "Pick a date first"
-              ]
+              ],
+              "role": "body"
             },
             {
               "id": "rich-a6648c29ea89",
@@ -6490,7 +6474,8 @@
               },
               "sources": [
                 "Choose a day on the calendar and the open slots appear here."
-              ]
+              ],
+              "role": "body"
             },
             {
               "id": "rich-75ff71a8e565",
@@ -6519,7 +6504,8 @@
               },
               "sources": [
                 "Nothing is held until you confirm. The invite lands in your inbox straight after."
-              ]
+              ],
+              "role": "body"
             },
             {
               "id": "rich-343784ff4bdf",
@@ -6548,7 +6534,8 @@
               },
               "sources": [
                 "Confirm your details"
-              ]
+              ],
+              "role": "body"
             },
             {
               "id": "rich-3c9723ec3fb0",
@@ -6586,7 +6573,8 @@
               "sources": [
                 "You’re",
                 "booked."
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-0f1d7f3933a0",
@@ -6628,7 +6616,8 @@
                 "A calendar invite and a joining link are on their way to",
                 "your inbox",
                 ". If anything changes, reply to that email and we will move it."
-              ]
+              ],
+              "role": "body"
             }
           ]
         }
@@ -6741,7 +6730,8 @@
               "sources": [
                 "Find it",
                 "faster."
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-522d14a750b2",
@@ -6770,7 +6760,8 @@
               },
               "sources": [
                 "Search across products, specifications, certifications, downloads, news and open positions."
-              ]
+              ],
+              "role": "body"
             }
           ]
         },
@@ -6913,7 +6904,8 @@
               "sources": [
                 "That page has",
                 "moved on."
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-f2cdec1cd8c0",
@@ -6942,7 +6934,8 @@
               },
               "sources": [
                 "The link you followed does not lead anywhere on this site any more. The pages below cover almost everything buyers come here for — or search for what you were after."
-              ]
+              ],
+              "role": "body"
             }
           ]
         },
@@ -7558,7 +7551,8 @@
               "sources": [
                 "Let’s",
                 "get in touch."
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-841a34a43fb8",
@@ -7587,7 +7581,8 @@
               },
               "sources": [
                 "Sealed 1 kg sample plus TDS within five business days of your request. Tell us your target Brix, break profile, volume and destination, and we will build the quotation around your formulation."
-              ]
+              ],
+              "role": "body"
             }
           ]
         },
@@ -7775,7 +7770,8 @@
               "sources": [
                 "How we handle",
                 "your data."
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-99aa957afa30",
@@ -7804,7 +7800,8 @@
               },
               "sources": [
                 "What we collect when you enquire, apply for a job or download a data sheet, why we hold it, and how to have it removed."
-              ]
+              ],
+              "role": "body"
             }
           ]
         },
@@ -8071,7 +8068,8 @@
               },
               "sources": [
                 "Who we are"
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-c48bbcfed6ef",
@@ -8100,7 +8098,8 @@
               },
               "sources": [
                 "What we collect"
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-60cf068c4057",
@@ -8129,7 +8128,8 @@
               },
               "sources": [
                 "Why we hold it"
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-5a01609c8ac7",
@@ -8158,7 +8158,8 @@
               },
               "sources": [
                 "How long we keep it"
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-e71102d544b3",
@@ -8187,7 +8188,8 @@
               },
               "sources": [
                 "Your rights"
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-df08a3121c53",
@@ -8216,7 +8218,8 @@
               },
               "sources": [
                 "Security and transfers"
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-524cf50b5df5",
@@ -8245,7 +8248,8 @@
               },
               "sources": [
                 "Cookies"
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-b37456c4530b",
@@ -8274,7 +8278,8 @@
               },
               "sources": [
                 "Contact"
-              ]
+              ],
+              "role": "heading"
             }
           ]
         }
@@ -8387,7 +8392,8 @@
               "sources": [
                 "Terms of",
                 "use."
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-49fb1d6a5180",
@@ -8416,7 +8422,8 @@
               },
               "sources": [
                 "The terms on which this website is provided. They govern the site itself — supply of goods is governed by the contract of sale, not by this page."
-              ]
+              ],
+              "role": "body"
             }
           ]
         },
@@ -8647,7 +8654,8 @@
               },
               "sources": [
                 "Acceptance"
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-8020b2d0b537",
@@ -8676,7 +8684,8 @@
               },
               "sources": [
                 "Information on this site"
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-3e694b7e8d03",
@@ -8705,7 +8714,8 @@
               },
               "sources": [
                 "Intellectual property"
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-a862c2b21b5e",
@@ -8734,7 +8744,8 @@
               },
               "sources": [
                 "Downloads"
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-bf541a99404a",
@@ -8763,7 +8774,8 @@
               },
               "sources": [
                 "Links to other sites"
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-ba841fa07d46",
@@ -8792,7 +8804,8 @@
               },
               "sources": [
                 "Liability"
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-4676ad8df95e",
@@ -8821,7 +8834,8 @@
               },
               "sources": [
                 "Governing law"
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-b37456c4530b",
@@ -8850,7 +8864,8 @@
               },
               "sources": [
                 "Contact"
-              ]
+              ],
+              "role": "heading"
             }
           ]
         }
@@ -8963,7 +8978,8 @@
               "sources": [
                 "Cookie",
                 "notice."
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-fc226169e5cc",
@@ -8992,7 +9008,8 @@
               },
               "sources": [
                 "What we set, what it does, and how to change your mind."
-              ]
+              ],
+              "role": "body"
             }
           ]
         },
@@ -9178,7 +9195,8 @@
               },
               "sources": [
                 "What cookies we use"
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-e766aa84901b",
@@ -9207,7 +9225,8 @@
               },
               "sources": [
                 "Essential cookies"
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-b8bb66ea761c",
@@ -9236,7 +9255,8 @@
               },
               "sources": [
                 "Analytics cookies"
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-2ca24cc62d55",
@@ -9265,7 +9285,8 @@
               },
               "sources": [
                 "Changing your choice"
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-b37456c4530b",
@@ -9294,7 +9315,8 @@
               },
               "sources": [
                 "Contact"
-              ]
+              ],
+              "role": "heading"
             }
           ]
         }
@@ -9398,7 +9420,8 @@
               "sources": [
                 "Thank you —",
                 "it’s with us."
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-b4934023a3a2",
@@ -9427,7 +9450,8 @@
               },
               "sources": [
                 "Your enquiry has reached the export team. You will get a reply within one business day, and where you asked for samples we ship a sealed 1 kg sample plus the technical data sheet within five business days."
-              ]
+              ],
+              "role": "body"
             }
           ]
         },
@@ -9586,7 +9610,8 @@
               "sources": [
                 "Three things worth",
                 "a look."
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-d7f58eefadc7",
@@ -9615,7 +9640,8 @@
               },
               "sources": [
                 "Quality & capability"
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-42ad227fdef5",
@@ -9644,7 +9670,8 @@
               },
               "sources": [
                 "The certification roadmap, the CFT process line and how we control specification batch to batch."
-              ]
+              ],
+              "role": "body"
             },
             {
               "id": "rich-d427b91a2c03",
@@ -9673,7 +9700,8 @@
               },
               "sources": [
                 "Product portfolio"
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-d7bb6d980201",
@@ -9702,7 +9730,8 @@
               },
               "sources": [
                 "Tomato concentrates, fruit concentrates, fruit purees and chilli concentrate, with Brix ranges."
-              ]
+              ],
+              "role": "body"
             },
             {
               "id": "rich-70938511781e",
@@ -9731,7 +9760,8 @@
               },
               "sources": [
                 "Where to meet us"
-              ]
+              ],
+              "role": "heading"
             },
             {
               "id": "rich-745862888a29",
@@ -9760,7 +9790,8 @@
               },
               "sources": [
                 "Trade shows across the next twelve months, and how to book a slot on the stand."
-              ]
+              ],
+              "role": "body"
             }
           ]
         }
@@ -9893,7 +9924,8 @@
                           }
                         ]
                       }
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -10055,7 +10087,8 @@
                       "$field": "page.productRange.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -10300,7 +10333,8 @@
                       "$field": "page.galleryIntro.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -10399,7 +10433,8 @@
                       "$field": "page.traceability.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -10534,7 +10569,8 @@
                       "$field": "page.allProducts.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               }
@@ -10667,7 +10703,8 @@
                           }
                         ]
                       }
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -10820,7 +10857,8 @@
                       "$field": "page.productRange.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -11074,7 +11112,8 @@
                       "$field": "page.galleryIntro.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -11173,7 +11212,8 @@
                       "$field": "page.traceability.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -11308,7 +11348,8 @@
                       "$field": "page.allProducts.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               }
@@ -11441,7 +11482,8 @@
                           }
                         ]
                       }
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -11594,7 +11636,8 @@
                       "$field": "page.productRange.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -11830,7 +11873,8 @@
                       "$field": "page.galleryIntro.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -11929,7 +11973,8 @@
                       "$field": "page.traceability.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -12064,7 +12109,8 @@
                       "$field": "page.allProducts.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               }
@@ -12206,7 +12252,8 @@
                           }
                         ]
                       }
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -12250,7 +12297,8 @@
                       "$field": "page.productRange.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               }
@@ -12406,9 +12454,11 @@
                       "$field": "page.overview.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-1",
@@ -12489,9 +12539,11 @@
                       "$field": "page.description.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-3",
@@ -12565,9 +12617,11 @@
                       "$field": "page.specifications.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "specifications"
               },
               {
                 "key": "fold-4",
@@ -12648,9 +12702,11 @@
                       "$field": "page.packaging.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-5",
@@ -12731,9 +12787,11 @@
                       "$field": "page.storage.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-6",
@@ -12814,9 +12872,11 @@
                       "$field": "page.documents.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "section-0",
@@ -12906,7 +12966,8 @@
                           }
                         ]
                       }
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -12960,7 +13021,8 @@
                       "$field": "page.specificationIntro.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -13129,7 +13191,8 @@
                       "$field": "page.galleryIntro.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -13192,7 +13255,8 @@
                       "$field": "page.relatedProducts.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -13291,7 +13355,8 @@
                       "$field": "page.enquiry.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -13426,7 +13491,8 @@
                       "$field": "page.allProducts.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               }
@@ -13582,9 +13648,11 @@
                       "$field": "page.overview.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-1",
@@ -13664,9 +13732,11 @@
                       "$field": "page.description.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-3",
@@ -13740,9 +13810,11 @@
                       "$field": "page.specifications.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "specifications"
               },
               {
                 "key": "fold-4",
@@ -13822,9 +13894,11 @@
                       "$field": "page.packaging.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-5",
@@ -13904,9 +13978,11 @@
                       "$field": "page.storage.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-6",
@@ -13986,9 +14062,11 @@
                       "$field": "page.documents.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "section-0",
@@ -14078,7 +14156,8 @@
                           }
                         ]
                       }
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -14132,7 +14211,8 @@
                       "$field": "page.specificationIntro.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -14301,7 +14381,8 @@
                       "$field": "page.galleryIntro.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -14364,7 +14445,8 @@
                       "$field": "page.relatedProducts.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -14463,7 +14545,8 @@
                       "$field": "page.enquiry.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -14598,7 +14681,8 @@
                       "$field": "page.allProducts.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               }
@@ -14754,9 +14838,11 @@
                       "$field": "page.overview.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-1",
@@ -14830,7 +14916,8 @@
                 "assets": [],
                 "enabled": {
                   "$field": "page.applications.enabled"
-                }
+                },
+                "kind": "applications"
               },
               {
                 "key": "fold-3",
@@ -14910,9 +14997,11 @@
                       "$field": "page.packaging.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-4",
@@ -14992,9 +15081,11 @@
                       "$field": "page.storage.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-5",
@@ -15074,9 +15165,11 @@
                       "$field": "page.documents.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "section-0",
@@ -15166,7 +15259,8 @@
                           }
                         ]
                       }
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -15220,7 +15314,8 @@
                       "$field": "page.specificationIntro.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -15389,7 +15484,8 @@
                       "$field": "page.galleryIntro.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -15452,7 +15548,8 @@
                       "$field": "page.relatedProducts.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -15551,7 +15648,8 @@
                       "$field": "page.enquiry.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -15686,7 +15784,8 @@
                       "$field": "page.allProducts.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               }
@@ -15842,9 +15941,11 @@
                       "$field": "page.overview.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-1",
@@ -15909,7 +16010,8 @@
                 "assets": [],
                 "enabled": {
                   "$field": "page.applications.enabled"
-                }
+                },
+                "kind": "applications"
               },
               {
                 "key": "fold-3",
@@ -15989,9 +16091,11 @@
                       "$field": "page.packaging.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-4",
@@ -16071,9 +16175,11 @@
                       "$field": "page.storage.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-5",
@@ -16153,9 +16259,11 @@
                       "$field": "page.documents.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "section-0",
@@ -16245,7 +16353,8 @@
                           }
                         ]
                       }
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -16299,7 +16408,8 @@
                       "$field": "page.specificationIntro.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -16468,7 +16578,8 @@
                       "$field": "page.galleryIntro.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -16531,7 +16642,8 @@
                       "$field": "page.relatedProducts.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -16630,7 +16742,8 @@
                       "$field": "page.enquiry.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -16765,7 +16878,8 @@
                       "$field": "page.allProducts.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               }
@@ -16921,9 +17035,11 @@
                       "$field": "page.overview.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-1",
@@ -16988,7 +17104,8 @@
                 "assets": [],
                 "enabled": {
                   "$field": "page.applications.enabled"
-                }
+                },
+                "kind": "applications"
               },
               {
                 "key": "fold-3",
@@ -17068,9 +17185,11 @@
                       "$field": "page.packaging.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-4",
@@ -17150,9 +17269,11 @@
                       "$field": "page.storage.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-5",
@@ -17232,9 +17353,11 @@
                       "$field": "page.documents.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "section-0",
@@ -17324,7 +17447,8 @@
                           }
                         ]
                       }
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -17378,7 +17502,8 @@
                       "$field": "page.specificationIntro.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -17547,7 +17672,8 @@
                       "$field": "page.galleryIntro.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -17610,7 +17736,8 @@
                       "$field": "page.relatedProducts.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -17709,7 +17836,8 @@
                       "$field": "page.enquiry.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -17844,7 +17972,8 @@
                       "$field": "page.allProducts.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               }
@@ -18000,9 +18129,11 @@
                       "$field": "page.overview.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-1",
@@ -18067,7 +18198,8 @@
                 "assets": [],
                 "enabled": {
                   "$field": "page.applications.enabled"
-                }
+                },
+                "kind": "applications"
               },
               {
                 "key": "fold-3",
@@ -18147,9 +18279,11 @@
                       "$field": "page.packaging.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-4",
@@ -18229,9 +18363,11 @@
                       "$field": "page.storage.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-5",
@@ -18311,9 +18447,11 @@
                       "$field": "page.documents.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "section-0",
@@ -18403,7 +18541,8 @@
                           }
                         ]
                       }
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -18457,7 +18596,8 @@
                       "$field": "page.specificationIntro.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -18626,7 +18766,8 @@
                       "$field": "page.galleryIntro.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -18689,7 +18830,8 @@
                       "$field": "page.relatedProducts.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -18788,7 +18930,8 @@
                       "$field": "page.enquiry.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -18923,7 +19066,8 @@
                       "$field": "page.allProducts.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               }
@@ -19079,9 +19223,11 @@
                       "$field": "page.overview.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-1",
@@ -19146,7 +19292,8 @@
                 "assets": [],
                 "enabled": {
                   "$field": "page.applications.enabled"
-                }
+                },
+                "kind": "applications"
               },
               {
                 "key": "fold-3",
@@ -19226,9 +19373,11 @@
                       "$field": "page.packaging.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-4",
@@ -19308,9 +19457,11 @@
                       "$field": "page.storage.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-5",
@@ -19390,9 +19541,11 @@
                       "$field": "page.documents.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "section-0",
@@ -19482,7 +19635,8 @@
                           }
                         ]
                       }
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -19536,7 +19690,8 @@
                       "$field": "page.specificationIntro.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -19705,7 +19860,8 @@
                       "$field": "page.galleryIntro.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -19768,7 +19924,8 @@
                       "$field": "page.relatedProducts.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -19867,7 +20024,8 @@
                       "$field": "page.enquiry.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -20002,7 +20160,8 @@
                       "$field": "page.allProducts.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               }
@@ -20158,9 +20317,11 @@
                       "$field": "page.overview.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-1",
@@ -20225,7 +20386,8 @@
                 "assets": [],
                 "enabled": {
                   "$field": "page.applications.enabled"
-                }
+                },
+                "kind": "applications"
               },
               {
                 "key": "fold-3",
@@ -20305,9 +20467,11 @@
                       "$field": "page.packaging.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-4",
@@ -20387,9 +20551,11 @@
                       "$field": "page.storage.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-5",
@@ -20469,9 +20635,11 @@
                       "$field": "page.documents.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "section-0",
@@ -20561,7 +20729,8 @@
                           }
                         ]
                       }
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -20615,7 +20784,8 @@
                       "$field": "page.specificationIntro.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -20784,7 +20954,8 @@
                       "$field": "page.galleryIntro.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -20847,7 +21018,8 @@
                       "$field": "page.relatedProducts.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -20946,7 +21118,8 @@
                       "$field": "page.enquiry.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -21081,7 +21254,8 @@
                       "$field": "page.allProducts.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               }
@@ -21237,9 +21411,11 @@
                       "$field": "page.overview.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-1",
@@ -21304,7 +21480,8 @@
                 "assets": [],
                 "enabled": {
                   "$field": "page.applications.enabled"
-                }
+                },
+                "kind": "applications"
               },
               {
                 "key": "fold-3",
@@ -21384,9 +21561,11 @@
                       "$field": "page.packaging.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-4",
@@ -21466,9 +21645,11 @@
                       "$field": "page.storage.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-5",
@@ -21548,9 +21729,11 @@
                       "$field": "page.documents.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "section-0",
@@ -21640,7 +21823,8 @@
                           }
                         ]
                       }
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -21694,7 +21878,8 @@
                       "$field": "page.specificationIntro.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -21863,7 +22048,8 @@
                       "$field": "page.galleryIntro.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -21926,7 +22112,8 @@
                       "$field": "page.relatedProducts.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -22025,7 +22212,8 @@
                       "$field": "page.enquiry.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -22160,7 +22348,8 @@
                       "$field": "page.allProducts.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               }
@@ -22316,9 +22505,11 @@
                       "$field": "page.overview.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-1",
@@ -22383,7 +22574,8 @@
                 "assets": [],
                 "enabled": {
                   "$field": "page.applications.enabled"
-                }
+                },
+                "kind": "applications"
               },
               {
                 "key": "fold-3",
@@ -22463,9 +22655,11 @@
                       "$field": "page.packaging.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-4",
@@ -22545,9 +22739,11 @@
                       "$field": "page.storage.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-5",
@@ -22627,9 +22823,11 @@
                       "$field": "page.documents.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "section-0",
@@ -22719,7 +22917,8 @@
                           }
                         ]
                       }
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -22773,7 +22972,8 @@
                       "$field": "page.specificationIntro.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -22942,7 +23142,8 @@
                       "$field": "page.galleryIntro.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -23005,7 +23206,8 @@
                       "$field": "page.relatedProducts.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -23104,7 +23306,8 @@
                       "$field": "page.enquiry.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -23239,7 +23442,8 @@
                       "$field": "page.allProducts.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               }
@@ -23395,9 +23599,11 @@
                       "$field": "page.overview.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-1",
@@ -23462,7 +23668,8 @@
                 "assets": [],
                 "enabled": {
                   "$field": "page.applications.enabled"
-                }
+                },
+                "kind": "applications"
               },
               {
                 "key": "fold-3",
@@ -23542,9 +23749,11 @@
                       "$field": "page.packaging.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-4",
@@ -23624,9 +23833,11 @@
                       "$field": "page.storage.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-5",
@@ -23706,9 +23917,11 @@
                       "$field": "page.documents.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "section-0",
@@ -23798,7 +24011,8 @@
                           }
                         ]
                       }
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -23852,7 +24066,8 @@
                       "$field": "page.specificationIntro.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -24021,7 +24236,8 @@
                       "$field": "page.galleryIntro.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -24084,7 +24300,8 @@
                       "$field": "page.relatedProducts.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -24183,7 +24400,8 @@
                       "$field": "page.enquiry.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -24318,7 +24536,8 @@
                       "$field": "page.allProducts.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               }
@@ -24474,9 +24693,11 @@
                       "$field": "page.overview.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-1",
@@ -24541,7 +24762,8 @@
                 "assets": [],
                 "enabled": {
                   "$field": "page.applications.enabled"
-                }
+                },
+                "kind": "applications"
               },
               {
                 "key": "fold-3",
@@ -24621,9 +24843,11 @@
                       "$field": "page.packaging.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-4",
@@ -24703,9 +24927,11 @@
                       "$field": "page.storage.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-5",
@@ -24785,9 +25011,11 @@
                       "$field": "page.documents.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "section-0",
@@ -24877,7 +25105,8 @@
                           }
                         ]
                       }
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -24931,7 +25160,8 @@
                       "$field": "page.specificationIntro.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -25100,7 +25330,8 @@
                       "$field": "page.galleryIntro.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -25163,7 +25394,8 @@
                       "$field": "page.relatedProducts.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -25262,7 +25494,8 @@
                       "$field": "page.enquiry.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -25397,7 +25630,8 @@
                       "$field": "page.allProducts.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               }
@@ -25553,9 +25787,11 @@
                       "$field": "page.overview.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-1",
@@ -25620,7 +25856,8 @@
                 "assets": [],
                 "enabled": {
                   "$field": "page.applications.enabled"
-                }
+                },
+                "kind": "applications"
               },
               {
                 "key": "fold-3",
@@ -25700,9 +25937,11 @@
                       "$field": "page.packaging.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-4",
@@ -25782,9 +26021,11 @@
                       "$field": "page.storage.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-5",
@@ -25864,9 +26105,11 @@
                       "$field": "page.documents.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "section-0",
@@ -25956,7 +26199,8 @@
                           }
                         ]
                       }
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -26010,7 +26254,8 @@
                       "$field": "page.specificationIntro.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -26179,7 +26424,8 @@
                       "$field": "page.galleryIntro.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -26242,7 +26488,8 @@
                       "$field": "page.relatedProducts.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -26341,7 +26588,8 @@
                       "$field": "page.enquiry.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -26476,7 +26724,8 @@
                       "$field": "page.allProducts.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               }
@@ -26632,9 +26881,11 @@
                       "$field": "page.overview.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-1",
@@ -26699,7 +26950,8 @@
                 "assets": [],
                 "enabled": {
                   "$field": "page.applications.enabled"
-                }
+                },
+                "kind": "applications"
               },
               {
                 "key": "fold-3",
@@ -26779,9 +27031,11 @@
                       "$field": "page.packaging.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-4",
@@ -26861,9 +27115,11 @@
                       "$field": "page.storage.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "fold-5",
@@ -26943,9 +27199,11 @@
                       "$field": "page.documents.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
-                ]
+                ],
+                "kind": "prose"
               },
               {
                 "key": "section-0",
@@ -27035,7 +27293,8 @@
                           }
                         ]
                       }
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -27089,7 +27348,8 @@
                       "$field": "page.specificationIntro.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -27258,7 +27518,8 @@
                       "$field": "page.galleryIntro.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -27321,7 +27582,8 @@
                       "$field": "page.relatedProducts.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -27420,7 +27682,8 @@
                       "$field": "page.enquiry.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               },
@@ -27555,7 +27818,8 @@
                       "$field": "page.allProducts.heading",
                       "$localized": true,
                       "$rich": true
-                    }
+                    },
+                    "role": "heading"
                   }
                 ]
               }

@@ -2,7 +2,7 @@ import {RecordLayout} from '@/components/pages/record-layout'
 import type {SustainabilityRecord} from '@/lib/sustainability/types'
 import {pageSchema,siteUrl} from '@/lib/seo/structured-data'
 import {textContent} from '@/lib/editor/document'
-import {getSustainabilityPayload, getHomeCmsData, getWebsiteSettings} from '@/lib/api/public'
+import {getSustainabilityPayload, getSiteShell, getWebsiteSettings} from '@/lib/api/public'
 import {notFound} from 'next/navigation'
 import type {Metadata} from 'next'
 import {SitePage} from '@/components/site/site-page'
@@ -22,8 +22,8 @@ export async function SustainabilityRoute({params,preview=false}:SustainabilityR
  if(preview)notFound()
  const [{articles,page,record,labels},home,settings] = await Promise.all([
     getSustainabilityPayload(l,slug),
-    getHomeCmsData(l,'shell'),
-    getWebsiteSettings(l),
+    getSiteShell(),
+    getWebsiteSettings(),
   ])
  const version=preview?record?.draft:record?.published[l]
  if(slug&&(!record||!version))notFound()

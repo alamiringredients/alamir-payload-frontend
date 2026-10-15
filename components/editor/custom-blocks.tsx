@@ -1,3 +1,4 @@
+import {TwoColumns} from '@/components/layout/two-columns'
 import { Fragment, type ReactNode } from "react";
 import { ContentImage } from "@/components/site/content-image";
 import { SmartLink } from "@/components/site/smart-link";
@@ -19,7 +20,7 @@ type BlockProps = {
 export function SectionHeaderBlock({ node, children }: BlockProps) {
   const a = node.attrs ?? {};
   return (
-    <header
+    <TwoColumns as="header" collapseAt={1050} style={a.layout==='split'?undefined:{display:'block'}} columns={String(a.columnWidth??'50-50')} align="end" gap="0 clamp(28px,4vw,72px)"
       className={`${styles["section-header"]} ${a.width === "wide" ? styles["section-header--wide"] : ""} ${a.singleLine ? styles["section-header--nowrap"] : ""} ${a.layout === "split" ? styles["section-header--split"] : ""} reveal`}
     >
       {a.eyebrow ? (
@@ -31,7 +32,7 @@ export function SectionHeaderBlock({ node, children }: BlockProps) {
           {String(a.ctaLabel)}
         </SmartLink>
       ) : null}
-    </header>
+    </TwoColumns>
   );
 }
 
@@ -59,8 +60,8 @@ export function ActionsBlock({ node }: BlockProps) {
   );
 }
 
-export function AboutProfileBlock({ node }: BlockProps) {
-  return <ProfileBlock attrs={node.attrs ?? {}} />;
+export function AboutProfileBlock({ node, renderNode }: BlockProps) {
+  return <ProfileBlock attrs={node.attrs ?? {}} renderNode={renderNode}/>;
 }
 export function ValuesRailBlock({ node }: BlockProps) {
   return (
@@ -303,7 +304,7 @@ function MediaStory({ node, renderNode }: BlockProps) {
   if (!image || !attrs.src || !bodyColumn) return null;
   const side = String(node.attrs?.mediaSide ?? "start");
   return (
-    <figure
+    <TwoColumns as="figure" collapseAt={700} columns={String(node.attrs?.columnWidth??(side==='end'?'minmax(0,1.05fr) minmax(0,.95fr)':'minmax(0,.95fr) minmax(0,1.05fr)'))} align="center"
       className={`${styles["media-story"]} reveal`}
       data-media-story=""
       data-media-side={side}
@@ -333,22 +334,17 @@ function MediaStory({ node, renderNode }: BlockProps) {
           </Fragment>
         ))}
       </figcaption>
-    </figure>
+    </TwoColumns>
   );
 }
 
 export function ColumnsBlock(props: BlockProps) {
-  const { node, children } = props,
-    a = node.attrs ?? {};
-  if (isMediaStory(node)) return <MediaStory {...props} />;
-  return (
-    <div
-      className={`${styles["content-columns"]} ${styles[`content-columns--${String(a.layout ?? "equal")}`] ?? ""} ${styles[`content-columns--align-${String(a.verticalAlign ?? "start")}`] ?? ""} reveal`}
-      data-count={node.content?.length}
-    >
-      {children}
-    </div>
-  );
+  const {node,children}=props,a=node.attrs??{};
+  if(isMediaStory(node))return <MediaStory {...props}/>;
+  const className=`${styles["content-columns"]} ${styles[`content-columns--${String(a.layout??"equal")}`]??""} reveal`;
+  if(node.content?.length!==2)return <div className={className} data-count={node.content?.length}>{children}</div>;
+  const columns=String(a.columnWidth??({'wide-start':'60-40','wide-end':'40-60','prose-media':'minmax(0,1.05fr) minmax(0,.95fr)'} as Record<string,string>)[String(a.layout)]??'50-50');
+  return <TwoColumns collapseAt={a.layout==='prose-media'?900:700} columns={columns} className={className} align={a.verticalAlign==='center'?'center':a.verticalAlign==='end'?'end':a.verticalAlign==='stretch'?'stretch':'start'} gap={a.layout==='prose-media'?'clamp(36px,5vw,72px)':'clamp(20px,3vw,40px)'}>{children}</TwoColumns>;
 }
 
 export function ColumnBlock({ children }: BlockProps) {
@@ -359,7 +355,7 @@ export function CalloutBlock({ node, children }: BlockProps) {
   const a = node.attrs ?? {};
   return (
     <aside
-      className={`${styles["content-callout"]} ${styles[`content-callout--${String(a.variant ?? "accent")}`] ?? ""}`}
+      className={`${styles["content-callout"]} ${styles[`content-callout--${String(a.variant ?? "soft")}`] ?? ""}`}
     >
       {children}
     </aside>

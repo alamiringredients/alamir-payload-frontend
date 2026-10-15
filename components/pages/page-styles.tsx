@@ -5,7 +5,7 @@ import {createHash} from 'node:crypto'
 
 const files:Record<string,string[]>={
  home:['home'],
- about:['careers-managed'],quality:['careers-managed','quality'],careers:['careers-managed'],
+ quality:['quality'],
  products:['products'],downloads:['downloads'],events:['events'],'book-a-meeting':['book-a-meeting'],
  news:['news'],sustainability:['sustainability'],contact:['contact'],
  privacy:['document'],terms:['document'],cookies:['document'],'thank-you':['document'],'404':['document'],search:['document'],

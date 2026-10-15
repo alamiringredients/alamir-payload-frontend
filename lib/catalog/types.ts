@@ -2,7 +2,7 @@ import type {LocalizedDocument,HomeSectionContent, LocalizedValue} from '@/lib/c
 
 // Templates describe the existing design. Editors change content, never markup.
 export type CatalogItem = {label?: LocalizedValue; value: LocalizedValue;document?:LocalizedDocument}
-export type CatalogBlock = HomeSectionContent & {items?: CatalogItem[]}
+export type CatalogBlock = HomeSectionContent & {kind?:'specifications'|'applications'|'prose';items?: CatalogItem[]}
 export type ProductGalleryItem = {image: string; caption: LocalizedValue;alt?:LocalizedValue}
 export type CatalogPageContent = {blocks: CatalogBlock[]}
 export type CatalogSeo = {title: LocalizedValue; description: LocalizedValue}
@@ -17,7 +17,8 @@ export type CategoryPageCopy = {
   introDescription: LocalizedValue
 }
 export type CatalogCard = {name: LocalizedValue; description: LocalizedValue; seo: CatalogSeo; artwork: CatalogBlock}
-export type CategoryContent = CatalogCard & {page: CatalogPageContent; pageCopy:CategoryPageCopy; icon: string; gallery: ProductGalleryItem[]}
+export type CategoryAppearance = 'standard' | 'muted'
+export type CategoryContent = CatalogCard & {appearance:CategoryAppearance;page: CatalogPageContent; pageCopy:CategoryPageCopy; icon: string; gallery: ProductGalleryItem[]}
 export type ProductContent = CatalogCard & {
   page: CatalogPageContent
   applications: string[]

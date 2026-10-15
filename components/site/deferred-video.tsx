@@ -1,5 +1,6 @@
 "use client";
 
+import { flushSync } from "react-dom";
 import { useEffect, useRef, useState, type VideoHTMLAttributes } from "react";
 
 export function DeferredVideo({
@@ -7,6 +8,7 @@ export function DeferredVideo({
   poster,
   autoPlay,
   onClick,
+  onKeyDown,
   ...props
 }: VideoHTMLAttributes<HTMLVideoElement>) {
   const ref = useRef<HTMLVideoElement>(null);
@@ -14,7 +16,7 @@ export function DeferredVideo({
 
   useEffect(() => {
     const video = ref.current;
-    if (!video) return;
+    if (!video || !autoPlay) return;
     const observer = new IntersectionObserver(
       (entries) => {
         if (!entries.some((entry) => entry.isIntersecting)) return;
@@ -27,24 +29,28 @@ export function DeferredVideo({
     return () => {
       observer.disconnect();
     };
-  }, []);
+  }, [autoPlay]);
 
   return (
     <video
       {...props}
       ref={ref}
       src={active ? src : undefined}
-      poster={active ? poster : undefined}
+      poster={poster}
       autoPlay={active && autoPlay}
       preload="none"
+      onKeyDown={(event) => {
+        onKeyDown?.(event);
+        if (event.defaultPrevented || active || !props.controls || !['Enter', ' '].includes(event.key)) return;
+        event.preventDefault();
+        flushSync(() => setActive(true));
+        void event.currentTarget.play().catch(() => {});
+      }}
       onClick={(event) => {
         onClick?.(event);
         const video = event.currentTarget;
         if (event.defaultPrevented || !props.controls || !video.paused || video.currentTime !== 0) return;
-        if (!active && typeof src === 'string') {
-          video.src = src;
-          setActive(true);
-        }
+        if (!active) flushSync(() => setActive(true));
         void video.play().catch(() => {});
       }}
     />

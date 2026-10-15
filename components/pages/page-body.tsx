@@ -24,7 +24,7 @@ async function Section({block,locale,page,context,form,countries}:{form?:CmsForm
  if(!definition)return <BasicSection block={block} locale={locale} form={form} countries={countries} pageId={page.id}/>
  const source=page.sourceKey===definition.pageKey?page:await pageBySourceKey(definition.pageKey)
  if(!source)throw new Error(`Missing section source: ${definition.pageKey}`)
- const {settings}=await getLayoutPayload(locale)
+ const {settings}=await getLayoutPayload()
  const name=definition.pageSlug
  const group=name==='about'||name==='quality'?'editorial':name==='products'?'catalog':name==='events'||name==='book-a-meeting'?'events':name==='news'||name==='sustainability'?'articles':name==='home'||name==='careers'||name==='downloads'?name:'managed'
  const renderer=await renderers[group]()

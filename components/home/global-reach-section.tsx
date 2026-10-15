@@ -1,7 +1,8 @@
+import {TwoColumns} from '@/components/layout/two-columns'
 import {InteractiveGlobe} from '@/components/home/interactive-globe'
 
 export function GlobalReachSection({globeLabel}:{globeLabel:string}){return (<section className="reach" id="reach">
-  <div className="wrap reach-layout reveal">
+  <TwoColumns collapseAt={1050} as="div" columns="minmax(360px,.88fr) minmax(0,1.12fr)" gap="clamp(55px,7vw,110px)" align="center" className="wrap reach-layout reveal">
     <div className="globe-wrap">
       <InteractiveGlobe label={globeLabel}/>
       <div className="globe-cap">Sadat City · Egypt</div>
@@ -18,6 +19,6 @@ export function GlobalReachSection({globeLabel}:{globeLabel:string}){return (<se
         <article className="region"><div className="region-name">Far East</div><div className="region-detail">Bulk ingredient supply</div></article>
       </div>
     </div>
-  </div>
+  </TwoColumns>
 </section>
 )}

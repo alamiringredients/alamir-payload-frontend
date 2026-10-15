@@ -2,7 +2,7 @@ import {RecordLayout} from '@/components/pages/record-layout'
 import type {NewsRecord} from '@/lib/news/types'
 import {pageSchema,siteUrl} from '@/lib/seo/structured-data'
 import {textContent} from '@/lib/editor/document'
-import {getNewsPayload, getPublicNewsArticle, getPublicNewsPage, getHomeCmsData, getWebsiteSettings} from '@/lib/api/public'
+import {getNewsPayload, getPublicNewsArticle, getPublicNewsPage, getSiteShell, getWebsiteSettings} from '@/lib/api/public'
 import {notFound} from 'next/navigation'
 import type {Metadata} from 'next'
 import {presentNewsCard,presentNewsVersion} from '@/lib/news/presentation'
@@ -25,8 +25,8 @@ export async function NewsRoute({params,searchParams,preview=false}:NewsRoutePro
   if(preview)notFound()
   const [{cards,page,taxonomies,source,labels},home,settings] = await Promise.all([
     getNewsPayload(l,slug),
-    getHomeCmsData(l,'shell'),
-    getWebsiteSettings(l),
+    getSiteShell(),
+    getWebsiteSettings(),
   ])
   const articles=cards.map(a=>presentNewsCard(a,l,taxonomies))
   const rawVersion=preview?source?.draft:source?.published[l]

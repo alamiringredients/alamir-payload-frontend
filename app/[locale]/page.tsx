@@ -31,7 +31,7 @@ export async function generateMetadata({params}: {params: Promise<{locale: strin
 export default async function HomePage({params}: {params: Promise<{locale: string}>}) {
   const {locale} = await params
   if (!hasLocale(routing.locales, locale)) notFound()
-  const [layout, homepage,cmsPage,forms] = await Promise.all([getLayoutPayload(locale), getHomepagePayload(locale),pageBySlug('home'),getForms(locale,{purpose:'home',collection:'pages',slug:'home'})])
+  const [layout, homepage,cmsPage,forms] = await Promise.all([getLayoutPayload(), getHomepagePayload(locale),pageBySlug('home'),getForms(locale,{purpose:'home',collection:'pages',slug:'home'})])
   const {settings, catalog} = layout
   const {home: {seo}, meetingEvent} = homepage
   const sections = new Map(layout.home.sections.map(section => [section.key, section]))

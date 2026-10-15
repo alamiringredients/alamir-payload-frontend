@@ -2,11 +2,10 @@ import {RecordLayout} from '@/components/pages/record-layout'
 import type {JobRecord} from '@/lib/careers/types'
 import {pageSchema} from '@/lib/seo/structured-data'
 import '@/styles/pages/career-detail.css'
-import '@/styles/pages/careers-managed.css'
 import {hasLocale} from 'next-intl'
 import {notFound} from 'next/navigation'
 import {locales,localePath,type SiteLocale} from '@/i18n/navigation'
-import {getPublicJobs, getPublicJob, getCareersPayload, getHomeCmsData, getWebsiteSettings} from '@/lib/api/public'
+import {getPublicJobs, getPublicJob, getCareersPayload, getSiteShell, getWebsiteSettings} from '@/lib/api/public'
 import {CareerJobBody} from '@/components/careers/public-content'
 import {SitePage} from '@/components/site/site-page'
 import {FormScopeProvider} from '@/components/forms/forms-provider'
@@ -26,8 +25,8 @@ export default async function Page({params}:Props){
   if(!hasLocale(locales,locale))notFound()
   const [{content,jobs,job,labels},home,settings,forms] = await Promise.all([
     getCareersPayload(locale,slug),
-    getHomeCmsData(locale,'shell'),
-    getWebsiteSettings(locale),
+    getSiteShell(),
+    getWebsiteSettings(),
     getForms(locale,{purpose:'application',collection:'jobs',slug}),
   ])
   if(!job)notFound()

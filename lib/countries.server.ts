@@ -1,6 +1,6 @@
 import 'server-only'
 import {countries} from './countries'
-import {getInterface} from './payload/public'
+import {getInterface} from './payload/interface'
 import type {SiteLocale} from '@/i18n/navigation'
 
 export async function getCountryOptions(locale: SiteLocale) {

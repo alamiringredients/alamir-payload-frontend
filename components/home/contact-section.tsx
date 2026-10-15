@@ -1,3 +1,4 @@
+import {TwoColumns} from '@/components/layout/two-columns'
 import {ContentImage} from '@/components/site/content-image'
 import {SmartLink} from '@/components/site/smart-link'
 import {HomeEnquiryForm} from '@/components/enquiries/home-enquiry-form'
@@ -12,7 +13,7 @@ function CompanyPhone({phone}:{phone:string}) {
 
 export function ContactSection({locale, company}: {locale: SiteLocale; company: CompanyInformation}){return (<section className="contact" id="contact">
   <div className="wrap">
-    <div className="contact-card reveal">
+    <TwoColumns collapseAt={1050} as="div" columns="minmax(0,1fr) minmax(340px,.72fr)" gap="clamp(26px,3vw,54px)" align="center" className="contact-card reveal">
       <div className="contact-media" aria-hidden="true">
         <ContentImage src="/assets/photos/contact-field.webp" alt="" loading="lazy" decoding="async" />
       </div>
@@ -31,7 +32,7 @@ export function ContactSection({locale, company}: {locale: SiteLocale; company: 
           <CompanyPhone phone={company.exportPhone}/>
         </div>
       </aside>
-    </div>
+    </TwoColumns>
   </div>
 </section>
 )}

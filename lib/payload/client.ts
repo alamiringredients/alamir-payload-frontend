@@ -1,3 +1,4 @@
+import type {CatalogLabels} from '@/lib/catalog/types'
 import {richText} from '@/lib/editor/lexical'
 export {richText} from '@/lib/editor/lexical'
 import 'server-only'
@@ -139,6 +140,12 @@ export const recordDocuments=cache(async(slug:keyof typeof templates.collections
  }
  return docs.map(doc=>({...doc,interface:interfaceText,mediaRefs:media}))
 })
+function articleBody(value:unknown,locale:string,introStyle:unknown):ContentDocument {
+ const document=richText(value,undefined,locale)
+ const first=document.content[0]
+ if(first?.type==='paragraph' && introStyle==='lead')first.attrs={...first.attrs,variant:'lead'}
+ return document
+}
 export function presentRecord<T>(slug:keyof typeof templates.collections,doc:Document,view?:'card'):T{
  const layouts=templates.collections[slug] as unknown as Record<string,Value>
   let template = layouts[String(doc.sourceId)] ?? Object.values(layouts)[0]
@@ -149,6 +156,7 @@ export function presentRecord<T>(slug:keyof typeof templates.collections,doc:Doc
   const result = hydrate(template, doc) as Record<string, unknown>
   // Component contracts use the historical reference IDs; submissions use Payload IDs.
   result.id=doc.sourceId ?? doc.id
+  if (slug === 'categories') (result.content as Record<string,unknown>).appearance=doc.appearance ?? 'standard'
   if (slug === 'products' && typeof doc.category === 'object' && doc.category) result.category_id=(doc.category as { sourceId?: number; id: number }).sourceId ?? (doc.category as {id:number}).id
   if (slug === 'certifications' && typeof doc.certificationType === 'object' && doc.certificationType) result.type_id=(doc.certificationType as {sourceId?:number;id:number}).sourceId ?? (doc.certificationType as {id:number}).id
   if (slug === 'jobs') {
@@ -187,15 +195,21 @@ export function presentRecord<T>(slug:keyof typeof templates.collections,doc:Doc
   }
   if(slug==='events'){
    const localized=(result.content as {body:Record<string,unknown>}).body
-   for(const language of ['en','ar','fr'])localized[language]=richText((doc.body as Record<string,unknown>)?.[language],undefined,language)
+   for(const language of ['en','ar','fr'])localized[language]=articleBody((doc.body as Record<string,unknown>)?.[language],language,doc.introStyle)
   }
   if (slug === 'news' || slug === 'sustainability') {
     const content=result.content as Record<string, unknown>
     const localized=content.locales as Record<string,Record<string,unknown>>
     for(const language of ['en','ar','fr']) {
+    if(slug==='news'){
+      const cardTitle=(doc.cardTitle as Record<string,unknown>|undefined)?.[language]
+      const cardSummary=(doc.cardSummary as Record<string,string>|undefined)?.[language]
+      if(cardTitle)localized[language].cardTitle=richText(cardTitle,undefined,language)
+      if(cardSummary)localized[language].cardSummary=cardSummary
+    }
     const body=(doc.body as Record<string,{root?:{children?:unknown[]}}> | undefined)?.[language]
     if(body?.root?.children?.length){
-      const document=richText(body,undefined,language)
+      const document=articleBody(body,language,doc.introStyle)
       if(slug==='sustainability'){
         const content:ContentNode[]=[]
         let section:ContentNode|undefined
@@ -280,7 +294,7 @@ export function sectionContent<T>(page:CmsPage,block:PageBlock):T {
  return hydrate(selected,sourceDocument(page,block)) as T
 }
 
-export const catalogInterfaceLabels=cache(async()=>hydrate(templates.globals['catalog-settings'].labels as unknown as Value,{id:0,interface:await translationContent()}))
+export const catalogInterfaceLabels=cache(async()=>hydrate(templates.globals['catalog-settings'].labels as unknown as Value,{id:0,interface:await translationContent()}) as CatalogLabels)
 
 export const mediaDocuments=cache(async()=>new Map((await payloadDocuments('media','&select[url]=true&select[width]=true&select[height]=true&select[mimeType]=true&select[filename]=true&select[prefix]=true&select[alt]=true',0)).map(doc=>[doc.id,doc])))
 export function localizedMedia(value:unknown,media:Map<number,Document>):unknown {

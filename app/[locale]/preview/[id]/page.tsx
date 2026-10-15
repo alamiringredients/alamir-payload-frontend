@@ -5,7 +5,7 @@ import {notFound} from 'next/navigation'
 import {hasLocale} from 'next-intl'
 import {locales} from '@/i18n/navigation'
 import {backendOrigin,type CmsPage} from '@/lib/payload/client'
-import {getHomeCmsData,getWebsiteSettings} from '@/lib/api/public'
+import {getSiteShell,getWebsiteSettings} from '@/lib/api/public'
 import {SitePage} from '@/components/site/site-page'
 
 export const metadata={robots:{index:false,follow:false}}
@@ -19,6 +19,6 @@ export default async function Preview({params}:{params:Promise<{locale:string;id
  const response=await fetch(`${backendOrigin()}/api/pages/${id}?draft=true&locale=all&depth=2`,options)
  if(!response.ok)notFound()
  const page=await response.json() as CmsPage
- const [home,settings]=await Promise.all([getHomeCmsData(locale,'shell'),getWebsiteSettings(locale)])
+ const [home,settings]=await Promise.all([getSiteShell(),getWebsiteSettings()])
  return <SitePage page={page.slug!} locale={locale} home={home} settings={settings}><PageBody page={page} locale={locale}/></SitePage>
 }
