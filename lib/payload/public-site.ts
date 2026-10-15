@@ -14,6 +14,7 @@ const site=cache(async(query:string):Promise<Record<string,Row|Collection>>=>{
 })
 const requestLocale=cache(async()=>{try{return await rootLocale()??'all'}catch{return 'all'}})
 const shared=cache(async()=>site(`scope=shared&locale=${await requestLocale()}`))
+const identities=cache(()=>site('scope=identities&locale=all'))
 const loaded=cache(()=>new Map<string,Promise<Row|Collection>>())
 const groups:Record<string,string[]>={
  home:['pages','certifications','certification-types','events'],
@@ -21,11 +22,12 @@ const groups:Record<string,string[]>={
  quality:['pages','certifications','certification-types'],
  news:['pages','news','news-taxonomies'],
  careers:['pages','jobs','news','news-taxonomies'],
- events:['pages','events','meeting-slots'],
+ events:['pages','events'],
+ booking:['pages','events','meeting-slots'],
  sustainability:['pages','sustainability','sustainability-goals'],
  page:['pages'],
 }
-const groupFor=(key:string)=>key==='home-page'?'home':key==='products-page'||key==='downloads-page'?'catalog':key==='quality-page'?'quality':key==='careers-page'?'careers':key==='events-page'||key==='booking-page'?'events':key==='news-page'?'news':key==='sustainability-page'?'sustainability':'page'
+const groupFor=(key:string)=>key==='home-page'?'home':key==='products-page'||key==='downloads-page'?'catalog':key==='quality-page'?'quality':key==='careers-page'?'careers':key==='events-page'?'events':key==='booking-page'?'booking':key==='news-page'?'news':key==='sustainability-page'?'sustainability':'page'
 async function preparePublicContent(group:string,pending:ReturnType<typeof loaded>){
  const resources=groups[group]
  const missing=resources.filter(resource=>!pending.has(resource))
@@ -40,6 +42,7 @@ async function preparePublicContent(group:string,pending:ReturnType<typeof loade
 }
 const summaryFields:Record<string,string[]>={pages:['slug','sourceKey','title'],products:['name','slug','sourceId','category','gallery'],categories:['name','slug','sourceId','icon','description','page.artwork'],media:['url','width','height','mimeType','filename','prefix','alt'],translations:['key','text']}
 async function resourceContent(resource:string,params:URLSearchParams){
+ if(params.get('view')==='identity')return (await identities())[resource]
  const metadata=await shared()
  const fields=[...params.keys()].filter(key=>key.startsWith('select[')).map(key=>[...key.matchAll(/\[([^\]]+)\]/g)].map(match=>match[1]).join('.'))
  if(resource.startsWith('globals/')||fields.length&&fields.every(field=>summaryFields[resource]?.includes(field)))return metadata[resource]
@@ -50,7 +53,7 @@ async function resourceContent(resource:string,params:URLSearchParams){
  }
  const pending=loaded()
  if(!pending.has(resource)){
-  let group=({products:'catalog',categories:'catalog',jobs:'careers',news:'news','news-taxonomies':'news',events:'events','meeting-slots':'events',sustainability:'sustainability','sustainability-goals':'sustainability','certifications':'quality','certification-types':'quality','product-applications':'catalog','product-concentrations':'catalog'} as Record<string,string>)[resource]??'page'
+  let group=({products:'catalog',categories:'catalog',jobs:'careers',news:'news','news-taxonomies':'news',events:'events','meeting-slots':'booking',sustainability:'sustainability','sustainability-goals':'sustainability','certifications':'quality','certification-types':'quality','product-applications':'catalog','product-concentrations':'catalog'} as Record<string,string>)[resource]??'page'
   if(resource==='pages'){
    const id=params.get('where[id][equals]'),sourceKey=params.get('where[sourceKey][equals]')
    const page=(metadata.pages as Collection).docs.find(page=>id?String(page.id)===id:page.sourceKey===sourceKey)

@@ -2,7 +2,7 @@ import {RecordLayout} from '@/components/pages/record-layout'
 import type {SustainabilityRecord} from '@/lib/sustainability/types'
 import {pageSchema,siteUrl} from '@/lib/seo/structured-data'
 import {textContent} from '@/lib/editor/document'
-import {getSustainabilityPayload, getSiteShell, getWebsiteSettings} from '@/lib/api/public'
+import {getSustainabilityPayload, getSustainabilityArticleMetadata, getPublicSustainabilityPage, getSiteShell, getWebsiteSettings} from '@/lib/api/public'
 import {notFound} from 'next/navigation'
 import type {Metadata} from 'next'
 import {SitePage} from '@/components/site/site-page'
@@ -12,9 +12,9 @@ import {SustainabilityIndexBody,SustainabilityArticleBody} from './sustainabilit
 export type SustainabilityRouteProps={params:Promise<{locale:string;slug?:string}>;preview?:boolean}
 export async function sustainabilityMetadata({params}:SustainabilityRouteProps):Promise<Metadata>{
  const {locale,slug}=await params;if(!newsLocales.includes(locale as SiteLocale))return {}
- const l=locale as SiteLocale,{page,record}=await getSustainabilityPayload(l,slug),v=record?.published[l]
+ const l=locale as SiteLocale,record=slug?await getSustainabilityArticleMetadata(l,slug):null,page=slug?undefined:await getPublicSustainabilityPage(),v=record?.published[l]
  if(slug&&!v)return {}
- const path=slug?`/sustainability/${slug}`:'/sustainability',available=record?record.availableLocales:newsLocales,title=v?.seoTitle??page.seo.title[l],description=v?.seoDescription??page.seo.description[l]
+ const path=slug?`/sustainability/${slug}`:'/sustainability',available=record?record.availableLocales:newsLocales,title=v?.seoTitle??page!.seo.title[l],description=v?.seoDescription??page!.seo.description[l]
  return {title,description,openGraph:{title,description,...(v?.gallery[0]?{images:[v.gallery[0].src]}:{})},alternates:{canonical:localePath(path,l),languages:Object.fromEntries(available.map(l=>[l,localePath(path,l)]))}}
 }
 export async function SustainabilityRoute({params,preview=false}:SustainabilityRouteProps){

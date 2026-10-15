@@ -9,7 +9,7 @@ import { SmartLink as Link } from "@/components/site/smart-link";
 import Image from "next/image";
 
 
-import type { EventRecord, PublicEventSlot } from "@/lib/events/types";
+import type { EventCard, PublicEventSlot } from "@/lib/events/types";
 import type { SiteLocale } from "@/i18n/navigation";
 import { textContent } from "@/lib/editor/document";
 
@@ -33,7 +33,7 @@ export function BookingWidget({
   section,
   labels,
 }: {
-  events: EventRecord[];
+  events: EventCard[];
   slots: PublicEventSlot[];
   locale: SiteLocale;
   preferredEvent?: string;

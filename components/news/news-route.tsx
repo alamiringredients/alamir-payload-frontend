@@ -2,7 +2,7 @@ import {RecordLayout} from '@/components/pages/record-layout'
 import type {NewsRecord} from '@/lib/news/types'
 import {pageSchema,siteUrl} from '@/lib/seo/structured-data'
 import {textContent} from '@/lib/editor/document'
-import {getNewsPayload, getPublicNewsArticle, getPublicNewsPage, getSiteShell, getWebsiteSettings} from '@/lib/api/public'
+import {getNewsPayload, getNewsArticleMetadata, getPublicNewsPage, getSiteShell, getWebsiteSettings} from '@/lib/api/public'
 import {notFound} from 'next/navigation'
 import type {Metadata} from 'next'
 import {presentNewsCard,presentNewsVersion} from '@/lib/news/presentation'
@@ -14,7 +14,7 @@ export type NewsRouteProps={params:Promise<{locale:string;slug?:string}>;searchP
 export async function newsMetadata({params}:NewsRouteProps):Promise<Metadata>{
   const {locale,slug}=await params
   if(!newsLocales.includes(locale as SiteLocale))return {}
-  const l=locale as SiteLocale,record=slug?await getPublicNewsArticle(l,slug):undefined,page=slug?undefined:await getPublicNewsPage(l),v=slug?record?.published[l]:page?.[l]
+  const l=locale as SiteLocale,record=slug?await getNewsArticleMetadata(l,slug):undefined,page=slug?undefined:await getPublicNewsPage(),v=slug?record?.published[l]:page?.[l]
   if(!v)return {}
   const path=slug?`/news/${slug}`:'/news',available=record?record.availableLocales:newsLocales
   const image=slug?record?.published[l]?.hero:page?.heroImage

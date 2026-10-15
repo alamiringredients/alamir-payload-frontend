@@ -1,22 +1,23 @@
+import {recordIdentities} from '@/lib/payload/client'
 import {RecordLayout} from '@/components/pages/record-layout'
 import type {JobRecord} from '@/lib/careers/types'
 import {pageSchema} from '@/lib/seo/structured-data'
 import '@/styles/pages/career-detail.css'
 import {hasLocale} from 'next-intl'
 import {notFound} from 'next/navigation'
-import {locales,localePath,type SiteLocale} from '@/i18n/navigation'
-import {getPublicJobs, getPublicJob, getCareersPayload, getSiteShell, getWebsiteSettings} from '@/lib/api/public'
+import {locales,localePath} from '@/i18n/navigation'
+import {getJobMetadata, getCareersPayload, getSiteShell, getWebsiteSettings} from '@/lib/api/public'
 import {CareerJobBody} from '@/components/careers/public-content'
 import {SitePage} from '@/components/site/site-page'
 import {FormScopeProvider} from '@/components/forms/forms-provider'
 import {getForms,getFormCountries} from '@/lib/forms/server'
 
 type Props={params:Promise<{locale:string;slug:string}>}
-export async function generateStaticParams({params}:{params:{locale:string}}){return (await getPublicJobs(params.locale as SiteLocale)).map(({slug})=>({slug}))}
+export async function generateStaticParams(){return (await recordIdentities('jobs')).map(({slug})=>({slug}))}
 export async function generateMetadata({params}:Props){
   const {locale,slug}=await params
   if(!hasLocale(locales,locale))notFound()
-  const job=await getPublicJob(locale,slug)
+  const job=await getJobMetadata(locale,slug)
   if(!job)notFound()
   return {title:job.content[locale].title,description:job.content[locale].summary,alternates:{canonical:localePath(`/careers/${slug}`,locale)}}
 }

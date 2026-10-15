@@ -117,8 +117,14 @@ export async function interfaceLabels(path: string, locale: SiteLocale): Promise
   const labels = fieldValue(await translationContent(), path) as Record<string, Record<string, string>> | undefined
   return Object.fromEntries(Object.entries(labels ?? {}).map(([key, value]) => [key, value[locale] ?? '']))
 }
+const recordSort=(slug:keyof typeof templates.collections)=>['products','categories','news','sustainability','jobs','events'].includes(slug)?'_order':'createdAt'
+export const recordIdentities=cache(async(slug:keyof typeof templates.collections):Promise<Document[]>=>{
+ const response=await request(`${slug}?locale=all&depth=0&limit=1000&pagination=false&joins=false&sort=${recordSort(slug)}&view=identity&select[slug]=true&select[sourceId]=true${slug==='products'?'&select[category]=true':slug==='jobs'?'&select[availability]=true':''}`)
+ if(response.hasNextPage)throw new Error(`The ${slug} collection exceeds the configured result limit.`)
+ return slug==='jobs'?response.docs.filter(doc=>doc.availability==='open'):response.docs
+})
 export const recordDocuments=cache(async(slug:keyof typeof templates.collections):Promise<Document[]>=>{
- const sort=['products','categories','news','sustainability','jobs','events'].includes(slug)?'_order':'createdAt'
+ const sort=recordSort(slug)
  const [response,interfaceText,media]=await Promise.all([request(`${slug}?locale=all&depth=0&limit=1000&pagination=false&joins=false&sort=${sort}`),translationContent(),mediaDocuments()])
  if(response.hasNextPage)throw new Error(`The ${slug} collection exceeds the configured result limit.`)
  let docs=response.docs.map((doc:Document)=>resolveMediaReferences(doc,media)) as Document[]
@@ -146,10 +152,35 @@ function articleBody(value:unknown,locale:string,introStyle:unknown):ContentDocu
  if(first?.type==='paragraph' && introStyle==='lead')first.attrs={...first.attrs,variant:'lead'}
  return document
 }
-export function presentRecord<T>(slug:keyof typeof templates.collections,doc:Document,view?:'card'):T{
+export function presentRecord<T>(slug:keyof typeof templates.collections,doc:Document,view?:'card'|'meta'):T{
  const layouts=templates.collections[slug] as unknown as Record<string,Value>
   let template = layouts[String(doc.sourceId)] ?? Object.values(layouts)[0]
-  if(view==='card' && template && typeof template==='object' && !Array.isArray(template)){
+  if(view && (slug==='news'||slug==='sustainability')){
+   const content=(template as Record<string,Value>).content as Record<string,Value>
+   const locales=content.locales as Record<string,Value>
+   const fields=view==='meta'
+    ? ['seoTitle','seoDescription',slug==='news'?'hero':'gallery']
+    : slug==='news'
+     ? ['title','summary','cardTitle','cardSummary','hero','heroAlt']
+     : ['title','summary','cardTitle','cardSummary','badge','gallery']
+   template={
+    ...(template as Record<string,Value>),
+    content:{
+     ...(view==='card'?content:{}),
+     locales:{...locales,$localeTree:Object.fromEntries(Object.entries(locales.$localeTree as Record<string,Value>).filter(([key])=>fields.includes(key)))},
+    },
+   }
+  } else if(view && slug==='jobs'){
+   const content=(template as Record<string,Value>).content as Record<string,Value>
+   const fields=view==='meta'?['title','summary']:['title','summary','department','location','contract','experience']
+   template={...(template as Record<string,Value>),content:{$localeTree:Object.fromEntries(Object.entries(content.$localeTree as Record<string,Value>).filter(([key])=>fields.includes(key)))}}
+  } else if(view==='card' && slug==='events'){
+   const content=(template as Record<string,Value>).content as Record<string,Value>
+   template={...(template as Record<string,Value>),content:Object.fromEntries(Object.entries(content).filter(([key])=>key!=='body'))}
+  } else if(view==='meta' && slug==='events'){
+   const content=(template as Record<string,Value>).content as Record<string,Value>
+   template={...(template as Record<string,Value>),content:{seo:content.seo}}
+  } else if(view==='card' && template && typeof template==='object' && !Array.isArray(template)){
    const fields=new Set(['name','description','artwork','applications','concentrations','gallery','seo','icon','tds'])
    template={...template,content:Object.fromEntries(Object.entries(template.content as Record<string,Value>).filter(([key])=>fields.has(key)))}
   }
@@ -162,7 +193,7 @@ export function presentRecord<T>(slug:keyof typeof templates.collections,doc:Doc
   if (slug === 'jobs') {
     result.status=doc.availability
     const localized=result.content as Record<string,Record<string,unknown>>
-    for(const language of ['en','ar','fr']){localized[language].title=(doc.name as Record<string,string>)?.[language]??'';localized[language].heading=richText((doc.title as Record<string,unknown>)?.[language],undefined,language)}
+    for(const language of ['en','ar','fr']){localized[language].title=(doc.name as Record<string,string>)?.[language]??'';if(!view)localized[language].heading=richText((doc.title as Record<string,unknown>)?.[language],undefined,language)}
   }
   if(slug==='sustainability'){
     const images=doc.heroImage as Record<string,{url?:string}|undefined>|undefined
@@ -193,7 +224,7 @@ export function presentRecord<T>(slug:keyof typeof templates.collections,doc:Doc
     }
     }
   }
-  if(slug==='events'){
+  if(slug==='events' && !view){
    const localized=(result.content as {body:Record<string,unknown>}).body
    for(const language of ['en','ar','fr'])localized[language]=articleBody((doc.body as Record<string,unknown>)?.[language],language,doc.introStyle)
   }
@@ -201,14 +232,14 @@ export function presentRecord<T>(slug:keyof typeof templates.collections,doc:Doc
     const content=result.content as Record<string, unknown>
     const localized=content.locales as Record<string,Record<string,unknown>>
     for(const language of ['en','ar','fr']) {
-    if(slug==='news'){
+    if(slug==='news' && view!=='meta'){
       const cardTitle=(doc.cardTitle as Record<string,unknown>|undefined)?.[language]
       const cardSummary=(doc.cardSummary as Record<string,string>|undefined)?.[language]
       if(cardTitle)localized[language].cardTitle=richText(cardTitle,undefined,language)
       if(cardSummary)localized[language].cardSummary=cardSummary
     }
     const body=(doc.body as Record<string,{root?:{children?:unknown[]}}> | undefined)?.[language]
-    if(body?.root?.children?.length){
+    if(!view && body?.root?.children?.length){
       const document=articleBody(body,language,doc.introStyle)
       if(slug==='sustainability'){
         const content:ContentNode[]=[]
@@ -228,7 +259,11 @@ export function presentRecord<T>(slug:keyof typeof templates.collections,doc:Doc
   }
   return result as T
 }
-export const records=cache(async<T>(slug:keyof typeof templates.collections):Promise<T[]> => (await recordDocuments(slug)).map(doc=>presentRecord<T>(slug,recordSource(doc))))
+export const records=cache(async<T>(slug:keyof typeof templates.collections,view?:'card'|'meta'):Promise<T[]> => (await recordDocuments(slug)).map(doc=>presentRecord<T>(slug,recordSource(doc),view)))
+export const record=cache(async<T>(collection:keyof typeof templates.collections,slug:string,view?:'card'|'meta'):Promise<T|null>=>{
+ const doc=(await recordDocuments(collection)).find(doc=>doc.slug===slug)
+ return doc?presentRecord<T>(collection,recordSource(doc),view):null
+})
 export function recordSource(doc:Document,selected?:PageBlock):Document{
  const blocks=doc.layout as PageBlock[]|undefined
  let result={...doc,page:{...(doc.page as Record<string,unknown>)}}

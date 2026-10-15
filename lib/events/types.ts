@@ -40,3 +40,5 @@ export type PublicEventSlot = {
   endsAt: string;
   status: EventSlotStatus;
 };
+
+export type EventCard = Omit<EventRecord, "content"> & {content: Omit<EventContent, "body">};

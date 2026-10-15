@@ -6,7 +6,7 @@ import { ContentImage } from "@/components/site/content-image";
 import { SmartLink } from "@/components/site/smart-link";
 import { PageHero } from "@/components/site/page-hero";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
-import type { EventRecord } from "@/lib/events/types";
+import type { EventRecord, EventCard } from "@/lib/events/types";
 import type { SiteLocale } from "@/i18n/navigation";
 import {
   ContentRenderer,
@@ -21,14 +21,14 @@ import {
 } from "@/components/site/content-section";
 import { FormActions } from "@/components/forms/form-actions";
 
-const eventPath = (event: EventRecord) => `/events/${event.slug}`;
+const eventPath = (event: Pick<EventRecord, "slug">) => `/events/${event.slug}`;
 function EventCard({
   event,
   locale,
   labels,
 }: {
   labels: Record<string,string>;
-  event: EventRecord;
+  event: EventCard;
   locale: SiteLocale;
 }) {
   const date = new Date(event.starts_at),
@@ -75,7 +75,7 @@ export function EventsPageBody({
   section: selectedSection,
 }: {
     labels: Record<string, string>;
-    events: EventRecord[];
+    events: EventCard[];
     locale: SiteLocale;
     content: ManagedPageContent;
   section?: string;

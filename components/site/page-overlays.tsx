@@ -2,7 +2,7 @@ import {interfaceLabels} from '@/lib/payload/client'
 import { ContentImage } from "./content-image";
 import { SmartLink } from "./smart-link";
 import { DeferredQuoteForm } from "@/components/enquiries/deferred-quote-form";
-import type { EventRecord } from "@/lib/events/types";
+import type { EventCard } from "@/lib/events/types";
 import type { SiteLocale } from "@/i18n/navigation";
 import { InlineContent } from "@/components/editor/inline-content";
 
@@ -10,7 +10,7 @@ export async function EventAnnouncement({
   event,
   locale,
 }: {
-  event: EventRecord;
+  event: EventCard;
   locale: SiteLocale;
 }) {
   const labels = await interfaceLabels('page.overlays', locale)

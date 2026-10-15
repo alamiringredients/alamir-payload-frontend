@@ -48,7 +48,7 @@ export async function TextMediaSection({
   const articles = articleIDs.flatMap((value) => {
     const doc = news.get(typeof value === "number" ? value : value.id);
     return doc
-      ? [presentRecord<NewsCardRecord>("news", recordSource(doc))]
+      ? [presentRecord<NewsCardRecord>("news", recordSource(doc), "card")]
       : [];
   });
   return (

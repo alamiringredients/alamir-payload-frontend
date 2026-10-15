@@ -4,7 +4,9 @@ import { cache } from "react";
 import {
   globalContent as global,
   records,
+  record,
   recordDocuments,
+  recordIdentities,
   payloadDocuments,
   request,
   translationContent,
@@ -36,7 +38,7 @@ import type {
   CertificationType,
   Certification,
 } from "@/lib/certifications/types";
-import type { EventRecord, PublicEventSlot } from "@/lib/events/types";
+import type { EventRecord, EventCard, PublicEventSlot } from "@/lib/events/types";
 import type {
   NewsPageContent,
   NewsRecord,
@@ -92,6 +94,12 @@ type PublicSustainabilityArticle = SustainabilityRecord & {
   availableLocales: SiteLocale[];
   draft?: SustainabilityVersion;
 };
+type NewsMetadataRecord = Pick<PublicNewsRecord, "id" | "slug" | "availableLocales"> & {
+  published: Partial<Record<SiteLocale, Pick<NewsVersion, "seoTitle" | "seoDescription" | "hero">>>;
+};
+type SustainabilityMetadataRecord = Pick<PublicSustainabilityArticle, "id" | "slug" | "availableLocales"> & {
+  published: Partial<Record<SiteLocale, Pick<SustainabilityVersion, "seoTitle" | "seoDescription" | "gallery">>>;
+};
 type ManagedPageKey =
   | "contact"
   | "privacy"
@@ -143,6 +151,24 @@ const catalog = cache(async (path = ""): Promise<Catalog> => {
       categoryIds.has(product.category_id),
     ),
     settings,
+  };
+});
+export const getCatalogIdentities = cache(async () => {
+  const [categoryDocs, productDocs] = await Promise.all([
+    recordIdentities("categories"),
+    recordIdentities("products"),
+  ]);
+  const categoriesById = new Map(categoryDocs.map(doc => [doc.id, doc]));
+  return {
+    categories: categoryDocs.map(doc => ({id: doc.sourceId ?? doc.id, slug: doc.slug!})),
+    products: productDocs.flatMap(doc => {
+      const category = categoriesById.get(Number(doc.category));
+      return category ? [{
+        id: doc.sourceId ?? doc.id,
+        slug: doc.slug!,
+        category_id: category.sourceId ?? category.id,
+      }] : [];
+    }),
   };
 });
 export const getNavigationCatalog = cache(
@@ -298,7 +324,7 @@ export const getHomepagePayload = cache(async (locale: SiteLocale) => {
     meetingEvent:
       events
         .map((doc) =>
-          presentRecord<EventRecord>(
+          presentRecord<EventCard>(
             "events",
             recordSource(
               resolveMediaReferences(
@@ -306,6 +332,7 @@ export const getHomepagePayload = cache(async (locale: SiteLocale) => {
                 media,
               ) as Document,
             ),
+            "card",
           ),
         )
         .find(
@@ -336,13 +363,13 @@ export const getNewsPayload = cache(
   async (locale: SiteLocale, slug?: string) => {
     const ui = await getInterface();
     const [articles, page, taxonomies] = await Promise.all([
-      records<PublicNewsRecord>("news"),
+      getNewsCards(),
       global<NewsPageContent>("news-page"),
       records<NewsTaxonomy>("news-taxonomies"),
     ]);
     return {
       cards: articles,
-      source: articles.find((article) => article.slug === slug) ?? null,
+      source: slug ? await getPublicNewsArticle(locale, slug) : null,
       page,
       taxonomies,
       labels: ui.news[locale],
@@ -354,12 +381,12 @@ export const getSustainabilityPayload = cache(
   async (locale: SiteLocale, slug?: string) => {
     const ui = await getInterface();
     const [articles, page] = await Promise.all([
-      records<PublicSustainabilityArticle>("sustainability"),
+      getSustainabilityCards(),
       global<SustainabilityPageContent>("sustainability-page"),
     ]);
     return {
       articles,
-      record: articles.find((article) => article.slug === slug) ?? null,
+      record: slug ? await getPublicSustainabilityArticle(locale, slug) : null,
       page,
       labels: ui.sustainability[locale],
     };
@@ -370,12 +397,12 @@ export const getCareersPayload = cache(
   async (locale: SiteLocale, slug?: string) => {
     const ui = await getInterface();
     const [jobs, content] = await Promise.all([
-      records<JobRecord>("jobs"),
+      getPublicJobs(),
       global<CareersContent>("careers-page"),
     ]);
     return {
-      jobs: jobs.filter((job) => job.status === "open"),
-      job: jobs.find((job) => job.slug === slug) ?? null,
+      jobs,
+      job: slug ? await getPublicJob(locale, slug) : null,
       content,
       labels: ui.careers[locale],
     };
@@ -386,12 +413,12 @@ export const getEventsPayload = cache(
   async (locale: SiteLocale, page = "events", slug?: string) => {
     const ui = await getInterface();
     const [events, slotDocs, managedContent, eventDocs] = await Promise.all([
-      records<EventRecord>("events"),
-      payloadDocuments("meeting-slots", "", 0),
+      getPublicEvents(),
+      page === "book-a-meeting" ? payloadDocuments("meeting-slots", "", 0) : [],
       global<ManagedPageContent>(
         page === "book-a-meeting" ? "booking-page" : "events-page",
       ),
-      recordDocuments("events"),
+      page === "book-a-meeting" ? recordDocuments("events") : [],
     ]);
     const eventIds = new Map(
       eventDocs.map((event) => [event.id, event.sourceId ?? event.id]),
@@ -407,7 +434,7 @@ export const getEventsPayload = cache(
       }));
     return {
       events,
-      event: events.find((event) => event.slug === slug) ?? null,
+      event: slug ? await getPublicEvent(locale, slug) : null,
       slots,
       managedContent,
       labels: ui.events[locale],
@@ -426,10 +453,10 @@ export const getSearchPayload = cache(
       };
     const [c, news, jobs, events, sustainability, content] = await Promise.all([
       catalog(),
-      records<PublicNewsRecord>("news"),
-      records<JobRecord>("jobs"),
-      records<EventRecord>("events"),
-      records<PublicSustainabilityArticle>("sustainability"),
+      getNewsCards(),
+      getPublicJobs(),
+      getPublicEvents(),
+      getSustainabilityCards(),
       global<ManagedPageContent>("search-page"),
     ]);
     const results: SearchResult[] = [];
@@ -544,22 +571,37 @@ export const getManagedPageContent = (
 };
 export const getCatalog = (locale: SiteLocale, page: string) =>
   getCatalogPayload(locale, page).then((data) => data.catalog);
-export const getPublicEvents = (locale: SiteLocale) =>
-  getEventsPayload(locale).then((data) => data.events);
+export const getPublicEvents = () =>
+  records<EventCard>("events", "card");
 export const getPublicEvent = (locale: SiteLocale, slug: string) =>
-  getEventsPayload(locale, "events", slug).then((data) => data.event);
-export const getNewsCards = (locale: SiteLocale) =>
-  getNewsPayload(locale).then((data) => data.cards);
+  record<EventRecord>("events", slug);
+export const getNewsCards = () =>
+  records<NewsCardRecord>("news", "card");
 export const getPublicNewsArticle = (locale: SiteLocale, slug: string) =>
-  getNewsPayload(locale, slug).then((data) => data.source);
-export const getPublicNewsPage = (locale: SiteLocale) =>
-  getNewsPayload(locale).then((data) => data.page);
-export const getPublicJobs = (locale: SiteLocale) =>
-  getCareersPayload(locale).then((data) => data.jobs);
+  record<PublicNewsRecord>("news", slug);
+export const getPublicNewsPage = () =>
+  global<NewsPageContent>("news-page");
+export const getPublicJobs = cache(async () =>
+  (await records<JobCard>("jobs", "card")).filter(job => job.status === "open"));
 export const getPublicJob = (locale: SiteLocale, slug: string) =>
-  getCareersPayload(locale, slug).then((data) => data.job);
-export const getSustainabilityCards = (locale: SiteLocale) =>
-  getSustainabilityPayload(locale).then((data) => data.articles);
+  record<JobRecord>("jobs", slug);
+export const getSustainabilityCards = () =>
+  records<SustainabilityCard>("sustainability", "card");
+
+
+export const getPublicSustainabilityArticle = (locale: SiteLocale, slug: string) =>
+  record<PublicSustainabilityArticle>("sustainability", slug);
+export const getPublicSustainabilityPage = () =>
+  global<SustainabilityPageContent>("sustainability-page");
+export const getNewsArticleMetadata = (locale: SiteLocale, slug: string) =>
+  record<NewsMetadataRecord>("news", slug, "meta");
+export const getSustainabilityArticleMetadata = (locale: SiteLocale, slug: string) =>
+  record<SustainabilityMetadataRecord>("sustainability", slug, "meta");
+export const getEventMetadata = (locale: SiteLocale, slug: string) =>
+  record<{content: Pick<EventRecord["content"], "seo">}>("events", slug, "meta");
+
+export const getJobMetadata = (locale: SiteLocale, slug: string) =>
+  record<{content: Record<SiteLocale, Pick<JobRecord["content"][SiteLocale], "title" | "summary">>}>("jobs", slug, "meta");
 
 function plain(node: { text?: string; content?: unknown[] }): string {
   return (
